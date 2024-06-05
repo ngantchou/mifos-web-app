@@ -1,7 +1,7 @@
 {
-  "APP_NAME": "Mifos X",
+  "APP_NAME": "LFV",
   "Logged in as": "connecté en tant que",
-  "Remember me": "Souviens-toi de moi",
+  "Remember me": "Se souvenir de moi",
   "errors": {
     "Email not valid": "E-mail non valide",
     "Filling Details": "Cliquez pour commencer à remplir les détails. * Les champs de marque sont nécessaires. Pour plus de détails, cliquez sur :",
@@ -287,7 +287,7 @@
       }
     },
     "breadcrumbs": {
-      "Home": "Maison"
+      "Home": "Accueil"
     },
     "buttons": {
       "Accept Transfer": "Accepter le transfert",
@@ -2727,7 +2727,7 @@
       "Global configurations, Cache and Business Date": "Configurations globales, paramètres de cache et de date professionnelle",
       "Group Actions": "Actions de groupe",
       "Groups": "Groupes",
-      "Home": "Maison",
+      "Home": "Accueil",
       "Identities": "Identités",
       "Import employee details from your local device": "Ce bouton est utilisé pour importer les détails des employés depuis votre appareil local.",
       "Individual Collection Sheet": "Feuille de collecte individuelle",
@@ -3000,7 +3000,7 @@
       "View, edit and/or delete your organization's employees": "Avec cette option, vous pouvez afficher, modifier et/ou supprimer les employés de votre organisation.",
       "Warning": "Avertissement",
       "Warning message": "Ce système est réservé à un usage autorisé uniquement. Tout accès non autorisé entraînera des poursuites judiciaires éventuelles. En accédant à ce système, vous reconnaissez que vous êtes autorisé à le faire et que toutes les données stockées et traitées ici sont confidentielles.",
-      "Welcome": "Accueillir",
+      "Welcome": "Bienvenue",
       "Welcome page logo from anywhere": "Ce logo ramènera l'utilisateur à la page d'accueil depuis n'importe où dans le système.",
       "Working Days": "Jours de travail",
       "Working days and configure behaviour of payments": "Définir les jours ouvrables et configurer le comportement des paiements dus les jours fériés",
@@ -3025,7 +3025,7 @@
     },
     "titles": {
       "Dashboard": "Tableau de bord",
-      "Home": "Maison",
+      "Home": "Accueil",
       "Login": "Se connecter"
     }
   },
