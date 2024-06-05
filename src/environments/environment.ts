@@ -15,7 +15,7 @@ export const environment = {
   fineractPlatformTenantIds: window['env']['fineractPlatformTenantIds'] || 'default',
   // For connecting to others servers running elsewhere update the base API URL
   baseApiUrls: window['env']['fineractApiUrls'] ||
-    'https://dev.mifos.io,https://demo.mifos.io,https://qa.mifos.io,https://staging.mifos.io,https://mobile.mifos.io,https://demo.fineract.dev,https://localhost:8443,http://localhost:8443',
+    'http://localhost:8080',
   // For connecting to server running elsewhere set the base API URL
   baseApiUrl: window['env']['baseApiUrl'] || 'https://demo.fineract.dev',
   allowServerSwitch: env.allow_switching_backend_instance,
@@ -32,7 +32,7 @@ export const environment = {
     buttonText: 'Close'
   },
   defaultLanguage: window['env']['defaultLanguage'] || 'en-US',
-  supportedLanguages: window['env']['supportedLanguages'] || 'cs-CS,de-DE,en-US,es-MX,fr-FR,it-IT,ko-KO,lt-LT,lv-LV,ne-NE,pt-PT,sw-SW',
+  supportedLanguages: window['env']['supportedLanguages'] || 'en-US,fr-FR',
   preloadClients: window['env']['preloadClients'] || true,
 
   defaultCharDelimiter: window['env']['defaultCharDelimiter'] || ',',
