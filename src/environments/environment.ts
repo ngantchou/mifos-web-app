@@ -15,7 +15,7 @@ export const environment = {
   fineractPlatformTenantIds: window['env']['fineractPlatformTenantIds'] || 'default',
   // For connecting to others servers running elsewhere update the base API URL
   baseApiUrls: window['env']['fineractApiUrls'] ||
-    'http://localhost:8080',
+    'https://localhost:8443',
   // For connecting to server running elsewhere set the base API URL
   baseApiUrl: window['env']['baseApiUrl'] || 'https://demo.fineract.dev',
   allowServerSwitch: env.allow_switching_backend_instance,
