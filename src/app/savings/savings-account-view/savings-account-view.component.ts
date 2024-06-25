@@ -66,7 +66,30 @@ export class SavingsAccountViewComponent implements OnInit {
   ngOnInit() {
     this.setConditionalButtons();
   }
+  getPreviousDayBalance(): number {
+    const currentDate = new Date();
+    // Convert currentDate to string for comparison
+    const previousDate = new Date(currentDate);
+    previousDate.setDate(currentDate.getDate() - 1);
+    previousDate.setHours(0, 0, 0, 0);
+    // Filter transactions to find the last transaction before the current date
+    // Find the last transaction before the current date
+    for (let transaction of this.savingsAccountData.transactions) {
+      const transactionDate = new Date(transaction.date[0], transaction.date[1] - 1, transaction.date[2]);
+      if (transactionDate < previousDate) {
+        return transaction.runningBalance;
+      }
+    }
 
+    return 0; // or initial balance if known
+  }
+
+  private formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
+  }
   /**
    * Adds options to button config. conditionaly.
    */

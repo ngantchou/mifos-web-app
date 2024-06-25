@@ -12,28 +12,28 @@
 
   .bottom {
     border-width: 0 90px 90px 90px;
-    border-color: transparent transparent #1fb050 transparent;
+    border-color: transparent transparent #b15c09 transparent;
     bottom: calc(50% - 100px);
     left: calc(50% - 90px);
   }
 
   .top {
     border-width: 90px 90px 0 90px;
-    border-color: #b4d575 transparent transparent transparent;
+    border-color: #d7b925 transparent transparent transparent;
     top: calc(50% - 100px);
     left: calc(50% - 90px);
   }
 
   .left {
     border-width: 90px 0 90px 90px;
-    border-color: transparent transparent transparent #1074b9;
+    border-color: transparent transparent transparent #866c53;
     top: calc(50% - 90px);
     left: calc(50% - 100px);
   }
 
   .right {
     border-width: 90px 90px 90px 0;
-    border-color: transparent #1daeec transparent transparent;
+    border-color: transparent #866c53 transparent transparent;
     top: calc(50% - 90px);
     right: calc(50% - 100px);
   }
