@@ -39,25 +39,6 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field *ngIf="createClientForm.contains('firstname')" fxFlex="48%">
-      <mat-label>{{"labels.inputs.First Name" | translate}}</mat-label>
-      <input matInput required formControlName="firstname">
-      <mat-error *ngIf="createClientForm.controls.firstname.hasError('required')">
-        {{"labels.inputs.Client first name" | translate}} {{"labels.commons.is" | translate}} <strong>{{"labels.commons.required" | translate}}</strong>
-      </mat-error>
-      <mat-error *ngIf="createClientForm.controls.firstname.hasError('pattern')">
-        {{"labels.inputs.Client first name" | translate}} <strong>{{"labels.inputs.cannot" | translate}}</strong> {{"labels.commons.begin with a special character or number" | translate}}
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field *ngIf="createClientForm.contains('middlename')" fxFlex="48%">
-      <mat-label>{{"labels.inputs.Middle Name" | translate}}</mat-label>
-      <input matInput formControlName="middlename">
-      <mat-error *ngIf="createClientForm.controls.middlename.hasError('pattern')">
-        {{"labels.inputs.Client middle name" | translate}} <strong>{{"labels.inputs.cannot" | translate}}</strong> {{"labels.commons.begin with a special character or number" | translate}}
-      </mat-error>
-    </mat-form-field>
-
     <mat-form-field *ngIf="createClientForm.contains('lastname')" fxFlex="48%">
       <mat-label>{{"labels.inputs.Last Name" | translate}}</mat-label>
       <input matInput required formControlName="lastname">
@@ -69,14 +50,38 @@
       </mat-error>
     </mat-form-field>
 
+    <mat-form-field *ngIf="createClientForm.contains('firstname')" fxFlex="48%">
+      <mat-label>{{"labels.inputs.First Name" | translate}}</mat-label>
+      <input matInput  formControlName="firstname">
+      <mat-error *ngIf="createClientForm.controls.firstname.hasError('pattern')">
+        {{"labels.inputs.Client first name" | translate}} <strong>{{"labels.inputs.cannot" | translate}}</strong> {{"labels.commons.begin with a special character or number" | translate}}
+      </mat-error>
+    </mat-form-field>
+
     <mat-divider></mat-divider>
 
     <mat-form-field fxFlex="48%" (click)="dateOfBirthDatePicker.open()">
-      <mat-label>{{ 'labels.inputs.' + getDateLabel(createClientForm.value.legalFormId, ['Date of Birth', 'Incorporation Date']) | translate }}</mat-label>
-      <input matInput [max]="maxDate" [matDatepicker]="dateOfBirthDatePicker" formControlName="dateOfBirth">
+      <mat-label>{{ 'labels.inputs.' + getDateLabel(createClientForm.value.legalFormId, ['Date of Birth', 'Incorporation Date']) | translate }}*</mat-label>
+      <input matInput required [max]="maxDate" [matDatepicker]="dateOfBirthDatePicker" formControlName="dateOfBirth">
       <mat-datepicker-toggle matSuffix [for]="dateOfBirthDatePicker"></mat-datepicker-toggle>
       <mat-datepicker #dateOfBirthDatePicker></mat-datepicker>
     </mat-form-field>
+    <!-- TODO: Add the following fields to the API client -->
+    <mat-form-field *ngIf="createClientForm.contains('middlename')" fxFlex="48%">
+      <mat-label>{{"labels.inputs.Lieu Naissance" | translate}}</mat-label>
+      <input matInput formControlName="middlename">
+      <mat-error *ngIf="createClientForm.controls.middlename.hasError('pattern')">
+        {{"labels.inputs.Lieu Naissance" | translate}} <strong>{{"labels.inputs.cannot" | translate}}</strong> {{"labels.commons.Lieu Naissance" | translate}}
+      </mat-error>
+    </mat-form-field> 
+    <!-- TODO: Add the following fields to the API client -->
+    <mat-form-field *ngIf="createClientForm.contains('middlename')" fxFlex="48%">
+      <mat-label>{{"labels.inputs.Profession" | translate}}</mat-label>
+      <input matInput formControlName="middlename">
+      <mat-error *ngIf="createClientForm.controls.middlename.hasError('pattern')">
+        {{"labels.inputs.Profession" | translate}} <strong>{{"labels.inputs.cannot" | translate}}</strong> {{"labels.commons.Profession" | translate}}
+      </mat-error>
+    </mat-form-field> 
 
     <div fxFlex="100%" fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column" formGroupName="clientNonPersonDetails"
       *ngIf="createClientForm.contains('clientNonPersonDetails')">

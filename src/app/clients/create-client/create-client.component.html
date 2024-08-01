@@ -30,6 +30,13 @@
 
     </mat-step>
 
+    <mat-step *ngFor="let datatable of datatables">
+
+      <ng-template matStepLabel>{{datatable.registeredTableName | uppercase}}</ng-template>
+
+      <mifosx-client-datatable-step [datatableData]="datatable" #dtclient></mifosx-client-datatable-step>
+
+    </mat-step>
     <mat-step>
 
       <ng-template matStepLabel>{{"labels.inputs.FAMILY MEMBERS" | translate}}</ng-template>
@@ -47,15 +54,6 @@
       </mifosx-client-address-step>
 
     </mat-step>
-
-    <mat-step *ngFor="let datatable of datatables">
-
-      <ng-template matStepLabel>{{datatable.registeredTableName | uppercase}}</ng-template>
-
-      <mifosx-client-datatable-step [datatableData]="datatable" #dtclient></mifosx-client-datatable-step>
-
-    </mat-step>
-
     <mat-step *ngIf="areFormvalids()" completed>
 
       <ng-template matStepLabel>{{"labels.inputs.PREVIEW" | translate}}</ng-template>
