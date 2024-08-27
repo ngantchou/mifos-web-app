@@ -9,7 +9,10 @@
     <span fxFlex="60%" *ngIf="client.legalFormId === 2">{{ client.fullname }}</span>
     <span fxFlex="60%" *ngIf="client.legalFormId === 1">{{ client.firstname }} {{ client.middlename ? client.middlename + ' ' + client.lastname : client.lastname }}</span>
   </div>
-
+  <div fxFlexFill>
+    <span fxFlex="40%">{{"labels.inputs.profession" | translate}}</span>
+    <span fxFlex="60%" *ngIf="client.legalFormId === 2">{{ client.profession }}</span>
+  </div>
   <div fxFlexFill>
     <span fxFlex="40%">{{"labels.inputs.Office" | translate}}</span>
     <span fxFlex="60%">{{ client.officeId | find:clientTemplate.officeOptions:'id':'name' }}</span>

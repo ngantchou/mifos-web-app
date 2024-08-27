@@ -75,10 +75,10 @@
       </mat-error>
     </mat-form-field> 
     <!-- TODO: Add the following fields to the API client -->
-    <mat-form-field *ngIf="createClientForm.contains('middlename')" fxFlex="48%">
+    <mat-form-field *ngIf="createClientForm.contains('profession')" fxFlex="48%">
       <mat-label>{{"labels.inputs.Profession" | translate}}</mat-label>
-      <input matInput formControlName="middlename">
-      <mat-error *ngIf="createClientForm.controls.middlename.hasError('pattern')">
+      <input matInput formControlName="profession">
+      <mat-error *ngIf="createClientForm.controls.profession.hasError('pattern')">
         {{"labels.inputs.Profession" | translate}} <strong>{{"labels.inputs.cannot" | translate}}</strong> {{"labels.commons.Profession" | translate}}
       </mat-error>
     </mat-form-field> 

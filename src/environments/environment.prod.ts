@@ -9,7 +9,7 @@ export const environment = {
   fineractPlatformTenantId: window['env']['fineractPlatformTenantId'] || 'default',
   fineractPlatformTenantIds: window['env']['fineractPlatformTenantIds'] || 'default',
   // For connecting to others servers running elsewhere update the base API URL
-  baseApiUrls: window['env']['fineractApiUrls'] || 'http://102.220.19.214:8443',
+  baseApiUrls: window['env']['fineractApiUrls'] || 'https://102.220.19.214:8443',
   // For connecting to server running elsewhere set the base API URL
   baseApiUrl: window['env']['fineractApiUrl'] || 'https://102.220.19.214:8443',
   allowServerSwitch: env.allow_switching_backend_instance,
