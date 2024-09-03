@@ -67,10 +67,10 @@
       <mat-datepicker #dateOfBirthDatePicker></mat-datepicker>
     </mat-form-field>
     <!-- TODO: Add the following fields to the API client -->
-    <mat-form-field *ngIf="createClientForm.contains('middlename')" fxFlex="48%">
+    <mat-form-field *ngIf="createClientForm.contains('lieuNaissance')" fxFlex="48%">
       <mat-label>{{"labels.inputs.Lieu Naissance" | translate}}</mat-label>
-      <input matInput formControlName="middlename">
-      <mat-error *ngIf="createClientForm.controls.middlename.hasError('pattern')">
+      <input matInput formControlName="lieuNaissance">
+      <mat-error *ngIf="createClientForm.controls.lieuNaissance.hasError('pattern')">
         {{"labels.inputs.Lieu Naissance" | translate}} <strong>{{"labels.inputs.cannot" | translate}}</strong> {{"labels.commons.Lieu Naissance" | translate}}
       </mat-error>
     </mat-form-field> 
