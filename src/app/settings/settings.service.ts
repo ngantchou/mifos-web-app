@@ -137,7 +137,7 @@ export class SettingsService {
    */
   get decimals() {
     if (!localStorage.getItem('mifosXDecimalsToDisplay')) {
-      return '2';
+      return '0';
     }
     return localStorage.getItem('mifosXDecimalsToDisplay');
   }

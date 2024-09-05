@@ -7,13 +7,13 @@ import * as moment from 'moment';
 })
 export class Dates {
 
-  public static DEFAULT_DATEFORMAT = 'yyyy-MM-dd';
-  public static DEFAULT_DATETIMEFORMAT = 'yyyy-MM-dd HH:mm';
+  public static DEFAULT_DATEFORMAT = 'DD-MM-YYYY';
+  public static DEFAULT_DATETIMEFORMAT = 'DD-MM-YYYY HH:mm';
 
   constructor(private datePipe: DatePipe) {}
 
   public getDate(timestamp: any): string {
-    return this.datePipe.transform(timestamp, 'YYYY-MM-DD');
+    return this.datePipe.transform(timestamp, 'DD-MM-YYYY');
   }
 
   public formatDate(timestamp: any, dateFormat: string): string {
@@ -27,7 +27,7 @@ export class Dates {
 
   public parseDate(value: any): Date {
     if (value instanceof Array) {
-      return moment(value.join('-'), 'YYYY-MM-DD').toDate();
+      return moment(value.join('-'), 'DD-MM-YYYY').toDate();
     } else {
       return moment(value).toDate();
     }

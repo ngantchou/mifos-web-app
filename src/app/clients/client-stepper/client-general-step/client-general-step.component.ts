@@ -20,7 +20,7 @@ export class ClientGeneralStepComponent implements OnInit {
   @Output() legalFormChangeEvent = new EventEmitter<{ legalForm: number }>();
 
   /** Minimum date allowed. */
-  minDate = new Date(2000, 0, 1);
+  minDate = new Date(1900, 0, 1);
   /** Maximum date allowed. */
   maxDate = new Date();
 
@@ -85,6 +85,8 @@ export class ClientGeneralStepComponent implements OnInit {
       'emailAddress': ['', Validators.email],
       'dateOfBirth': [''],
       'clientTypeId': [''],
+      'lieuNaissance': [''],
+      'profession': [''],
       'clientClassificationId': [''],
       'submittedOnDate': [this.settingsService.businessDate, Validators.required]
     });
@@ -115,7 +117,7 @@ export class ClientGeneralStepComponent implements OnInit {
         this.createClientForm.removeControl('fullname');
         this.createClientForm.removeControl('clientNonPersonDetails');
         this.createClientForm.addControl('firstname', new UntypedFormControl('', [Validators.required, Validators.pattern('(^[A-z]).*')]));
-        this.createClientForm.addControl('middlename', new UntypedFormControl('', Validators.pattern('(^[A-z]).*')));
+        //this.createClientForm.addControl('middlename', new UntypedFormControl('', Validators.pattern('(^[A-z]).*')));
         this.createClientForm.addControl('lastname', new UntypedFormControl('', [Validators.required, Validators.pattern('(^[A-z]).*')]));
       } else {
         this.createClientForm.removeControl('firstname');
