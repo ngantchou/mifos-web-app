@@ -42,9 +42,9 @@
     <mat-form-field *ngIf="createClientForm.contains('lastname')" fxFlex="48%">
       <mat-label>{{"labels.inputs.Last Name" | translate}}</mat-label>
       <input matInput required formControlName="lastname" class="uppercase">
-      <mat-error *ngIf="createClientForm.controls.lastname.hasError('required')">
+      <!-- <mat-error *ngIf="createClientForm.controls.lastname.hasError('required')">
         {{"labels.inputs.Client last name" | translate}} {{"labels.commons.is" | translate}} <strong>{{"labels.commons.required" | translate}}</strong>
-      </mat-error>
+      </mat-error> -->
       <mat-error *ngIf="createClientForm.controls.lastname.hasError('pattern')">
         {{"labels.inputs.Client last name" | translate}} <strong>{{"labels.inputs.cannot" | translate}}</strong> {{"labels.commons.begin with a special character or number" | translate}}
       </mat-error>
@@ -70,6 +70,9 @@
     <mat-form-field *ngIf="createClientForm.contains('lieuNaissance')" fxFlex="48%">
       <mat-label>{{"labels.inputs.Lieu Naissance" | translate}}</mat-label>
       <input matInput formControlName="lieuNaissance">
+      <mat-error *ngIf="createClientForm.controls.lieuNaissance.hasError('required')">
+        {{"labels.inputs.Lieu Naissance" | translate}} {{"labels.commons.is" | translate}} <strong>{{"labels.commons.required" | translate}}</strong>
+      </mat-error>
       <mat-error *ngIf="createClientForm.controls.lieuNaissance.hasError('pattern')">
         {{"labels.inputs.Lieu Naissance" | translate}} <strong>{{"labels.inputs.cannot" | translate}}</strong> {{"labels.commons.Lieu Naissance" | translate}}
       </mat-error>
@@ -81,11 +84,17 @@
           {{ gender.name }}
         </mat-option>
       </mat-select>
+      <mat-error *ngIf="createClientForm.controls.genderId.hasError('required')">
+        {{"labels.inputs.genderId" | translate}} {{"labels.commons.is" | translate}} <strong>{{"labels.commons.required" | translate}}</strong>
+      </mat-error>
     </mat-form-field>
     <!-- TODO: Add the following fields to the API client -->
     <mat-form-field *ngIf="createClientForm.contains('profession')" fxFlex="48%">
       <mat-label>{{"labels.inputs.Profession" | translate}}</mat-label>
       <input matInput formControlName="profession">
+      <mat-error *ngIf="createClientForm.controls.profession.hasError('required')">
+        {{"labels.inputs.Profession" | translate}} {{"labels.commons.is" | translate}} <strong>{{"labels.commons.required" | translate}}</strong>
+      </mat-error>
       <mat-error *ngIf="createClientForm.controls.profession.hasError('pattern')">
         {{"labels.inputs.Profession" | translate}} <strong>{{"labels.inputs.cannot" | translate}}</strong> {{"labels.commons.Profession" | translate}}
       </mat-error>
@@ -149,6 +158,9 @@
     <mat-form-field fxFlex="48%">
       <mat-label>{{"labels.inputs.Mobile No" | translate}}</mat-label>
       <input matInput type="number" formControlName="mobileNo">
+      <mat-error *ngIf="createClientForm.controls.mobileNo.hasError('required')">
+        {{"labels.inputs.mobileNo" | translate}} {{"labels.commons.is" | translate}} <strong>{{"labels.commons.required" | translate}}</strong>
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field fxFlex="48%">

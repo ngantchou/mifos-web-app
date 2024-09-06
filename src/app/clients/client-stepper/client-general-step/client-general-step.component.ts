@@ -80,13 +80,13 @@ export class ClientGeneralStepComponent implements OnInit {
       'addSavings': [false],
       'accountNo': [''],
       'externalId': [''],
-      'genderId': [''],
-      'mobileNo': [''],
+      'genderId': ['', Validators.required],
+      'mobileNo': ['', Validators.required],
       'emailAddress': ['', Validators.email],
       'dateOfBirth': [''],
       'clientTypeId': [''],
-      'lieuNaissance': [''],
-      'profession': [''],
+      'lieuNaissance': ['', Validators.required],
+      'profession': ['', Validators.required],
       'clientClassificationId': [''],
       'submittedOnDate': [this.settingsService.businessDate, Validators.required]
     });
@@ -116,9 +116,9 @@ export class ClientGeneralStepComponent implements OnInit {
       if (legalFormId === 1) {
         this.createClientForm.removeControl('fullname');
         this.createClientForm.removeControl('clientNonPersonDetails');
-        this.createClientForm.addControl('firstname', new UntypedFormControl('', [Validators.required, Validators.pattern('(^[A-z]).*')]));
+        this.createClientForm.addControl('firstname', new UntypedFormControl('', [ Validators.pattern('(^[A-z]).*')]));
         //this.createClientForm.addControl('middlename', new UntypedFormControl('', Validators.pattern('(^[A-z]).*')));
-        this.createClientForm.addControl('lastname', new UntypedFormControl('', [Validators.required, Validators.pattern('(^[A-z]).*')]));
+        this.createClientForm.addControl('lastname', new UntypedFormControl('', [ Validators.required,Validators.pattern('(^[A-z]).*')]));
       } else {
         this.createClientForm.removeControl('firstname');
         this.createClientForm.removeControl('middlename');
