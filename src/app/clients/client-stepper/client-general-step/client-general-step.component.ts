@@ -85,8 +85,8 @@ export class ClientGeneralStepComponent implements OnInit {
       'emailAddress': ['', Validators.email],
       'dateOfBirth': [''],
       'clientTypeId': [''],
-      'lieuNaissance': ['', Validators.required],
-      'profession': ['', Validators.required],
+      //'lieuNaissance': ['', Validators.required],
+      //'profession': ['', Validators.required],
       'clientClassificationId': [''],
       'submittedOnDate': [this.settingsService.businessDate, Validators.required]
     });

@@ -79,13 +79,11 @@ export class CreateClientComponent {
         ...this.clientGeneralStep.clientGeneralDetails,
         ...this.clientFamilyMembersStep.familyMembers,
         ...this.clientAddressStep.address,
-        clientDatatables: datatables, 
       };
     } else {
       return {
         ...this.clientGeneralStep.clientGeneralDetails,
         ...this.clientFamilyMembersStep.familyMembers,
-        clientDatatables: datatables, 
       };
     }
   }

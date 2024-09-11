@@ -2332,7 +2332,10 @@
       "promoteur": "Promoteur",
       "dirigeants": "Dirigeants",
       "capital_social": "Capital Social",
-      "autres": "Autres"
+      "autres": "Autres",
+      "Total Amount of Deposit": "Montant total déposé",
+      "Total Amount in Words": "Montant en lettre",
+      "Source of Funds": "Source des fonds"
     },
     "links": {
       "Community": "Communauté",
