@@ -445,6 +445,14 @@ export class OrganizationService {
     return this.http.post(`/tellers/${tellerId}/cashiers/${cashierId}/allocate`, cashData, { params: httpParams });
   }
 
+  openCashierSession(tellerId: string, cashierId: string, cashData: any): Observable<any> {
+    const httpParams = new HttpParams().set('command', 'open');
+    return this.http.post(`/tellers/${tellerId}/cashiers/${cashierId}/open`, cashData, { params: httpParams });
+  }
+  closeCashierSession(tellerId: string, cashierId: string, cashData: any): Observable<any> {
+    const httpParams = new HttpParams().set('command', 'close');
+    return this.http.post(`/tellers/${tellerId}/cashiers/${cashierId}/close`, cashData, { params: httpParams });
+  }
   /** Get Cashier Template.
    * @param tellerId Teller ID.
    * @returns {Observable<any>} Cashier template.
