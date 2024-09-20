@@ -15,7 +15,9 @@ export class Dates {
   public getDate(timestamp: any): string {
     return this.datePipe.transform(timestamp, 'DD-MM-YYYY');
   }
-
+  public getDateCustom(timestamp: any): string {
+    return this.datePipe.transform(timestamp, 'DD-MM-YYYY');
+  }
   public formatDate(timestamp: any, dateFormat: string): string {
     const datePipe: DatePipe = new DatePipe(this.language.code);
     return datePipe.transform(timestamp, dateFormat);

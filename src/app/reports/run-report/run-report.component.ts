@@ -238,7 +238,8 @@ export class RunReportComponent implements OnInit {
           break;
         case 'date':
           if (this.isTableReport()) {
-            formattedResponse[newKey] = this.dateUtils.formatDate(value, Dates.DEFAULT_DATEFORMAT);
+            formattedResponse[newKey] = this.dateUtils.getDateCustom(value);
+            console.log(formattedResponse);
           } else {
             formattedResponse[newKey] = this.dateUtils.formatDate(value, this.settingsService.dateFormat);
           }
