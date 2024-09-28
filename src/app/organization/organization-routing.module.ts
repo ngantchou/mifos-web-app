@@ -59,6 +59,8 @@ import { EditLoanProvisioningCriteriaComponent } from './loan-provisioning-crite
 import { StandingInstructionsHistoryComponent } from './standing-instructions-history/standing-instructions-history.component';
 import { FundMappingComponent } from './fund-mapping/fund-mapping.component';
 import { CreateHolidayComponent } from './holidays/create-holiday/create-holiday.component';
+import { OpenCashierComponent } from './tellers/cashiers/open-cashier/open-cashier.component';
+import { CloseCashierComponent } from './tellers/cashiers/close-cashier/close-cashier.component';
 
 /** Custom Resolvers */
 import { LoanProvisioningCriteriaResolver } from './loan-provisioning-criteria/common-resolvers/loan-provisioning-criteria.resolver';
@@ -103,6 +105,7 @@ import { ViewFundComponent } from './manage-funds/view-fund/view-fund.component'
 import { EditFundComponent } from './manage-funds/edit-fund/edit-fund.component';
 import { CreateFundComponent } from './manage-funds/create-fund/create-fund.component';
 import { InvestorsComponent } from './investors/investors.component';
+import { TellerSessionResolver } from './tellers/common-resolvers/teller-session.resolver';
 
 /** Organization Routes */
 const routes: Routes = [
@@ -398,6 +401,99 @@ const routes: Routes = [
               resolve: {
                 tellers: TellersResolver
               }
+            },
+            {
+              path: 'session',
+              data: { title: 'Tellers', breadcrumb: 'Tellers' },
+              children: [
+                {
+                  path: '',
+                  component: TellersComponent,
+                  resolve: {
+                    tellers: TellerSessionResolver
+                  },
+                },
+                {
+                  path: ':id',
+                  data: { title: 'View Teller', routeParamBreadcrumb: 'id' },
+                  children: [
+                    {
+                      path: '',
+                      component: ViewTellerComponent,
+                      resolve: {
+                        teller: TellerResolver
+                      },
+                    },
+                    {
+                      path: 'cashiers',
+                      data: { title: 'Cashiers', breadcrumb: 'Cashiers', routeParamBreadcrumb: false },
+                      children: [
+                        {
+                          path: '',
+                          component: CashiersComponent,
+                          resolve: {
+                            cashiersData: CashiersResolver
+                          }
+                        },
+                        {
+                          path: ':id',
+                          data: { title: 'View Cashier', routeParamBreadcrumb: 'id' },
+                          children: [
+                            {
+                              path: '',
+                              component: ViewCashierComponent,
+                              data: { title: 'View Cashier', breadcrumb: 'View Cashier', routeParamBreadcrumb: false },
+                              resolve: {
+                                cashier: CashierResolver
+                              }
+                            },
+                            {
+                              path: 'transactions',
+                              data: { title: 'Cashier Transactions', breadcrumb: 'Transactions', routeParamBreadcrumb: false },
+                              component: TransactionsComponent,
+                              resolve: {
+                                currencies: CurrenciesResolver
+                              }
+                            },
+                            {
+                              path: 'settle',
+                              component: SettleCashComponent,
+                              data: { title: 'Settle Cash', breadcrumb: 'Settle Cash', routeParamBreadcrumb: false },
+                              resolve: {
+                                cashierTemplate: CashierTransactionTemplateResolver
+                              }
+                            },
+                            {
+                              path: 'allocate',
+                              component: AllocateCashComponent,
+                              data: { title: 'Allocate Cash', breadcrumb: 'Allocate Cash', routeParamBreadcrumb: false },
+                              resolve: {
+                                cashierTemplate: CashierTransactionTemplateResolver
+                              }
+                            },
+                            {
+                              path: 'open',
+                              component: OpenCashierComponent,
+                              data: { title: 'Open Cashier', breadcrumb: 'Open Cashier', routeParamBreadcrumb: false },
+                              resolve: {
+                                cashierTemplate: CashierTransactionTemplateResolver
+                              }
+                            },
+                            {
+                              path: 'close',
+                              component: CloseCashierComponent,
+                              data: { title: 'Close Cashier', breadcrumb: 'close Cashier', routeParamBreadcrumb: false },
+                              resolve: {
+                                cashierTemplate: CashierTransactionTemplateResolver
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             },
             {
               path: 'create',
@@ -737,7 +833,8 @@ const routes: Routes = [
     LoanProvisioningCriteriaTemplateResolver,
     LoanProvisioningCriteriaAndTemplateResolver,
     StandingInstructionsTemplateResolver,
-    AdvanceSearchTemplateResolver
+    AdvanceSearchTemplateResolver,
+    TellerSessionResolver
   ]
 })
 export class OrganizationRoutingModule { }

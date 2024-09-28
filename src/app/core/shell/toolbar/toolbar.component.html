@@ -26,15 +26,11 @@
         <fa-icon class="mr-05" icon="chart-bar" size="lg"></fa-icon>
         {{'labels.menus.Reports' | translate}}
       </a>
-      <a #produits mat-tab-link class="tab-link"  *mifosxHasPermission="['ALL_FUNCTIONS','WITHDRAW_SAVINGSACCOUNT','DEPOSIT_FIXEDDEPOSITACCOUNT','ALLOCATECASHTOCASHIER_TELLER']" [routerLink]="['/products']">
+      <a #produits mat-tab-link class="tab-link"  *mifosxHasPermission="['ALL_FUNCTIONS']" [routerLink]="['/products']">
         <fa-icon class="mr-05" icon="briefcase" size="lg"></fa-icon>
         {{'labels.menus.Product' | translate}}
       </a>
-      <a #admin mat-tab-link class="tab-link" *mifosxHasPermission="'ALL_FUNCTIONS'" [matMenuTriggerFor]="adminMenu" #adminMenuTrigger="matMenuTrigger">
-        <fa-icon class="mr-05" icon="shield-alt" size="lg"></fa-icon>
-        {{'labels.menus.Admin' | translate}}
-      </a>
-      <a #selfService mat-tab-link class="tab-link" *mifosxHasPermission="['ALL_FUNCTIONS','WITHDRAW_SAVINGSACCOUNT','DEPOSIT_FIXEDDEPOSITACCOUNT','ALLOCATECASHTOCASHIER_TELLER']" [routerLink]="['/organization/tellers']">
+      <a #selfService mat-tab-link class="tab-link" *mifosxHasPermission="['CASHIERSESSION','ALL_FUNCTIONS']" [routerLink]="['/organization/tellers/session']">
         <fa-icon class="mr-05" icon="key" size="lg"></fa-icon>
         {{'labels.menus.Teller' | translate}}
       </a>
@@ -43,7 +39,10 @@
         <fa-icon class="mr-05" icon="message" size="lg"></fa-icon>
         {{'labels.menus.Commercial' | translate}}
       </a>
-
+      <a #admin mat-tab-link class="tab-link" *mifosxHasPermission="'ALL_FUNCTIONS'" [matMenuTriggerFor]="adminMenu" #adminMenuTrigger="matMenuTrigger">
+        <fa-icon class="mr-05" icon="shield-alt" size="lg"></fa-icon>
+        {{'labels.menus.Admin' | translate}}
+      </a>
     </span>
 
   </nav>

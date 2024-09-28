@@ -19,7 +19,7 @@ import { of } from 'rxjs';
 export class TellersComponent implements OnInit {
 
   /** Tellers data. */
-  tellersData: any;
+  tellersData:  any[] = [];
   /** Columns to be displayed in tellers table. */
   displayedColumns: string[] = ['officeName', 'name', 'status', 'startDate', 'actions'];
   /** Data source for tellers table. */
@@ -36,7 +36,7 @@ export class TellersComponent implements OnInit {
    */
   constructor(private route: ActivatedRoute) {
     this.route.data.subscribe(( data: { tellers: any }) => {
-      this.tellersData = data.tellers;
+      this.tellersData.push(data.tellers);
     });
   }
 

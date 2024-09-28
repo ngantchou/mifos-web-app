@@ -32,9 +32,9 @@
             </span>
           </div>
 
-          <div *ngIf="!savingsAccountData.status.rejected && !savingsAccountData.status.submittedAndPendingApproval">
+          <div *ngIf="!savingsAccountData.status.rejected && !savingsAccountData.status.submittedAndPendingApproval" >
             <h3> {{"labels.heading.Account Overview" | translate}} </h3>
-            <table class="account-overview">
+            <table class="account-overview" *mifosxHasPermission="'ALL_FUNCTIONS'">
               <tbody>
                 <tr>
                   <td>{{"labels.inputs.Solde Veille" | translate }}</td>
@@ -90,7 +90,7 @@
 
   </mat-card-header>
 
-  <mat-card-content class="content">
+  <mat-card-content class="content" *mifosxHasPermission="'ALL_FUNCTIONS'">
 
     <nav mat-tab-nav-bar class="navigation-tabs" *ngIf="isActive">
       <a mat-tab-link [routerLink]="['./general']" routerLinkActive #general="routerLinkActive"

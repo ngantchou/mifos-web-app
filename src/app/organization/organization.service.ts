@@ -360,6 +360,13 @@ export class OrganizationService {
   }
 
   /**
+   * @param {string} staffId Staff ID of teller.
+  * @returns {Observable<any>} Tellers data
+  */
+  getLoggerTellers(staffId: Number): Observable<any> {
+    return this.http.get(`/tellers/logger?staffId=${staffId}`);
+  }
+  /**
    * @param {string} tellerId Teller ID of teller.
    * @returns {Observable<any>} Teller.
    */
@@ -446,12 +453,10 @@ export class OrganizationService {
   }
 
   openCashierSession(tellerId: string, cashierId: string, cashData: any): Observable<any> {
-    const httpParams = new HttpParams().set('command', 'open');
-    return this.http.post(`/tellers/${tellerId}/cashiers/${cashierId}/open`, cashData, { params: httpParams });
+    return this.http.post(`/tellers/${tellerId}/cashiers/${cashierId}/open`, cashData);
   }
   closeCashierSession(tellerId: string, cashierId: string, cashData: any): Observable<any> {
-    const httpParams = new HttpParams().set('command', 'close');
-    return this.http.post(`/tellers/${tellerId}/cashiers/${cashierId}/close`, cashData, { params: httpParams });
+    return this.http.post(`/tellers/${tellerId}/cashiers/${cashierId}/close`, cashData);
   }
   /** Get Cashier Template.
    * @param tellerId Teller ID.
