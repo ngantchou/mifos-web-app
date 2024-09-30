@@ -586,6 +586,22 @@ const routes: Routes = [
                           resolve: {
                             cashierTemplate: CashierTransactionTemplateResolver
                           }
+                        },
+                        {
+                          path: 'open',
+                          component: OpenCashierComponent,
+                          data: { title: 'Open Cashier', breadcrumb: 'Open Cashier', routeParamBreadcrumb: false },
+                          resolve: {
+                            cashierTemplate: CashierTransactionTemplateResolver
+                          }
+                        },
+                        {
+                          path: 'close',
+                          component: CloseCashierComponent,
+                          data: { title: 'Close Cashier', breadcrumb: 'close Cashier', routeParamBreadcrumb: false },
+                          resolve: {
+                            cashierTemplate: CashierTransactionTemplateResolver
+                          }
                         }
                       ]
                     }
