@@ -402,6 +402,12 @@ export class OrganizationService {
     return this.http.get(`/tellers/${tellerId}/cashiers/${cashierId}/summaryandtransactions`, { params: httpParams });
   }
 
+  getCashierSummaryAndTransactionsByDateRange(tellerId: string, cashierId: string, currencyCode: string, dateFrom :string, dateTo:string): Observable<any> {
+    const httpParams = new HttpParams().set('currencyCode', currencyCode)
+    .set('fromDate', dateFrom)
+    .set('toDate', dateTo);
+    return this.http.get(`/tellers/${tellerId}/cashiers/${cashierId}/summaryandtransactionsbydate`, { params: httpParams });
+  }
   /**
    * Get Cashier Transaction template.
    * @param {string} tellerId Teller Id.

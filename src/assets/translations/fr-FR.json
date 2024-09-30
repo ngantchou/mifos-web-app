@@ -517,7 +517,11 @@
       "View Active Charges": "Afficher les frais actifs",
       "View Inactive Charges": "Afficher les frais inactifs",
       "Yes": "Oui",
+      "CloseSession": "Clôturer la session",
       "Fermer": "Fermer"
+    },
+    "errors": {
+      "MismatchTotal": "Le montant total des coupures ne correspond pas au montant de clôture."
     },
     "catalogs": {
       "Active": "Actif",
@@ -2335,7 +2339,20 @@
       "autres": "Autres",
       "Total Amount of Deposit": "Montant total déposé",
       "Total Amount in Words": "Montant en lettre",
-      "Source of Funds": "Source des fonds"
+      "Source of Funds": "Source des fonds",
+      "Opening Amount": "Montant d'ouverture",
+      "Closing Amount": "Montant de clôture",
+      "Denomination": "Coupures",
+      "Bill10000FCFA": "Billet de 10000 FCFA",
+      "Bill5000FCFA": "Billet de 5000 FCFA",
+      "Bill2000FCFA": "Billet de 2000 FCFA",
+      "Bill1000FCFA": "Billet de 1000 FCFA",
+      "Coin500FCFA": "Pièce de 500 FCFA",
+      "Coin100FCFA": "Pièce de 100 FCFA",
+      "Coin50FCFA": "Pièce de 50 FCFA",
+      "Coin25FCFA": "Pièce de 25 FCFA",
+      "txnNote": "Note de transaction",
+      "TotalAmount": "Montant total"
     },
     "links": {
       "Community": "Communauté",

@@ -62,7 +62,7 @@
   <mat-card fxLayout="column" fxLayoutGap="2%" class="mat-elevation-z8">
 
     <div fxLayout="row" fxLayoutGap="2%">
-
+      
       <mat-form-field fxFlex>
         <mat-label>{{'labels.inputs.Filter' | translate}}</mat-label>
         <input matInput (keyup)="applyFilter($event.target.value)">
@@ -76,7 +76,27 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+        <form [formGroup]="dateFilterForm">
+          <div fxLayout="row" fxLayoutGap="2%">
+            <!-- From Date Field -->
+            <mat-form-field fxFlex>
+              <mat-label>{{ 'labels.inputs.From Date' | translate }}</mat-label>
+              <input matInput [matDatepicker]="picker1" formControlName="fromDate">
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
 
+            <!-- To Date Field -->
+            <mat-form-field fxFlex>
+              <mat-label>{{ 'labels.inputs.To Date' | translate }}</mat-label>
+              <input matInput [matDatepicker]="picker2" formControlName="toDate">
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </form>
+      
+      
     </div>
 
     <div *ngIf="cashierData">
