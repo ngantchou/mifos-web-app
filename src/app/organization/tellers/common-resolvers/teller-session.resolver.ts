@@ -26,7 +26,6 @@ export class TellerSessionResolver implements Resolve<Object> {
    */
   resolve(): Observable<any> {
     const credential = this.authenticationService.getCredentials();
-    console.log('staffId', credential.staffId);
     return this.organizationService.getLoggerTellers(credential.staffId);
   }
 

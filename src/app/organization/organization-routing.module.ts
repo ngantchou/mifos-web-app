@@ -399,12 +399,12 @@ const routes: Routes = [
               path: '',
               component: TellersComponent,
               resolve: {
-                tellers: TellersResolver
+                tellers: TellerSessionResolver
               }
             },
             {
               path: 'session',
-              data: { title: 'Tellers', breadcrumb: 'Tellers' },
+              data: { title: 'Tellers', breadcrumb: 'Session' },
               children: [
                 {
                   path: '',

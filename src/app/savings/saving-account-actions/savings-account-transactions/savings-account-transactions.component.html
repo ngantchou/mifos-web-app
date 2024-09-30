@@ -169,10 +169,14 @@
         </mat-form-field>
 
         <mat-form-field>
+          <mat-label>{{'labels.inputs.Deposit Name' | translate}}</mat-label>
+          <textarea formControlName="DepositName" matInput cdkTextareaAutosize cdkAutosizeMinRows="1"></textarea>
+        </mat-form-field>
+
+        <mat-form-field>
           <mat-label>{{'labels.inputs.Notes' | translate}}</mat-label>
           <textarea formControlName="note" matInput cdkTextareaAutosize cdkAutosizeMinRows="2"></textarea>
         </mat-form-field>
-
         <mat-card-actions fxLayoutGap="5px" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center">
           <button type="button" mat-raised-button [routerLink]="['../../transactions']">{{'labels.buttons.Cancel' | translate}}</button>
           <button mat-raised-button color="primary" [disabled]="!savingAccountTransactionForm.valid">{{'labels.buttons.Submit' | translate}}</button>

@@ -2352,7 +2352,8 @@
       "Coin50FCFA": "Pièce de 50 FCFA",
       "Coin25FCFA": "Pièce de 25 FCFA",
       "txnNote": "Note de transaction",
-      "TotalAmount": "Montant total"
+      "TotalAmount": "Montant total",
+      "Deposit Name": "Nom du déposant"
     },
     "links": {
       "Community": "Communauté",
@@ -3278,7 +3279,9 @@
     "Withdraw": "Retirer",
     "Yes": "Oui",
     "loan product will be active and available to clients": "La date à laquelle le produit de prêt sera actif et disponible pour les clients. Si ce champ est vide, le produit de prêt sera actif dès sa création.",
-    "loan product will become inactive and unavailable to clients": "Date à laquelle le produit de prêt deviendra inactif et indisponible pour les clients. S'il est vide, le produit chargé ne deviendra jamais inactif."
+    "loan product will become inactive and unavailable to clients": "Date à laquelle le produit de prêt deviendra inactif et indisponible pour les clients. S'il est vide, le produit chargé ne deviendra jamais inactif.",
+    "Open Cashier": "Ouvrir la caisse",
+    "Close Cashier": "clôturer la caisse"
   },
     "WRITEOFF_LOAN_CHECKER": "VÉRIFICATEUR D'ANNULATION DE PRÊT",
     "WRITEOFF_LOAN": "ANNULATION DE PRÊT",
