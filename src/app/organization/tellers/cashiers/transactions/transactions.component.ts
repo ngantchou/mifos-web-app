@@ -4,7 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormControl } from '@angular/forms';
 
 /** Custom Services */
 import { OrganizationService } from 'app/organization/organization.service';
@@ -33,7 +33,8 @@ export class TransactionsComponent implements OnInit {
   displayedColumns: string[] = ['date', 'transactions', 'allocation', 'cashIn', 'cashOut', 'settlement'];
   /** Data source for transactions table. */
   dataSource: MatTableDataSource<any>;
-
+  /** Date filter form group */
+  dateFilterForm: FormGroup;
   /** Paginator for transactions table. */
   @ViewChild(MatPaginator) paginator: MatPaginator;
   /** Sorter for transactions table. */
@@ -51,6 +52,11 @@ export class TransactionsComponent implements OnInit {
     });
     this.tellerId = this.route.parent.parent.parent.snapshot.params['id'];
     this.cashierId = this.route.parent.snapshot.params['id'];
+    // Initialize the date filter form group
+    this.dateFilterForm = new FormGroup({
+      fromDate: new FormControl(new Date()),  // Default to today's date
+      toDate: new FormControl(new Date())     // Default to today's date
+    });
   }
 
   /**
@@ -65,19 +71,33 @@ export class TransactionsComponent implements OnInit {
    * Retrieves transactions data on changing currency.
    */
   ngOnInit() {
-    this.onChangeCurrency();
+    this.onFilterChange();
   }
 
-  /**
-   * Retrieves the transactions data on changing currency and sets the transactions table.
-   */
-  onChangeCurrency() {
+  onFilterChange() {
+    // Listen for changes in both currency and date range
     this.currencySelector.valueChanges.subscribe((currencyCode: any) => {
-      this.organizationService.getCashierSummaryAndTransactions(this.tellerId, this.cashierId, currencyCode)
-        .subscribe((response: any) => {
-          this.cashierData = response;
-          this.setTransactions();
-        });
+      this.fetchTransactions(currencyCode, this.dateFilterForm.value.fromDate, this.dateFilterForm.value.toDate);
+    });
+
+    // Listen for changes in the date filter form
+    this.dateFilterForm.valueChanges.subscribe(values => {
+      if (this.currencySelector.value) {
+        this.fetchTransactions(this.currencySelector.value, values.fromDate, values.toDate);
+      }
+    });
+  }
+  
+  fetchTransactions(currencyCode: string, fromDate: Date, toDate: Date): void {
+    this.organizationService.getCashierSummaryAndTransactionsByDateRange(
+      this.tellerId,
+      this.cashierId,
+      currencyCode,
+      fromDate.toISOString().split('T')[0], // Format date to YYYY-MM-DD
+      toDate.toISOString().split('T')[0]
+    ).subscribe((response: any) => {
+      this.cashierData = response;
+      this.setTransactions();
     });
   }
 

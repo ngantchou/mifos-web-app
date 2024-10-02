@@ -18,28 +18,31 @@
 
     <span fxHide.lt-lg="true">
 
-      <a #accounting mat-tab-link class="tab-link" [routerLink]="['/accounting']">
+      <a #accounting mat-tab-link class="tab-link" *mifosxHasPermission="['ALL_FUNCTIONS']" [routerLink]="['/accounting']">
         <fa-icon class="mr-05" icon="money-bill-alt" size="lg"></fa-icon>
         {{'labels.menus.Accounting' | translate}}
       </a>
-      <a #reports mat-tab-link class="tab-link" [matMenuTriggerFor]="reportsMenu" #reportsMenuTrigger="matMenuTrigger" >
+      <a #reports mat-tab-link class="tab-link" *mifosxHasPermission="['ALL_FUNCTIONS','WITHDRAW_SAVINGSACCOUNT','DEPOSIT_FIXEDDEPOSITACCOUNT','ALLOCATECASHTOCASHIER_TELLER']" [routerLink]="['/reports']" >
         <fa-icon class="mr-05" icon="chart-bar" size="lg"></fa-icon>
         {{'labels.menus.Reports' | translate}}
       </a>
-      <a #admin mat-tab-link class="tab-link" [matMenuTriggerFor]="adminMenu" #adminMenuTrigger="matMenuTrigger">
+      <a #produits mat-tab-link class="tab-link"  *mifosxHasPermission="['ALL_FUNCTIONS']" [routerLink]="['/products']">
+        <fa-icon class="mr-05" icon="briefcase" size="lg"></fa-icon>
+        {{'labels.menus.Product' | translate}}
+      </a>
+      <a #selfService mat-tab-link class="tab-link" *mifosxHasPermission="['CASHIERSESSION','ALL_FUNCTIONS']" [routerLink]="['/organization/tellers/session']">
+        <fa-icon class="mr-05" icon="key" size="lg"></fa-icon>
+        {{'labels.menus.Teller' | translate}}
+      </a>
+
+      <a #configWizard mat-tab-link class="tab-link" *mifosxHasPermission="'ALL_FUNCTIONS'" [routerLink]="['/organization/sms-campaigns']">
+        <fa-icon class="mr-05" icon="message" size="lg"></fa-icon>
+        {{'labels.menus.Commercial' | translate}}
+      </a>
+      <a #admin mat-tab-link class="tab-link" *mifosxHasPermission="'ALL_FUNCTIONS'" [matMenuTriggerFor]="adminMenu" #adminMenuTrigger="matMenuTrigger">
         <fa-icon class="mr-05" icon="shield-alt" size="lg"></fa-icon>
         {{'labels.menus.Admin' | translate}}
       </a>
-      <!-- <a #selfService mat-tab-link class="tab-link" [matMenuTriggerFor]="selfServiceMenu" #selfServiceMenuTrigger="matMenuTrigger">
-        <fa-icon class="mr-05" icon="users" size="lg"></fa-icon>
-        {{'labels.menus.Self Service' | translate}}
-      </a>
-
-      <a #configWizard mat-tab-link class="tab-link" (click)="openDialog()">
-        <fa-icon class="mr-05" icon="info" size="lg"></fa-icon>
-        {{'labels.menus.Configuration Wizard' | translate}}
-      </a> -->
-
     </span>
 
   </nav>
@@ -82,12 +85,12 @@
   <button mat-menu-item routerLink="/clients">{{'labels.menus.Clients' | translate}}</button>
   <button mat-menu-item routerLink="/groups">{{'labels.menus.Groups' | translate}}</button>
   <button mat-menu-item routerLink="/centers">{{'labels.menus.Centers' | translate}}</button>
-  <span fxHide.lt>
+  <!-- <span fxHide.lt>
     <button mat-menu-item [routerLink]="['/accounting']">{{'labels.menus.Accounting' | translate}}</button>
     <button mat-menu-item [matMenuTriggerFor]="reportsMenu">{{'labels.menus.Reports' | translate}}</button>
     <button mat-menu-item [matMenuTriggerFor]="adminMenu">{{'labels.menus.Admin' | translate}}</button>
     <button mat-menu-item [matMenuTriggerFor]="selfServiceMenu">{{'labels.menus.Self Service' | translate}}</button>
-  </span>
+  </span> -->
 </mat-menu>
 
 <!-- Toolbar Menus -->
@@ -109,32 +112,32 @@
   <button mat-menu-item routerLink="/templates">{{'labels.menus.Templates' | translate}}</button>
 </mat-menu>
 
-<mat-menu #selfServiceMenu="matMenu" [overlapTrigger]="false">
+<!-- <mat-menu #selfServiceMenu="matMenu" [overlapTrigger]="false">
   <button mat-menu-item [routerLink]="['/self-service/users']">{{'labels.menus.User Management' | translate}}</button>
   <button mat-menu-item [routerLink]="['/self-service/app-configuration']">{{'labels.menus.App Configuration' | translate}}</button>
   <button mat-menu-item [routerLink]="['/self-service/task-management']">{{'labels.menus.Task Management' | translate}}</button>
-</mat-menu>
+</mat-menu> -->
 
 <!-- Application User Help Menu -->
 <mat-menu #applicationMenu="matMenu" [overlapTrigger]="false">
-  <button mat-menu-item (click)="help()">
+  <!-- <button mat-menu-item (click)="help()">
     <mat-icon matListIcon>
       <fa-icon icon="question-circle" size="sm"></fa-icon>
     </mat-icon>
     <span>{{'labels.menus.Help' | translate}}</span>
-  </button>
+  </button> -->
   <button mat-menu-item [routerLink]="['/profile']">
     <mat-icon>
       <fa-icon icon="user" size="sm"></fa-icon>
     </mat-icon>
     <span>{{'labels.menus.Profile' | translate}}</span>
   </button>
-  <button mat-menu-item [routerLink]="['/settings']">
+  <!-- <button mat-menu-item [routerLink]="['/settings']">
     <mat-icon>
       <fa-icon icon="cog" size="sm"></fa-icon>
     </mat-icon>
     <span>{{'labels.menus.Settings' | translate}}</span>
-  </button>
+  </button> -->
   <button mat-menu-item (click)="logout()" id="logout">
     <mat-icon>
       <fa-icon icon="sign-out-alt" size="sm"></fa-icon>
@@ -183,7 +186,7 @@
   </div>
 </ng-template>
 
-<ng-template #templateSelfService let-popover="popover">
+<!-- <ng-template #templateSelfService let-popover="popover">
   <h2>{{'labels.menus.Self Service' | translate}}</h2>
   <p class="mw300">{{"labels.text.Dropdown self service user administrative portal" | translate}}</p>
   <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="2%" fxLayout.lt-md="column">
@@ -191,9 +194,9 @@
     <button mat-raised-button color="primary" (click)="popover.close();showPopover(templateAdmin, admin)">{{"labels.buttons.Back" | translate}}</button>
     <button mat-raised-button color="primary" (click)="popover.close();showPopover(templateConfigWizard, configWizard)">{{"labels.buttons.Next" | translate}}</button>
   </div>
-</ng-template>
+</ng-template> -->
 
-<ng-template #templateConfigWizard let-popover="popover">
+<!-- <ng-template #templateConfigWizard let-popover="popover">
   <h2>{{'labels.menus.Configuration Wizard' | translate}}</h2>
   <p class="mw300">{{"labels.text.Initial setup and application tour" | translate}}</p>
   <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="2%" fxLayout.lt-md="column">
@@ -201,7 +204,7 @@
     <button mat-raised-button color="primary" (click)="popover.close();showPopover(templateSelfService, selfService)">{{"labels.buttons.Back" | translate}}</button>
     <button mat-raised-button color="primary" (click)="popover.close();showPopover(templateGlobalSearch, globalSearch)">{{"labels.buttons.Next" | translate}}</button>
   </div>
-</ng-template>
+</ng-template> -->
 
 <ng-template #templateGlobalSearch let-popover="popover">
   <h2>{{'labels.menus.Global Search' | translate}}</h2>

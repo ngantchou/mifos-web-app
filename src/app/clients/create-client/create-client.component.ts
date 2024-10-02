@@ -70,20 +70,25 @@ export class CreateClientComponent {
    * Retrieves the client object
    */
   get client() {
+    const datatables: any[] = [];
+    this.clientDatatables.forEach((clientDatatable: ClientDatatableStepComponent) => {
+      datatables.push(clientDatatable.payload);
+    });
     if (this.clientTemplate.isAddressEnabled) {
       return {
         ...this.clientGeneralStep.clientGeneralDetails,
         ...this.clientFamilyMembersStep.familyMembers,
-        ...this.clientAddressStep.address
+        ...this.clientAddressStep.address,
       };
     } else {
       return {
         ...this.clientGeneralStep.clientGeneralDetails,
-        ...this.clientFamilyMembersStep.familyMembers
+        ...this.clientFamilyMembersStep.familyMembers,
       };
     }
   }
 
+  
   areFormvalids(): boolean {
     let areValids = this.clientGeneralForm.valid;
     if (this.clientTemplate.isAddressEnabled) {

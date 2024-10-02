@@ -34,6 +34,7 @@ import { SidenavComponent } from './shell/sidenav/sidenav.component';
 import { ToolbarComponent } from './shell/toolbar/toolbar.component';
 import { BreadcrumbComponent } from './shell/breadcrumb/breadcrumb.component';
 import { ContentComponent } from './shell/content/content.component';
+import { DirectivesModule } from '../directives/directives.module';
 
 
 /**
@@ -46,7 +47,8 @@ import { ContentComponent } from './shell/content/content.component';
     SharedModule,
     HttpClientModule,
     TranslateModule,
-    RouterModule
+    RouterModule,
+    DirectivesModule
   ],
   declarations: [
     ShellComponent,

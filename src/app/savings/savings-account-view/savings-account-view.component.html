@@ -32,21 +32,21 @@
             </span>
           </div>
 
-          <div *ngIf="!savingsAccountData.status.rejected && !savingsAccountData.status.submittedAndPendingApproval">
+          <div *ngIf="!savingsAccountData.status.rejected && !savingsAccountData.status.submittedAndPendingApproval" >
             <h3> {{"labels.heading.Account Overview" | translate}} </h3>
-            <table class="account-overview">
+            <table class="account-overview" *mifosxHasPermission="'ALL_FUNCTIONS'">
               <tbody>
                 <tr>
                   <td>{{"labels.inputs.Solde Veille" | translate }}</td>
-                  <td class="r-amount">{{getPreviousDayBalance() | currency:currency.code:'symbol-narrow':'1.2-2'}}</td>
+                  <td class="r-amount">{{getPreviousDayBalance() }} FCFA</td>
                 </tr>
                 <tr>
                   <td>{{"labels.inputs.Current Balance" | translate }}</td>
-                  <td class="r-amount">{{savingsAccountData.summary.accountBalance | currency:currency.code:'symbol-narrow':'1.2-2'}}</td>
+                  <td class="r-amount">{{savingsAccountData.summary.accountBalance | formatNumber}} FCFA</td>
                 </tr>
                 <tr>
                   <td>{{"labels.inputs.Available Balance" | translate }}</td>
-                  <td class="r-amount">{{savingsAccountData.summary.availableBalance | currency:currency.code:'symbol-narrow':'1.2-2'}}</td>
+                  <td class="r-amount">{{savingsAccountData.summary.availableBalance | formatNumber}} FCFA</td>
                 </tr>
               </tbody>
             </table>
@@ -90,7 +90,7 @@
 
   </mat-card-header>
 
-  <mat-card-content class="content">
+  <mat-card-content class="content" *mifosxHasPermission="'ALL_FUNCTIONS'">
 
     <nav mat-tab-nav-bar class="navigation-tabs" *ngIf="isActive">
       <a mat-tab-link [routerLink]="['./general']" routerLinkActive #general="routerLinkActive"

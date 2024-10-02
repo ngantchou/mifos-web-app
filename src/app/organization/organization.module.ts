@@ -67,6 +67,8 @@ import { EditLoanProvisioningCriteriaComponent } from './loan-provisioning-crite
 import { StandingInstructionsHistoryComponent } from './standing-instructions-history/standing-instructions-history.component';
 import { FundMappingComponent } from './fund-mapping/fund-mapping.component';
 import { CreateHolidayComponent } from './holidays/create-holiday/create-holiday.component';
+import { OpenCashierComponent } from './tellers/cashiers/open-cashier/open-cashier.component';
+import { CloseCashierComponent } from './tellers/cashiers/close-cashier/close-cashier.component';
 
 
 /** Custom Service */
@@ -155,7 +157,9 @@ import { InvestorsComponent } from './investors/investors.component';
     CreateFundComponent,
     EditFundComponent,
     ViewFundComponent,
-    InvestorsComponent
+    InvestorsComponent,
+    OpenCashierComponent,
+    CloseCashierComponent
   ],
   providers: [
     CreateHoliday,

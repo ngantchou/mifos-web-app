@@ -4,9 +4,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 /** rxjs Imports */
-import { of } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 /**
  * Tellers component.
@@ -18,8 +19,6 @@ import { of } from 'rxjs';
 })
 export class TellersComponent implements OnInit {
 
-  /** Tellers data. */
-  tellersData: any;
   /** Columns to be displayed in tellers table. */
   displayedColumns: string[] = ['officeName', 'name', 'status', 'startDate', 'actions'];
   /** Data source for tellers table. */
@@ -34,34 +33,32 @@ export class TellersComponent implements OnInit {
    * Retrieves the tellers data from `resolve`.
    * @param {ActivatedRoute} route Activated Route.
    */
-  constructor(private route: ActivatedRoute) {
-    this.route.data.subscribe(( data: { tellers: any }) => {
-      this.tellersData = data.tellers;
-    });
-  }
+  constructor(private route: ActivatedRoute) {}
 
   /**
-   * Filters data in tellers table based on passed value.
+   * Filters data in tellers table based on passed value with debounce.
    * @param {string} filterValue Value to filter data.
    */
   applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    of(filterValue)
+      .pipe(debounceTime(300))  // Debounce to prevent excessive filter calls
+      .subscribe(value => {
+        this.dataSource.filter = value.trim().toLowerCase();
+      });
   }
 
   /**
-   * Sets the tellers table.
+   * Initializes the component.
    */
   ngOnInit() {
-    this.setTellers();
+    this.route.data.subscribe((data: { tellers: any }) => {
+      if (data?.tellers) {
+        // Check if data.tellers is an array
+        const tellersData = Array.isArray(data.tellers) ? data.tellers : [data.tellers]; 
+        this.dataSource = new MatTableDataSource(tellersData);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
+    });
   }
-
-  /**
-   * Initializes the data source, paginator and sorter for tellers table.
-   */
-  setTellers() {
-    this.dataSource = new MatTableDataSource(this.tellersData);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
 }

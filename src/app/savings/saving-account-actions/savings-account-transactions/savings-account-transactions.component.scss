@@ -13,3 +13,40 @@ text-align: right;
 .right-label {
 padding-right: 25px !important;
 }
+.bills-table mat-header-cell, .bills-table mat-cell {
+  border: 1px solid black;
+  padding: 4px; /* Reduced padding */
+  text-align: center;
+  height: 20PX; /* Ensure the height is automatically adjusted */
+}
+
+.bills-table mat-header-cell {
+  font-weight: bold;
+  background-color: #f5f5f5;
+}
+
+/* Optional: Adjust the font size to further reduce the cell height */
+.bills-table mat-cell, .bills-table mat-header-cell {
+  font-size: 12px; 
+  min-height: 14px !important;
+}
+
+.total-section mat-form-field {
+  /*width: 45%;*/
+  flex: auto;
+}
+.mat-table mat-row, .mat-table mat-footer-row {
+  min-height: 14px !important;
+}
+.error-message {
+  color: red;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+.success-message {
+  color: rgb(4, 118, 68);
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 5px;
+}

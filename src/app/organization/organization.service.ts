@@ -360,6 +360,13 @@ export class OrganizationService {
   }
 
   /**
+   * @param {string} staffId Staff ID of teller.
+  * @returns {Observable<any>} Tellers data
+  */
+  getLoggerTellers(staffId: Number): Observable<any> {
+    return this.http.get(`/tellers/logger?staffId=${staffId}`);
+  }
+  /**
    * @param {string} tellerId Teller ID of teller.
    * @returns {Observable<any>} Teller.
    */
@@ -395,6 +402,12 @@ export class OrganizationService {
     return this.http.get(`/tellers/${tellerId}/cashiers/${cashierId}/summaryandtransactions`, { params: httpParams });
   }
 
+  getCashierSummaryAndTransactionsByDateRange(tellerId: string, cashierId: string, currencyCode: string, dateFrom :string, dateTo:string): Observable<any> {
+    const httpParams = new HttpParams().set('currencyCode', currencyCode)
+    .set('fromDate', dateFrom)
+    .set('toDate', dateTo);
+    return this.http.get(`/tellers/${tellerId}/cashiers/${cashierId}/summaryandtransactionsbydate`, { params: httpParams });
+  }
   /**
    * Get Cashier Transaction template.
    * @param {string} tellerId Teller Id.
@@ -445,6 +458,12 @@ export class OrganizationService {
     return this.http.post(`/tellers/${tellerId}/cashiers/${cashierId}/allocate`, cashData, { params: httpParams });
   }
 
+  openCashierSession(tellerId: string, cashierId: string, cashData: any): Observable<any> {
+    return this.http.post(`/tellers/${tellerId}/cashiers/${cashierId}/open`, cashData);
+  }
+  closeCashierSession(tellerId: string, cashierId: string, cashData: any): Observable<any> {
+    return this.http.post(`/tellers/${tellerId}/cashiers/${cashierId}/close`, cashData);
+  }
   /** Get Cashier Template.
    * @param tellerId Teller ID.
    * @returns {Observable<any>} Cashier template.

@@ -17,7 +17,8 @@ export class ClientPreviewStepComponent {
   @Input() clientTemplate: any;
   /** Client Object */
   @Input() client: any;
-
+  objectKeys = Object.keys;
+  @Input() clientDatatables: any[] = [];
   /** Form submission event */
   @Output() submit = new EventEmitter();
 

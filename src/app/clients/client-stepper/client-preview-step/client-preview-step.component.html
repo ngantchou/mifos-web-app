@@ -9,7 +9,18 @@
     <span fxFlex="60%" *ngIf="client.legalFormId === 2">{{ client.fullname }}</span>
     <span fxFlex="60%" *ngIf="client.legalFormId === 1">{{ client.firstname }} {{ client.middlename ? client.middlename + ' ' + client.lastname : client.lastname }}</span>
   </div>
-
+  <div fxFlexFill *ngIf="client.dateOfBirth">
+    <span fxFlex="40%">{{ client.legalFormId === 1 ? 'Date Naissance' : 'Date Incorporation' }}</span>
+    <span fxFlex="60%">{{ client.dateOfBirth | dateFormat }}</span>
+  </div>
+  <div fxFlexFill *ngIf="client.lieuNaissance">
+    <span fxFlex="40%">{{"labels.inputs.lieuNaissance" | translate}}</span>
+    <span fxFlex="40%">{{ client.lieuNaissance }}</span>
+  </div>
+  <div fxFlexFill *ngIf="client.profession">
+    <span fxFlex="40%">{{"labels.inputs.profession" | translate}}</span>
+    <span fxFlex="60%" *ngIf="client.legalFormId === 1">{{ client.profession }}</span>
+  </div>
   <div fxFlexFill>
     <span fxFlex="40%">{{"labels.inputs.Office" | translate}}</span>
     <span fxFlex="60%">{{ client.officeId | find:clientTemplate.officeOptions:'id':'name' }}</span>
@@ -23,11 +34,6 @@
   <div fxFlexFill *ngIf="client.staffId">
     <span fxFlex="40%">{{"labels.inputs.Staff" | translate}}</span>
     <span fxFlex="60%">{{ client.staffId | find:clientTemplate.staffOptions:'id':'displayName' }}</span>
-  </div>
-
-  <div fxFlexFill *ngIf="client.dateOfBirth">
-    <span fxFlex="40%">{{ client.legalFormId === 1 ? 'Date of Birth' : 'Incorporation Date' }}</span>
-    <span fxFlex="60%">{{ client.dateOfBirth | dateFormat }}</span>
   </div>
 
   <div fxFlexFill *ngIf="client.externalId">
@@ -119,7 +125,7 @@
     </div>
 
   </ng-container>
-
+  
   <div fxFlexFill *ngIf="client.familyMembers.length" fxLayout="row wrap" fxLayout.lt-md="column" class="m-b-20">
 
     <h3 class="mat-h3" fxFlexFill>{{"labels.heading.Family Members" | translate}}</h3>

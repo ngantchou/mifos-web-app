@@ -1,0 +1,133 @@
+<div class="container">
+
+  <mat-card>
+    <form [formGroup]="sessionCashForm" (ngSubmit)="submit()">
+      <mat-card-content>
+
+        <div fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column">
+
+          <mat-form-field fxFlex="48%" >
+            <mat-label>{{ 'labels.inputs.Office' | translate }}</mat-label>
+            <input matInput required formControlName="office">
+          </mat-form-field>
+
+          <mat-form-field fxFlex="48%" >
+            <mat-label>{{ 'labels.inputs.Teller Name' | translate }}</mat-label>
+            <input matInput required formControlName="tellerName">
+          </mat-form-field>
+
+          <mat-form-field fxFlex="48%" >
+            <mat-label>{{ 'labels.inputs.Cashier' | translate }}</mat-label>
+            <input matInput required formControlName="cashier">
+          </mat-form-field>
+
+          <mat-form-field fxFlex="48%" (click)="cashDatePicker.open()">
+            <mat-label>{{ 'labels.inputs.Date' | translate }}</mat-label>
+            <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="cashDatePicker" required formControlName="txnDate">
+            <mat-datepicker-toggle matSuffix [for]="cashDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #cashDatePicker></mat-datepicker>
+            <mat-error *ngIf="sessionCashForm.controls.txnDate.hasError('required')">
+              {{ 'labels.inputs.Date' | translate }} {{ 'labels.commons.is' | translate }} <strong>{{ 'labels.commons.required' | translate }}</strong>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field fxFlex="48%" >
+            <mat-label>{{ 'labels.inputs.Currency' | translate }}</mat-label>
+            <mat-select required formControlName="currencyCode">
+              <mat-option *ngFor="let currency of cashierData.currencyOptions" [value]="currency.code">
+                {{ currency.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="sessionCashForm.controls.currencyCode.hasError('required')">
+              {{ 'labels.inputs.Currency' | translate }} {{ 'labels.commons.is' | translate }} <strong>{{ 'labels.commons.required' | translate }}</strong>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field fxFlex="48%" >
+            <mat-label>{{ 'labels.inputs.Opening Amount' | translate }}</mat-label>
+            <input matInput required formControlName="openingBalance" [disabled]="status === 'close'">
+            <mat-error *ngIf="sessionCashForm.controls.openingBalance.hasError('required')">
+              {{ 'labels.inputs.Amount' | translate }} {{ 'labels.commons.is' | translate }} <strong>{{ 'labels.commons.required' | translate }}</strong>
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Closing amount for closing session -->
+
+          <div fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column">
+  
+            <!-- Section pour le billetage -->
+            <div fxFlex="100%" style="margin-top: 20px;">
+              <h3>{{ 'labels.inputs.Denomination' | translate }}</h3>
+            </div>
+  
+            <!-- Champs pour les billets FCFA -->
+            <mat-form-field fxFlex="48%">
+              <mat-label>{{ 'labels.inputs.Bill10000FCFA' | translate }}</mat-label>
+              <input matInput type="number" formControlName="bill10000" (input)="calculateTotal()">
+            </mat-form-field>
+  
+            <mat-form-field fxFlex="48%">
+              <mat-label>{{ 'labels.inputs.Bill5000FCFA' | translate }}</mat-label>
+              <input matInput type="number" formControlName="bill5000" (input)="calculateTotal()">
+            </mat-form-field>
+  
+            <mat-form-field fxFlex="48%">
+              <mat-label>{{ 'labels.inputs.Bill2000FCFA' | translate }}</mat-label>
+              <input matInput type="number" formControlName="bill2000" (input)="calculateTotal()">
+            </mat-form-field>
+  
+            <mat-form-field fxFlex="48%">
+              <mat-label>{{ 'labels.inputs.Bill1000FCFA' | translate }}</mat-label>
+              <input matInput type="number" formControlName="bill1000" (input)="calculateTotal()">
+            </mat-form-field>
+  
+            <!-- Champs pour les pièces FCFA -->
+            <mat-form-field fxFlex="48%">
+              <mat-label>{{ 'labels.inputs.Coin500FCFA' | translate }}</mat-label>
+              <input matInput type="number" formControlName="coin500" (input)="calculateTotal()">
+            </mat-form-field>
+  
+            <mat-form-field fxFlex="48%">
+              <mat-label>{{ 'labels.inputs.Coin100FCFA' | translate }}</mat-label>
+              <input matInput type="number" formControlName="coin100" (input)="calculateTotal()">
+            </mat-form-field>
+  
+            <mat-form-field fxFlex="48%">
+              <mat-label>{{ 'labels.inputs.Coin50FCFA' | translate }}</mat-label>
+              <input matInput type="number" formControlName="coin50" (input)="calculateTotal()">
+            </mat-form-field>
+
+            <mat-form-field fxFlex="48%">
+              <mat-label>{{ 'labels.inputs.Coin25FCFA' | translate }}</mat-label>
+              <input matInput type="number" formControlName="coin200" (input)="calculateTotal()">
+            </mat-form-field>
+            <!-- Total calculé automatiquement -->
+            <div fxFlex="100%" style="margin-top: 20px;">
+              <p>{{ 'labels.inputs.TotalAmount' | translate }}: {{ calculatedTotal | currency }}</p>
+            </div>
+  
+            <!-- Validation si le billetage ne correspond pas au montant de clôture -->
+            <div *ngIf="!isMismatchTotal" fxFlex="100%" style="color: red;">
+              <p>{{ 'labels.errors.MismatchTotal' | translate }}</p>
+            </div>
+  
+          </div>
+          <mat-form-field fxFlex="48%" >
+            <mat-label>{{ 'labels.inputs.txnNote' | translate }}</mat-label>
+            <input matInput required formControlName="txnNote">
+          </mat-form-field>
+        </div>
+
+      </mat-card-content>
+
+      <mat-card-actions fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="5px">
+        <button type="button" mat-raised-button [routerLink]="['../']">{{ 'labels.buttons.Cancel' | translate }}</button>
+        <button mat-raised-button color="primary" [disabled]="!sessionCashForm.valid">
+          {{ 'labels.buttons.OpenSession' | translate }}
+        </button>
+      </mat-card-actions>
+
+    </form>
+  </mat-card>
+
+</div>
