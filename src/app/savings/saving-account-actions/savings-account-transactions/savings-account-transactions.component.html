@@ -43,13 +43,13 @@
           <div fxLayout="row" class="margin-t" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="2%">
             <div>
               <mat-table [dataSource]="billsDenominations" class="bills-table" mat-table>
-      
+
                 <!-- Denomination Column -->
                 <ng-container matColumnDef="denomination">
                   <mat-header-cell *matHeaderCellDef> Denomination </mat-header-cell>
                   <mat-cell *matCellDef="let bill"> {{bill.denomination}} </mat-cell>
                 </ng-container>
-              
+
                 <!-- Number of Bills Column -->
                 <ng-container matColumnDef="numberOfBills">
                   <mat-header-cell *matHeaderCellDef> Number </mat-header-cell>
@@ -57,7 +57,7 @@
                     <input type="number" [formControlName]="'numberOfBills_' + bill.denomination" matInput min="0" placeholder="0"/>
                   </mat-cell>
                 </ng-container>
-              
+
                 <!-- Total Amount Column -->
                 <ng-container matColumnDef="total">
                   <mat-header-cell *matHeaderCellDef> Total </mat-header-cell>
@@ -66,22 +66,22 @@
                     <span>{{ currencyCode }}</span>
                   </mat-cell>
                 </ng-container>
-              
+
                 <!-- Header and Row Declarations -->
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-              
+
               </mat-table>
             </div>
             <div>
               <mat-table [dataSource]="smallCoins" class="bills-table" mat-table>
-      
+
                 <!-- Denomination Column -->
                 <ng-container matColumnDef="denomination">
                   <mat-header-cell *matHeaderCellDef> Denomination </mat-header-cell>
                   <mat-cell *matCellDef="let bill"> {{bill.denomination}} </mat-cell>
                 </ng-container>
-              
+
                 <!-- Number of Bills Column -->
                 <ng-container matColumnDef="numberOfBills">
                   <mat-header-cell *matHeaderCellDef> Number </mat-header-cell>
@@ -89,7 +89,7 @@
                     <input type="number" [formControlName]="'numberOfBills_' + bill.denomination" matInput min="0" class="form-control" placeholder="0"/>
                   </mat-cell>
                 </ng-container>
-              
+
                 <!-- Total Amount Column -->
                 <ng-container matColumnDef="total">
                   <mat-header-cell *matHeaderCellDef> Total </mat-header-cell>
@@ -98,11 +98,11 @@
                     <span>{{ currencyCode }}</span>
                   </mat-cell>
                 </ng-container>
-              
+
                 <!-- Header and Row Declarations -->
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-              
+
               </mat-table>
             </div>
           </div>
@@ -115,14 +115,14 @@
               </div>
               <div class="m-t-20">
                 {{'labels.inputs.Total Amount in Words' | translate}}:
-                <input type="text" class="d-none" formControlName="totalAmountInWords" matInput readonly />
+                <input type="text" class="d-none" formControlName="amountInWords" matInput readonly />
                 <span class="success-message">{{totalAmountInWords}} Franc CFA</span>
               </div>
           </div>
           <!-- Label outside the form field wrapper -->
           <div *ngIf="savingAccountTransactionForm.hasError('amountMismatch')">
             <p class="error-message">Transaction amount must match the total deposit amount.</p>
-          </div>  
+          </div>
           <div formArrayName="sourceOfFunds" class="m-t-20">
             <label>{{ 'labels.inputs.Source of Funds' | translate }}</label>
             <div>
@@ -132,7 +132,7 @@
             </div>
           </div>
         </div>
-      
+
         <div fxFlexFill class="m-t-40">
           <span fxFlex="75%" class="expandcollapsebutton m-l-10 m-t-4" (click)="addPaymentDetails()">
             <mat-slide-toggle>
@@ -168,9 +168,9 @@
           <input formControlName="bankNumber" matInput />
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field *ngIf="isDeposit">
           <mat-label>{{'labels.inputs.Deposit Name' | translate}}</mat-label>
-          <textarea formControlName="DepositName" matInput cdkTextareaAutosize cdkAutosizeMinRows="1"></textarea>
+          <textarea formControlName="depositName" matInput cdkTextareaAutosize cdkAutosizeMinRows="1"></textarea>
         </mat-form-field>
 
         <mat-form-field>

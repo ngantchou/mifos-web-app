@@ -134,15 +134,15 @@ export class SavingsAccountTransactionsComponent implements OnInit {
           `numberOfBills_${bill.denomination}`,
           new FormControl('')
         );
-    
+
         this.savingAccountTransactionForm.addControl(
           `totalAmount_${bill.denomination}`,
           new FormControl({ value: '', disabled: true })
         );
-    
+
         const numberOfBillsControl = this.savingAccountTransactionForm.get(`numberOfBills_${bill.denomination}`);
         const totalAmountControl = this.savingAccountTransactionForm.get(`totalAmount_${bill.denomination}`);
-    
+
         numberOfBillsControl?.valueChanges.subscribe(value => {
           if (value && bill.denomination) {
             totalAmountControl?.setValue(value * bill.denomination);
@@ -160,10 +160,10 @@ export class SavingsAccountTransactionsComponent implements OnInit {
         total += totalAmountControl.value;
       }
     });
-    
+
     this.savingAccountTransactionForm.get('totalDepositAmount')?.setValue(total);
     let totalInWord = this.customUtils.numberToWordsFr(this.savingAccountTransactionForm.get('totalDepositAmount').value)
-    this.savingAccountTransactionForm.get('totalAmountInWords')?.setValue(totalInWord);
+    this.savingAccountTransactionForm.get('amountInWords')?.setValue(totalInWord);
     this.totalAmountInWords = totalInWord;
     this.totalDepositAmount = this.savingAccountTransactionForm.get('totalDepositAmount').value;
   }
@@ -181,9 +181,9 @@ export class SavingsAccountTransactionsComponent implements OnInit {
       'totalAmount_5000': [0],
       // add all denominations
       'totalDepositAmount': [0],
-      'totalAmountInWords': [''],
+      'amountInWords': [''],
       'sourceOfFunds': this.formBuilder.array(this.sourcesOfFundsOptions.map(() => this.formBuilder.control(false))),
-      'DepositName': [''],
+      'depositName': [''],
       // Dynamically add form controls for each denomination
       numberOfBills_2000: [0],
       totalAmount_2000: [0],
@@ -204,7 +204,7 @@ export class SavingsAccountTransactionsComponent implements OnInit {
       'note': ['']
     }, { validators: this.amountMatchValidator()});
   }
-  
+
   amountMatchValidator(): ValidatorFn {
     if (!this.isDeposit) {
       return null;
@@ -212,7 +212,7 @@ export class SavingsAccountTransactionsComponent implements OnInit {
     return (formGroup: AbstractControl): ValidationErrors | null => {
       const transactionAmount = formGroup.get('transactionAmount')?.value;
       const totalDepositAmount = formGroup.get('totalDepositAmount')?.value;
-  
+
       // Check if both fields are filled and if they match
       if (transactionAmount !== null && totalDepositAmount !== null && transactionAmount !== totalDepositAmount) {
         return { amountMismatch: true }; // Validation error
@@ -251,7 +251,7 @@ export class SavingsAccountTransactionsComponent implements OnInit {
     // Remove unsupported parameters from the form data
     const unsupportedKeys = [
       'numberOfBills_10000', 'totalAmount_10000', 'numberOfBills_5000', 'totalAmount_5000',
-      'totalDepositAmount', 'totalAmountInWords', 'sourceOfFunds', 'numberOfBills_2000', 
+      'totalDepositAmount', 'numberOfBills_2000',
       'totalAmount_2000', 'numberOfBills_1000', 'totalAmount_1000', 'numberOfBills_500',
       'totalAmount_500', 'numberOfBills_200', 'totalAmount_200', 'numberOfBills_100',
       'totalAmount_100', 'numberOfBills_50', 'totalAmount_50', 'numberOfBills_20',

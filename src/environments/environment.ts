@@ -30,7 +30,7 @@ export const environment = {
     title: 'Avertissement',
     content: "Ce système est réservé à une utilisation autorisée. Un accès non autorisé entraînera d'éventuelles poursuites judiciaires. En accédant à ce système, vous reconnaissez être autorisé à le faire et que toutes les données stockées et traitées ici sont confidentielles.",
     buttonText: 'Fermer'
-  },  
+  },
   defaultLanguage: window['env']['defaultLanguage'] || 'en-US',
   supportedLanguages: window['env']['supportedLanguages'] || 'en-US,fr-FR',
   preloadClients: window['env']['preloadClients'] || true,
