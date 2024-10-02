@@ -1,6 +1,6 @@
 /** Angular Imports */
 import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, Validators, UntypedFormControl, FormControl,AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators, UntypedFormControl, FormControl,AbstractControl, ValidationErrors, ValidatorFn, FormArray } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
 
@@ -220,6 +220,15 @@ export class SavingsAccountTransactionsComponent implements OnInit {
       return null; // No validation error
     };
   }
+  // Method to get checked values
+  getSourceOfFundCheckedValues(): string {
+    const sourceOfFundsArray = this.savingAccountTransactionForm.get('sourceOfFunds') as FormArray;
+    const checkedValues = this.sourcesOfFundsOptions
+      .filter((option, i) => sourceOfFundsArray.at(i).value)
+      .join(', '); // Join the selected values with a comma and space
+    return checkedValues;
+  }
+
   /**
    * Method to add payment detail fields to the UI.
    */
@@ -248,6 +257,27 @@ export class SavingsAccountTransactionsComponent implements OnInit {
     const locale = this.settingsService.language.code;
     const dateFormat = this.settingsService.dateFormat;
     const prevTransactionDate: Date = this.savingAccountTransactionForm.value.transactionDate;
+
+    // Define the list of denominations and map them to the form values
+    const billetage = [
+      { denomination: 10000, count: this.savingAccountTransactionForm.value.numberOfBills_10000 },
+      { denomination: 5000, count: this.savingAccountTransactionForm.value.numberOfBills_5000 },
+      { denomination: 2000, count: this.savingAccountTransactionForm.value.numberOfBills_2000 },
+      { denomination: 1000, count: this.savingAccountTransactionForm.value.numberOfBills_1000 },
+      { denomination: 500, count: this.savingAccountTransactionForm.value.numberOfBills_500 },
+      { denomination: 200, count: this.savingAccountTransactionForm.value.numberOfBills_200 },
+      { denomination: 100, count: this.savingAccountTransactionForm.value.numberOfBills_100 },
+      { denomination: 50, count: this.savingAccountTransactionForm.value.numberOfBills_50 },
+      { denomination: 20, count: this.savingAccountTransactionForm.value.numberOfBills_20 },
+      { denomination: 10, count: this.savingAccountTransactionForm.value.numberOfBills_10 }
+    ]
+    .filter(item => item.count > 0) // Only include denominations where the count is greater than 0
+    .map(item => ({
+      ...item,
+      tellerCount: item.count,  // Use the same count for tellerCount
+      cashierCount: item.count, // Use the same count for cashierCount
+      difference: 0             // Default the difference to 0
+    }));
     // Remove unsupported parameters from the form data
     const unsupportedKeys = [
       'numberOfBills_10000', 'totalAmount_10000', 'numberOfBills_5000', 'totalAmount_5000',
@@ -264,10 +294,14 @@ export class SavingsAccountTransactionsComponent implements OnInit {
     if (savingAccountTransactionFormData.transactionDate instanceof Date) {
       savingAccountTransactionFormData.transactionDate = this.dateUtils.formatDate(prevTransactionDate, dateFormat);
     }
+    if(savingAccountTransactionFormData.sourceOfFunds !== null) {
+      savingAccountTransactionFormData.sourceOfFunds = this.getSourceOfFundCheckedValues();
+    }
     const data = {
       ...savingAccountTransactionFormData,
       dateFormat,
-      locale
+      locale,
+      billetage
     };
     this.savingsService.executeSavingsAccountTransactionsCommand(this.savingAccountId, this.transactionCommand, data).subscribe(res => {
       this.router.navigate(['../../transactions'], { relativeTo: this.route });
