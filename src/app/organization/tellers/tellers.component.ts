@@ -51,10 +51,11 @@ export class TellersComponent implements OnInit {
    * Initializes the component.
    */
   ngOnInit() {
+    console.log("test teller list")
     this.route.data.subscribe((data: { tellers: any }) => {
       if (data?.tellers) {
         // Check if data.tellers is an array
-        const tellersData = Array.isArray(data.tellers) ? data.tellers : [data.tellers]; 
+        const tellersData = Array.isArray(data.tellers) ? data.tellers : [data.tellers];
         this.dataSource = new MatTableDataSource(tellersData);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;

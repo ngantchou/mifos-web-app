@@ -399,7 +399,7 @@ const routes: Routes = [
               path: '',
               component: TellersComponent,
               resolve: {
-                tellers: TellerSessionResolver
+                tellers: TellerResolver
               }
             },
             {
