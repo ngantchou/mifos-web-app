@@ -30,7 +30,7 @@ export class TransactionsComponent implements OnInit {
   /** Currencys data. */
   currencyData: any;
   /** Columns to be displayed in transactions table. */
-  displayedColumns: string[] = ['date', 'transactions', 'allocation', 'cashIn', 'cashOut', 'settlement'];
+  displayedColumns: string[] = ['date', 'transactions', 'allocation', 'cashIn', 'cashOut', 'settlement','action'];
   /** Data source for transactions table. */
   dataSource: MatTableDataSource<any>;
   /** Date filter form group */
@@ -87,7 +87,7 @@ export class TransactionsComponent implements OnInit {
       }
     });
   }
-  
+
   fetchTransactions(currencyCode: string, fromDate: Date, toDate: Date): void {
     this.organizationService.getCashierSummaryAndTransactionsByDateRange(
       this.tellerId,

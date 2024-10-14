@@ -121,7 +121,7 @@
 
     <ng-container matColumnDef="Loan Account">
       <th mat-header-cell *matHeaderCellDef> {{"labels.inputs.Loan Product" | translate}} </th>
-      <td mat-cell *matCellDef="let element"> 
+      <td mat-cell *matCellDef="let element">
         <mifosx-long-text textValue="{{element.productName}}" chars="35"></mifosx-long-text>
       </td>
     </ng-container>
@@ -197,7 +197,7 @@
 
     <ng-container matColumnDef="Loan Account">
       <th mat-header-cell *matHeaderCellDef> {{"labels.inputs.Loan Product" | translate}} </th>
-      <td mat-cell *matCellDef="let element"> 
+      <td mat-cell *matCellDef="let element">
         <mifosx-long-text textValue="{{element.productName}}" chars="35"></mifosx-long-text>
       </td>
     </ng-container>
@@ -264,7 +264,7 @@
 
     <ng-container matColumnDef="Saving Account">
       <th mat-header-cell *matHeaderCellDef> {{"labels.inputs.Savings Product" | translate}} </th>
-      <td mat-cell *matCellDef="let element"> 
+      <td mat-cell *matCellDef="let element">
         <mifosx-long-text textValue="{{element.productName}}" chars="35"></mifosx-long-text>
       </td>
     </ng-container>
@@ -276,13 +276,13 @@
 
     <ng-container matColumnDef="Balance">
       <th mat-header-cell class="r-amount" *matHeaderCellDef> {{"labels.inputs.Balance" | translate}} </th>
-      <td mat-cell class="r-amount" *matCellDef="let element"> {{element.accountBalance | formatNumber}} </td>
+      <td mat-cell class="r-amount" *matCellDef="let element" > <span *mifosxHasPermission="'READ_SOLDECLIENT'">{{element.accountBalance | formatNumber}} </span> </td>
     </ng-container>
 
     <ng-container matColumnDef="Actions">
       <th mat-header-cell class="center" *matHeaderCellDef> {{"labels.inputs.Actions" | translate}} </th>
       <td mat-cell class="center" *matCellDef="let element">
-        <button *ngIf="element.status.active" class="account-action-button" mat-raised-button color="primary"
+        <button *ngIf="element.status.active" class="account-action-button" mat-raised-button color="secondary"
           (click)="routeEdit($event)" [routerLink]="['../','savings-accounts', element.id, 'actions', 'Deposit']">
           <i class="fa fa-arrow-up"></i>
         </button>
@@ -326,7 +326,7 @@
 
     <ng-container matColumnDef="Saving Account">
       <th mat-header-cell *matHeaderCellDef> {{"labels.inputs.Saving Product" | translate}} </th>
-      <td mat-cell *matCellDef="let element"> 
+      <td mat-cell *matCellDef="let element">
         <mifosx-long-text textValue="{{element.productName}}" chars="35"></mifosx-long-text>
       </td>
     </ng-container>
@@ -380,7 +380,7 @@
 
     <ng-container matColumnDef="Balance">
       <th mat-header-cell class="r-amount" *matHeaderCellDef> {{"labels.inputs.Balance" | translate}} </th>
-      <td mat-cell class="r-amount" *matCellDef="let element"> {{element.accountBalance | formatNumber}} </td>
+      <td mat-cell class="r-amount" *matCellDef="let element"> <span *mifosxHasPermission="'READ_SOLDECLIENT'">{{element.accountBalance | formatNumber}} </span></td>
     </ng-container>
 
     <ng-container matColumnDef="Actions">
@@ -423,7 +423,7 @@
 
     <ng-container matColumnDef="Saving Account">
       <th mat-header-cell *matHeaderCellDef> {{"labels.inputs.Fixed Deposit Product" | translate}} </th>
-      <td mat-cell *matCellDef="let element"> 
+      <td mat-cell *matCellDef="let element">
         <mifosx-long-text textValue="{{element.productName}}" chars="35"></mifosx-long-text>
       </td>
     </ng-container>
@@ -468,7 +468,7 @@
 
     <ng-container matColumnDef="Saving Account">
       <th mat-header-cell *matHeaderCellDef> {{"labels.inputs.Recurring Deposit Product" | translate}} </th>
-      <td mat-cell *matCellDef="let element"> 
+      <td mat-cell *matCellDef="let element">
         <mifosx-long-text textValue="{{element.productName}}" chars="35"></mifosx-long-text>
       </td>
     </ng-container>
@@ -480,7 +480,7 @@
 
     <ng-container matColumnDef="Balance">
       <th mat-header-cell class="r-amount" *matHeaderCellDef> {{"labels.inputs.Balance" | translate}} </th>
-      <td mat-cell class="r-amount" *matCellDef="let element"> {{element.accountBalance | formatNumber}} </td>
+      <td mat-cell class="r-amount" *matCellDef="let element"> <span *mifosxHasPermission="'READ_SOLDECLIENT'">{{element.accountBalance | formatNumber}} </span></td>
     </ng-container>
 
     <ng-container matColumnDef="Actions">
@@ -527,7 +527,7 @@
 
     <ng-container matColumnDef="Saving Account">
       <th mat-header-cell *matHeaderCellDef> {{"labels.inputs.Recurring Deposit Product" | translate}} </th>
-      <td mat-cell *matCellDef="let element"> 
+      <td mat-cell *matCellDef="let element">
         <mifosx-long-text textValue="{{element.productName}}" chars="35"></mifosx-long-text>
       </td>
     </ng-container>
@@ -570,7 +570,7 @@
 
     <ng-container matColumnDef="Share Account">
       <th mat-header-cell *matHeaderCellDef> {{"labels.inputs.Share Product" | translate}} </th>
-      <td mat-cell *matCellDef="let element"> 
+      <td mat-cell *matCellDef="let element">
         <mifosx-long-text textValue="{{element.productName}}" chars="35"></mifosx-long-text>
       </td>
     </ng-container>

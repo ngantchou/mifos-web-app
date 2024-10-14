@@ -31,7 +31,7 @@ export class ViewSignatureDialogComponent implements OnInit {
               private clientsService: ClientsService,
               private sanitizer: DomSanitizer,
               @Inject(MAT_DIALOG_DATA) public data: { documents: any[], id: string }) {
-    const signature = this.data.documents.find((document: any) => document.name === 'clientSignature') || {};
+    const signature = this.data.documents.find((document: any) => document.name === 'signature') || {};
     this.signatureId = signature.id;
     this.clientId = this.data.id;
   }
@@ -39,8 +39,15 @@ export class ViewSignatureDialogComponent implements OnInit {
   ngOnInit() {
     if (this.signatureId) {
       this.clientsService.getClientSignatureImage(this.clientId, this.signatureId).subscribe(
-        (base64Image: any) => {
-          this.signatureImage = this.sanitizer.bypassSecurityTrustResourceUrl(base64Image);
+        (blob: Blob) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            // FileReader will return the base64 string when it's done reading the Blob
+            const base64Image = reader.result as string;
+            // Bypass security with DomSanitizer and set the image URL
+            this.signatureImage = this.sanitizer.bypassSecurityTrustResourceUrl(base64Image);
+          };
+          reader.readAsDataURL(blob); // This will convert the Blob to base64
         }, (error: any) => {}
       );
     }

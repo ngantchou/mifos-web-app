@@ -14,7 +14,7 @@
             <td *ngIf="savingsAccountData.externalId">
               <mifosx-external-identifier externalId="{{savingsAccountData.externalId}}"></mifosx-external-identifier>
             </td>
-            <td *ngIf="!savingsAccountData.externalId">{{'labels.inputs.Not Provided' | translate}}</td>              
+            <td *ngIf="!savingsAccountData.externalId">{{'labels.inputs.Not Provided' | translate}}</td>
           </tr>
           <tr>
             <td>{{'labels.inputs.Activated On' | translate}}</td>
@@ -51,7 +51,7 @@
             </tr>
             <tr>
               <td>{{'labels.inputs.Balance' | translate}}</td>
-              <td class="r-amount">{{savingsAccountData.summary.accountBalance | currency:currency.code:'symbol-narrow':'1.2-2'}}</td>
+              <td class="r-amount" *mifosxHasPermission="'READ_SOLDECLIENT'">{{savingsAccountData.summary.accountBalance | currency:currency.code:'symbol-narrow':'1.2-2'}}</td>
             </tr>
           </tbody>
         </table>
@@ -64,11 +64,11 @@
         <tbody>
           <tr *ngIf="savingsAccountData.summary.totalDeposits">
             <td>{{'labels.inputs.Total Deposits' | translate}}</td>
-            <td class="r-amount">{{savingsAccountData.summary.totalDeposits | currency:currency.code:'symbol-narrow':'1.2-2'}}</td>
+            <td class="r-amount" *mifosxHasPermission="'READ_SOLDECLIENT'">{{savingsAccountData.summary.totalDeposits | currency:currency.code:'symbol-narrow':'1.2-2'}}</td>
           </tr>
           <tr *ngIf="savingsAccountData.summary.totalInterestEarned >= 0">
             <td>{{'labels.inputs.Total Interest Earned' | translate}}</td>
-            <td class="r-amount">{{savingsAccountData.summary.totalInterestEarned | currency:currency.code:'symbol-narrow':'1.2-2'}}</td>
+            <td class="r-amount" *mifosxHasPermission="'READ_SOLDECLIENT'">{{savingsAccountData.summary.totalInterestEarned | currency:currency.code:'symbol-narrow':'1.2-2'}}</td>
           </tr>
         </tbody>
       </table>
@@ -76,13 +76,13 @@
   </div>
 
   <div fxFlex="49%"
-    *ngIf="isActive; else alternateSummary">
+    *ngIf="isActive; else alternateSummary" >
     <h4 class="table-headers">{{'labels.heading.Account Summary' | translate}}</h4>
-    <table>
+    <table *mifosxHasPermission="'READ_SOLDECLIENT'">
       <tbody>
         <tr *ngIf="savingsAccountData.summary.totalWithdrawals">
           <td>{{'labels.inputs.Total Withdrawls' | translate}}</td>
-          <td class="r-amount">{{savingsAccountData.summary.totalWithdrawals | currency:currency.code:'symbol-narrow':'1.2-2'}}</td>
+          <td class="r-amount" >{{savingsAccountData.summary.totalWithdrawals | currency:currency.code:'symbol-narrow':'1.2-2'}}</td>
         </tr>
         <tr *ngIf="savingsAccountData.summary.totalWithdrawalFees">
           <td>{{'labels.inputs.Withdrawals Fees' | translate}}</td>

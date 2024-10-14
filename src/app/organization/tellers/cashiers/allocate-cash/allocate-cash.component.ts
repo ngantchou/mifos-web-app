@@ -26,7 +26,8 @@ export class AllocateCashComponent implements OnInit {
   cashierData: any;
   /** Cashier Form. */
   allocateCashForm: UntypedFormGroup;
-
+  calculatedTotal: number = 0;
+  isMismatchTotal : boolean;
   /**
    * Get cashier data from `Resolver`.
    * @param {FormBuilder} formBuilder Form Builder.
@@ -64,10 +65,36 @@ export class AllocateCashComponent implements OnInit {
       'txnDate': [new Date(), Validators.required],
       'currencyCode': ['', Validators.required],
       'txnAmount': ['', Validators.required],
-      'txnNote': ['', Validators.required]
+      'txnNote': ['', Validators.required],
+      'bill10000': [0],
+      'bill5000': [0],
+      'bill2000': [0],
+      'bill1000': [0],
+      'coin500': [0],
+      'coin200': [0],
+      'coin100': [0],
+      'coin50': [0],
     });
   }
+  // Fonction pour calculer le total des billets et pièces FCFA
+  calculateTotal() {
+    const bill10000 = this.allocateCashForm.get('bill10000').value || 0;
+    const bill5000 = this.allocateCashForm.get('bill5000').value || 0;
+    const bill2000 = this.allocateCashForm.get('bill2000').value || 0;
+    const bill1000 = this.allocateCashForm.get('bill1000').value || 0;
 
+    const coin500 = this.allocateCashForm.get('coin500').value || 0;
+    const coin200 = this.allocateCashForm.get('coin200').value || 0;
+    const coin100 = this.allocateCashForm.get('coin100').value || 0;
+    const coin50 = this.allocateCashForm.get('coin50').value || 0;
+
+    // Calcul total en fonction des billets et pièces
+    this.calculatedTotal = (bill10000 * 10000) + (bill5000 * 5000) +
+                            (bill2000 * 2000) + (bill1000 * 1000) +
+                            (coin500 * 500) + (coin200 * 200) +
+                            (coin100 * 100) + (coin50 * 50);
+    this.isMismatchTotal = this.calculatedTotal !== this.allocateCashForm.get('openingBalance').value;
+  }
   /**
    * Submits Allocate Cash form.
    */
@@ -76,13 +103,27 @@ export class AllocateCashComponent implements OnInit {
     const locale = this.settingsService.language.code;
     const dateFormat = this.settingsService.dateFormat;
     const txnDate = this.allocateCashForm.value.txnDate;
+
+    // Prepare billetage array
+    const billetage = [
+      { denomination: 10000, count: allocateCashFormData.bill10000, tellerCount: allocateCashFormData.bill10000, cashierCount: allocateCashFormData.bill10000, difference: 0 },
+      { denomination: 5000, count: allocateCashFormData.bill5000, tellerCount: allocateCashFormData.bill5000, cashierCount: allocateCashFormData.bill5000, difference: 0 },
+      { denomination: 2000, count: allocateCashFormData.bill2000, tellerCount: allocateCashFormData.bill2000, cashierCount: allocateCashFormData.bill2000, difference: 0 },
+      { denomination: 1000, count: allocateCashFormData.bill1000, tellerCount: allocateCashFormData.bill1000, cashierCount: allocateCashFormData.bill1000, difference: 0 },
+      { denomination: 500, count: allocateCashFormData.coin500, tellerCount: allocateCashFormData.coin500, cashierCount: allocateCashFormData.coin500, difference: 0 },
+      { denomination: 100, count: allocateCashFormData.coin100, tellerCount: allocateCashFormData.coin100, cashierCount: allocateCashFormData.coin100, difference: 0 },
+      { denomination: 50, count: allocateCashFormData.coin50, tellerCount: allocateCashFormData.coin50, cashierCount: allocateCashFormData.coin50, difference: 0 },
+      { denomination: 25, count: allocateCashFormData.coin200, tellerCount: allocateCashFormData.coin200, cashierCount: allocateCashFormData.coin200, difference: 0 },
+
+    ];
     if (allocateCashFormData.txnDate instanceof Date) {
       allocateCashFormData.txnDate = this.dateUtils.formatDate(txnDate, dateFormat);
     }
     const data = {
       ...allocateCashFormData,
       dateFormat,
-      locale
+      locale,
+      billetage
     };
     this.organizationService.allocateCash(this.cashierData.tellerId, this.cashierData.cashierId, data).subscribe((response: any) => {
       this.router.navigate(['../'], {relativeTo: this.route});

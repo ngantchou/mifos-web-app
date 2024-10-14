@@ -19,7 +19,7 @@
                 [matTooltip]="savingsAccountData.status.value" *ngIf="!savingsAccountData.subStatus.block"></i>
               <i class="fa fa-stop" [ngClass]="savingsAccountData.subStatus.value | statusLookup"
                 [matTooltip]="savingsAccountData.subStatus.value" *ngIf="savingsAccountData.subStatus.block"></i>
-                <span class="m-r-5">{{'labels.inputs.Savings Product' | translate}} :</span> 
+                <span class="m-r-5">{{'labels.inputs.Savings Product' | translate}} :</span>
                 <span class="m-r-5"><mifosx-long-text textValue="{{savingsAccountData.savingsProductName}}"></mifosx-long-text></span>
                 <mifosx-account-number accountNo="{{savingsAccountData.accountNo}}" display="left"></mifosx-account-number>
             </h3>
@@ -30,11 +30,12 @@
                 <mifosx-account-number accountNo="{{savingsAccountData.clientAccountNo}}"></mifosx-account-number>
               </span>
             </span>
+
           </div>
 
           <div *ngIf="!savingsAccountData.status.rejected && !savingsAccountData.status.submittedAndPendingApproval" >
             <h3> {{"labels.heading.Account Overview" | translate}} </h3>
-            <table class="account-overview" *mifosxHasPermission="'ALL_FUNCTIONS'">
+            <table class="account-overview" *mifosxHasPermission="'READ_SOLDECLIENT'">
               <tbody>
                 <tr>
                   <td>{{"labels.inputs.Solde Veille" | translate }}</td>
@@ -50,6 +51,16 @@
                 </tr>
               </tbody>
             </table>
+            <div>
+              <button class="cashier-action-button" mat-raised-button color="primary" matTooltip="{{ 'tooltips.deposit' | translate }}"
+              (click)="doAction('Deposit')" *mifosxHasPermission="'CASHIERSESSION'">{{'labels.menus.Deposit' | translate}}
+              <i class="fa fa-arrow-up"></i>
+              </button>
+              <button class="cashier-action-button" mat-raised-button color="warn" matTooltip="{{ 'tooltips.Withdrawal' | translate }}"
+                (click)="doAction('Withdrawal')" *mifosxHasPermission="'CASHIERSESSION'">{{'labels.menus.Withdrawal' | translate}}
+                <i class="fa fa-arrow-down"></i>
+              </button>
+            </div>
           </div>
 
           <span fxFlex="auto"></span>
@@ -90,22 +101,22 @@
 
   </mat-card-header>
 
-  <mat-card-content class="content" *mifosxHasPermission="'ALL_FUNCTIONS'">
+  <mat-card-content class="content" >
 
     <nav mat-tab-nav-bar class="navigation-tabs" *ngIf="isActive">
       <a mat-tab-link [routerLink]="['./general']" routerLinkActive #general="routerLinkActive"
-        [active]="general.isActive">
+        [active]="general.isActive" *mifosxHasPermission="'READ_SAVINGACCOUNTDETAIL'">
         {{'labels.inputs.General' | translate}}
       </a>
-      <a mat-tab-link [routerLink]="['./transactions']" routerLinkActive #transactions="routerLinkActive"
+      <a mat-tab-link [routerLink]="['./transactions']" *mifosxHasPermission="'READ_TRANSACTIONACCOUNT'" routerLinkActive #transactions="routerLinkActive"
         [active]="transactions.isActive">
         {{'labels.inputs.Transactions' | translate}}
       </a>
-      <a mat-tab-link [routerLink]="['./charges']" routerLinkActive #charges="routerLinkActive"
+      <a mat-tab-link [routerLink]="['./charges']" *mifosxHasPermission="'READ_SAVINGACCOUNTCHARGE'" routerLinkActive #charges="routerLinkActive"
         [active]="charges.isActive">
         {{'labels.inputs.Charges' | translate}}
       </a>
-      <a mat-tab-link [routerLink]="['./documents']" routerLinkActive #savingsDocuments="routerLinkActive"
+      <a mat-tab-link [routerLink]="['./documents']" *mifosxHasPermission="'READ_SAVINGACCOUNTDOCUMENT'" routerLinkActive #savingsDocuments="routerLinkActive"
         [active]="savingsDocuments.isActive">
         {{'labels.inputs.Documents' | translate}}
       </a>

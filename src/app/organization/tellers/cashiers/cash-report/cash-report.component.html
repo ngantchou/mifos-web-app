@@ -1,0 +1,106 @@
+<mat-card class="cash-report-card">
+  <mat-card-header>
+    <mat-card-title>{{ 'labels.titles.CashSessionReport' | translate }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <table class="info-table">
+      <tr>
+        <td>{{ 'labels.inputs.Office' | translate }}</td>
+        <td>{{ sessionData.officeName }}</td>
+      </tr>
+      <tr>
+        <td>{{ 'labels.inputs.Teller Name' | translate }}</td>
+        <td>{{ sessionData.tellerName }}</td>
+      </tr>
+      <tr>
+        <td>{{ 'labels.inputs.Cashier' | translate }}</td>
+        <td>{{ sessionData.cashierName }}</td>
+      </tr>
+      <tr>
+        <td>{{ 'labels.inputs.startDate' | translate }}</td>
+        <td>{{ sessionData.startDate | date }}</td>
+      </tr>
+      <tr>
+        <td>{{ 'labels.inputs.endDate' | translate }}</td>
+        <td>{{ sessionData.endDate | date }}</td>
+      </tr>
+      <tr>
+        <td>{{ 'labels.inputs.Currency' | translate }}</td>
+        <td>{{ sessionData.currencyOptions[0].code }}</td>
+      </tr>
+      <tr>
+        <td>{{ 'labels.inputs.Opening Amount' | translate }}</td>
+        <td>{{ sessionData.openingBalance | currency:sessionData.currencyOptions[0].code }}</td>
+      </tr>
+      <tr>
+        <td>{{ 'labels.inputs.Closing Amount' | translate }}</td>
+        <td>{{ sessionData.closingBalance | currency:sessionData.currencyOptions[0].code }}</td>
+      </tr>
+    </table>
+
+    <table class="denomination-table">
+      <thead>
+        <tr>
+          <th>{{ 'labels.inputs.Denomination' | translate }}</th>
+          <th>{{ 'labels.inputs.Count' | translate }}</th>
+          <th>{{ 'labels.inputs.Total' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>10,000 FCFA</td>
+          <td>{{ sessionData.bill10000 }}</td>
+          <td>{{ sessionData.bill10000 * 10000 | currency:sessionData.currencyCode }}</td>
+        </tr>
+        <tr>
+          <td>5,000 FCFA</td>
+          <td>{{ sessionData.bill5000 }}</td>
+          <td>{{ sessionData.bill5000 * 5000 | currency:sessionData.currencyCode }}</td>
+        </tr>
+        <tr>
+          <td>2,000 FCFA</td>
+          <td>{{ sessionData.bill2000 }}</td>
+          <td>{{ sessionData.bill2000 * 2000 | currency:sessionData.currencyCode }}</td>
+        </tr>
+        <tr>
+          <td>1,000 FCFA</td>
+          <td>{{ sessionData.bill1000 }}</td>
+          <td>{{ sessionData.bill1000 * 1000 | currency:sessionData.currencyCode }}</td>
+        </tr>
+        <tr>
+          <td>500 FCFA</td>
+          <td>{{ sessionData.coin500 }}</td>
+          <td>{{ sessionData.coin500 * 500 | currency:sessionData.currencyCode }}</td>
+        </tr>
+        <tr>
+          <td>100 FCFA</td>
+          <td>{{ sessionData.coin100 }}</td>
+          <td>{{ sessionData.coin100 * 100 | currency:sessionData.currencyCode }}</td>
+        </tr>
+        <tr>
+          <td>50 FCFA</td>
+          <td>{{ sessionData.coin50 }}</td>
+          <td>{{ sessionData.coin50 * 50 | currency:sessionData.currencyCode }}</td>
+        </tr>
+        <tr>
+          <td>25 FCFA</td>
+          <td>{{ sessionData.coin25 }}</td>
+          <td>{{ sessionData.coin25 * 25 | currency:sessionData.currencyCode }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="summary">
+      <p><strong>{{ 'labels.inputs.TotalCounted' | translate }}:</strong> {{ calculateTotal() | currency:sessionData.currencyCode }}</p>
+      <p><strong>{{ 'labels.inputs.ClosingBalance' | translate }}:</strong> {{ sessionData.closingBalance | currency:sessionData.currencyCode }}</p>
+      <p [ngClass]="{'difference-mismatch': difference !== 0}">
+        <strong>{{ 'labels.inputs.Difference' | translate }}:</strong> {{ difference | currency:sessionData.currencyCode }}
+      </p>
+    </div>
+
+    <div class="transaction-note">
+      <p><strong>{{ 'labels.inputs.txnNote' | translate }}:</strong></p>
+      <p>{{ sessionData.txnNote }}</p>
+    </div>
+  </mat-card-content>
+</mat-card>

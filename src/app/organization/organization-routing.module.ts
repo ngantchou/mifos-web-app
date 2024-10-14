@@ -106,6 +106,10 @@ import { EditFundComponent } from './manage-funds/edit-fund/edit-fund.component'
 import { CreateFundComponent } from './manage-funds/create-fund/create-fund.component';
 import { InvestorsComponent } from './investors/investors.component';
 import { TellerSessionResolver } from './tellers/common-resolvers/teller-session.resolver';
+import { DetailTransactionResolver } from './tellers/common-resolvers/detail-transaction.resolver';
+import { ViewTransactionDetailComponent } from './tellers/cashiers/transactions/view-transaction/view-transaction.component';
+import { TransfertCashComponent } from './tellers/cashiers/cash-transfert/cash-transfert.component';
+import { CashReportComponent } from './tellers/cashiers/cash-report/cash-report.component';
 
 /** Organization Routes */
 const routes: Routes = [
@@ -399,7 +403,7 @@ const routes: Routes = [
               path: '',
               component: TellersComponent,
               resolve: {
-                tellers: TellerResolver
+                tellers: TellersResolver
               }
             },
             {
@@ -485,6 +489,22 @@ const routes: Routes = [
                               data: { title: 'Close Cashier', breadcrumb: 'close Cashier', routeParamBreadcrumb: false },
                               resolve: {
                                 cashierTemplate: CashierTransactionTemplateResolver
+                              }
+                            },
+                            {
+                              path: 'report',
+                              component: CashReportComponent,
+                              data: { title: 'Report Cashier', breadcrumb: 'Report Cashier', routeParamBreadcrumb: false },
+                              resolve: {
+                                cashierTemplate: CashierTransactionTemplateResolver
+                              }
+                            },
+                            {
+                              path: 'transfert',
+                              component: TransfertCashComponent,
+                              data: { title: 'Transfert Cash', breadcrumb: 'Transfert Cash', routeParamBreadcrumb: false },
+                              resolve: {
+                                cashiersData: TellersResolver
                               }
                             }
                           ]
@@ -572,6 +592,14 @@ const routes: Routes = [
                           }
                         },
                         {
+                          path: 'transaction/:id',
+                          component: ViewTransactionDetailComponent,
+                          data: { title: 'Detail transaction', breadcrumb: 'Detail transaction', routeParamBreadcrumb: false },
+                          resolve: {
+                            cashierTemplate: DetailTransactionResolver
+                          }
+                        },
+                        {
                           path: 'settle',
                           component: SettleCashComponent,
                           data: { title: 'Settle Cash', breadcrumb: 'Settle Cash', routeParamBreadcrumb: false },
@@ -588,6 +616,14 @@ const routes: Routes = [
                           }
                         },
                         {
+                          path: 'transfert',
+                          component: TransfertCashComponent,
+                          data: { title: 'Transfert Cash', breadcrumb: 'Transfert Cash', routeParamBreadcrumb: false },
+                          resolve: {
+                            cashiersData: TellersResolver
+                          }
+                        },
+                        {
                           path: 'open',
                           component: OpenCashierComponent,
                           data: { title: 'Open Cashier', breadcrumb: 'Open Cashier', routeParamBreadcrumb: false },
@@ -599,6 +635,14 @@ const routes: Routes = [
                           path: 'close',
                           component: CloseCashierComponent,
                           data: { title: 'Close Cashier', breadcrumb: 'close Cashier', routeParamBreadcrumb: false },
+                          resolve: {
+                            cashierTemplate: CashierTransactionTemplateResolver
+                          }
+                        },
+                        {
+                          path: 'report',
+                          component: CashReportComponent,
+                          data: { title: 'Report Cashier', breadcrumb: 'Report Cashier', routeParamBreadcrumb: false },
                           resolve: {
                             cashierTemplate: CashierTransactionTemplateResolver
                           }
@@ -850,7 +894,8 @@ const routes: Routes = [
     LoanProvisioningCriteriaAndTemplateResolver,
     StandingInstructionsTemplateResolver,
     AdvanceSearchTemplateResolver,
-    TellerSessionResolver
+    TellerSessionResolver,
+    DetailTransactionResolver
   ]
 })
 export class OrganizationRoutingModule { }

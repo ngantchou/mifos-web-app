@@ -26,6 +26,7 @@ export class ClientsViewComponent implements OnInit {
   clientViewData: any;
   clientDatatables: any;
   clientImage: any;
+  signatureImage: any;
   clientTemplateData: any;
 
   constructor(private route: ActivatedRoute,

@@ -418,6 +418,10 @@ export class OrganizationService {
     return this.http.get(`/tellers/${tellerId}/cashiers/${cashierId}/transactions/template`);
   }
 
+  getDetailTransaction(tellerId: string, cashierId: string, transactionId: string): Observable<any> {
+    return this.http.get(`/tellers/${tellerId}/cashiers/${cashierId}/transactions/template`);
+    //return this.http.get(`/tellers/${tellerId}/cashiers/${cashierId}/transaction/${transactionId}`);
+  }
   /**
    * @param {string} tellerId Teller Id
    * @param {any} cashier Cashier
@@ -457,7 +461,10 @@ export class OrganizationService {
     const httpParams = new HttpParams().set('command', 'allocate');
     return this.http.post(`/tellers/${tellerId}/cashiers/${cashierId}/allocate`, cashData, { params: httpParams });
   }
-
+  transfertCash(tellerId: string, cashierId: string, cashData: any): Observable<any> {
+    const httpParams = new HttpParams().set('command', 'transfert');
+    return this.http.post(`/tellers/${tellerId}/cashiers/${cashierId}/transfert`, cashData, { params: httpParams });
+  }
   openCashierSession(tellerId: string, cashierId: string, cashData: any): Observable<any> {
     return this.http.post(`/tellers/${tellerId}/cashiers/${cashierId}/open`, cashData);
   }

@@ -1,0 +1,39 @@
+.receipt-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.receipt-footer {
+  margin-top: 40px;
+}
+
+.signature-line {
+  border-top: 1px solid black;
+  width: 80%;
+  margin: 20px auto;
+}
+
+@media print {
+  .container {
+    font-size: 12px;
+    color: black;
+  }
+
+  button {
+    display: none;
+  }
+
+  .mat-elevation-z1 {
+    border: 1px solid black;
+    margin-bottom: 20px;
+  }
+
+  .receipt-header, .receipt-footer {
+    text-align: center;
+  }
+
+  .receipt-footer .signature-line {
+    margin: 50px auto;
+    width: 60%;
+  }
+}

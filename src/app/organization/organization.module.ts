@@ -80,6 +80,9 @@ import { CreateFundComponent } from './manage-funds/create-fund/create-fund.comp
 import { EditFundComponent } from './manage-funds/edit-fund/edit-fund.component';
 import { ViewFundComponent } from './manage-funds/view-fund/view-fund.component';
 import { InvestorsComponent } from './investors/investors.component';
+import { ViewTransactionDetailComponent } from './tellers/cashiers/transactions/view-transaction/view-transaction.component';
+import { TransfertCashComponent } from './tellers/cashiers/cash-transfert/cash-transfert.component';
+import { CashReportComponent } from './tellers/cashiers/cash-report/cash-report.component';
 
 
 /**
@@ -159,7 +162,10 @@ import { InvestorsComponent } from './investors/investors.component';
     ViewFundComponent,
     InvestorsComponent,
     OpenCashierComponent,
-    CloseCashierComponent
+    CloseCashierComponent,
+    ViewTransactionDetailComponent,
+    TransfertCashComponent,
+    CashReportComponent
   ],
   providers: [
     CreateHoliday,

@@ -67,7 +67,7 @@ export class CloseCashierComponent implements OnInit {
       'txnDate': [new Date(), Validators.required],
       'currencyCode': ['', Validators.required],
       'openingBalance': ['', Validators.required],
-      'closingBalance': ['', Validators.required], 
+      'closingBalance': ['', Validators.required],
       'bill10000': [0],
       'bill5000': [0],
       'bill2000': [0],
@@ -92,9 +92,9 @@ export class CloseCashierComponent implements OnInit {
     const coin50 = this.sessionCashForm.get('coin50').value || 0;
 
     // Calcul total en fonction des billets et pièces
-    this.calculatedTotal = (bill10000 * 10000) + (bill5000 * 5000) + 
-                            (bill2000 * 2000) + (bill1000 * 1000) + 
-                            (coin500 * 500) + (coin200 * 200) + 
+    this.calculatedTotal = (bill10000 * 10000) + (bill5000 * 5000) +
+                            (bill2000 * 2000) + (bill1000 * 1000) +
+                            (coin500 * 500) + (coin200 * 200) +
                             (coin100 * 100) + (coin50 * 50);
 
     this.isMismatchTotal = this.calculatedTotal !== this.sessionCashForm.get('openingBalance').value;
@@ -108,12 +108,12 @@ export class CloseCashierComponent implements OnInit {
     const locale = this.settingsService.language.code;
     const dateFormat = this.settingsService.dateFormat;
     const txnDate = sessionCashFormData.txnDate;
-  
+
     // Format transaction date
     if (txnDate instanceof Date) {
       sessionCashFormData.txnDate = this.dateUtils.formatDate(txnDate, dateFormat);
     }
-  
+
     // Prepare billetage array
     const billetage = [
       { denomination: 10000, count: sessionCashFormData.bill10000, tellerCount: sessionCashFormData.bill10000, cashierCount: sessionCashFormData.bill10000, difference: 0 },
@@ -126,7 +126,7 @@ export class CloseCashierComponent implements OnInit {
       { denomination: 25, count: sessionCashFormData.coin200, tellerCount: sessionCashFormData.coin200, cashierCount: sessionCashFormData.coin200, difference: 0 },
 
     ];
-  
+
     // Prepare the data object
     const data = {
       cashierId: this.cashierData.cashierId,
@@ -141,11 +141,11 @@ export class CloseCashierComponent implements OnInit {
       status: 0,  // Assuming status '1' means opening session
       billetage
     };
-  
+
     // Call the service to open cashier session
     this.organizationService.closeCashierSession(this.cashierData.tellerId, this.cashierData.cashierId, data)
     .subscribe((response: any) => {
-      this.router.navigate(['../'], { relativeTo: this.route });
+      this.router.navigate(['../report'], { relativeTo: this.route });
     });
   }
 }

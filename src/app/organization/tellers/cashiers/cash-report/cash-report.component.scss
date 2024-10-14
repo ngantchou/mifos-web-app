@@ -1,0 +1,33 @@
+.cash-report-card {
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+.info-table, .denomination-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.info-table td, .denomination-table td, .denomination-table th {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+.denomination-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.summary p {
+  margin: 5px 0;
+}
+
+.difference-mismatch {
+  color: red;
+  font-weight: bold;
+}
+
+.transaction-note {
+  margin-top: 20px;
+}

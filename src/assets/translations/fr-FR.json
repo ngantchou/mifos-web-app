@@ -518,6 +518,7 @@
       "View Inactive Charges": "Afficher les frais inactifs",
       "Yes": "Oui",
       "CloseSession": "Clôturer la session",
+      "OpenSession": "Ouvrir la session",
       "Fermer": "Fermer"
     },
     "errors": {
@@ -1926,7 +1927,7 @@
       "Period To": "Période jusqu'à",
       "Period Type": "Type de période",
       "Amount Range From": "Fourchette de montant",
-      "Amount Range To": "Fourchette de montant à",		
+      "Amount Range To": "Fourchette de montant à",
       "Person": "Personne",
       "Phone Number": "Numéro de téléphone",
       "Place Guarantee Funds On-Hold": "Mettre les fonds de garantie en attente",

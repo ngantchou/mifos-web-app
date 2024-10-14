@@ -1,0 +1,104 @@
+<div class="container" *ngIf="transaction && billetageArray.length > 0; else loading">
+  <h2>{{ 'labels.Transaction Details' | translate }}</h2>
+
+  <!-- Transaction Details Table -->
+  <table class="mat-elevation-z1" mat-table [dataSource]="transactionDataSource" matSort>
+
+    <!-- Date Column -->
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'labels.inputs.Date' | translate }} </th>
+      <td mat-cell *matCellDef="let transaction"> {{ transaction.txnDate | date:'shortDate' }} </td>
+    </ng-container>
+
+    <!-- Amount Column -->
+    <ng-container matColumnDef="amount">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'labels.inputs.Amount' | translate }} </th>
+      <td mat-cell *matCellDef="let transaction"> {{ transaction.amount | currency }} </td>
+    </ng-container>
+
+    <!-- Reference Column -->
+    <ng-container matColumnDef="refNo">
+      <th mat-header-cell *matHeaderCellDef> {{ 'labels.inputs.Reference' | translate }} </th>
+      <td mat-cell *matCellDef="let transaction"> {{ transaction.refNo }} </td>
+    </ng-container>
+
+    <!-- account Column -->
+    <ng-container matColumnDef="accountId">
+      <th mat-header-cell *matHeaderCellDef> {{ 'labels.inputs.Account id' | translate }} </th>
+      <td mat-cell *matCellDef="let transaction"> {{ transaction.accountId }} </td>
+    </ng-container>
+
+    <!-- client  Column -->
+    <ng-container matColumnDef="clientName">
+      <th mat-header-cell *matHeaderCellDef> {{ 'labels.inputs.Client Name' | translate }} </th>
+      <td mat-cell *matCellDef="let transaction"> {{ transaction.clientName }} </td>
+    </ng-container>
+
+    <!-- deposit Column -->
+    <ng-container matColumnDef="depositName">
+      <th mat-header-cell *matHeaderCellDef> {{ 'labels.inputs.Deposit Name' | translate }} </th>
+      <td mat-cell *matCellDef="let transaction"> {{ transaction.depositName }} </td>
+    </ng-container>
+
+    <!-- Header and Row Declaration -->
+    <tr mat-header-row *matHeaderRowDef="transactionDisplayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: transactionDisplayedColumns;"></tr>
+  </table>
+
+  <h2>{{ 'labels.Billetage Details' | translate }}</h2>
+
+  <!-- Billetage Table -->
+  <table class="mat-elevation-z1" mat-table [dataSource]="billetageDataSource" matSort>
+
+    <!-- Denomination Column -->
+    <ng-container matColumnDef="denomination">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'labels.inputs.Denomination' | translate }} </th>
+      <td mat-cell *matCellDef="let billetage"> {{ billetage.denomination_id }} </td>
+    </ng-container>
+
+    <!-- Count Column -->
+    <ng-container matColumnDef="count">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'labels.inputs.Count' | translate }} </th>
+      <td mat-cell *matCellDef="let billetage"> {{ billetage.count }} </td>
+    </ng-container>
+
+    <!-- Count Column -->
+    <ng-container matColumnDef="amount">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'labels.inputs.Amount' | translate }} </th>
+      <td mat-cell *matCellDef="let billetage"> {{ billetage.amount }} </td>
+    </ng-container>
+
+    <!-- Teller Count Column -->
+    <ng-container matColumnDef="tellerCount">
+      <th mat-header-cell *matHeaderCellDef> {{ 'labels.inputs.Teller Count' | translate }} </th>
+      <td mat-cell *matCellDef="let billetage"> {{ billetage.teller_count }} </td>
+    </ng-container>
+
+    <!-- Cashier Count Column -->
+    <ng-container matColumnDef="cashierCount">
+      <th mat-header-cell *matHeaderCellDef> {{ 'labels.inputs.Cashier Count' | translate }} </th>
+      <td mat-cell *matCellDef="let billetage"> {{ billetage.cashier_count }} </td>
+    </ng-container>
+
+    <!-- Difference Column -->
+    <ng-container matColumnDef="difference">
+      <th mat-header-cell *matHeaderCellDef> {{ 'labels.inputs.Difference' | translate }} </th>
+      <td mat-cell *matCellDef="let billetage"> {{ billetage.difference }} </td>
+    </ng-container>
+
+    <!-- Status Column -->
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef> {{ 'labels.inputs.Status' | translate }} </th>
+      <td mat-cell *matCellDef="let billetage"> {{ billetage.status }} </td>
+    </ng-container>
+
+    <!-- Header and Row Declaration -->
+    <tr mat-header-row *matHeaderRowDef="billetageDisplayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: billetageDisplayedColumns;"></tr>
+  </table>
+
+</div>
+
+<ng-template #loading>
+  <p>{{ 'labels.inputs.Loading Transaction Details...' | translate }}</p>
+</ng-template>
