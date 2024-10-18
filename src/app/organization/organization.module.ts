@@ -83,6 +83,8 @@ import { InvestorsComponent } from './investors/investors.component';
 import { ViewTransactionDetailComponent } from './tellers/cashiers/transactions/view-transaction/view-transaction.component';
 import { TransfertCashComponent } from './tellers/cashiers/cash-transfert/cash-transfert.component';
 import { CashReportComponent } from './tellers/cashiers/cash-report/cash-report.component';
+import { CashTransferReceiptComponent } from './tellers/cashiers/cash-transfert-receipt/cash-transfer-receipt.component';
+import { CashierSessionReportComponent } from './tellers/cashiers/cashier-session-report/cashier-session-report.component';
 
 
 /**
@@ -165,7 +167,9 @@ import { CashReportComponent } from './tellers/cashiers/cash-report/cash-report.
     CloseCashierComponent,
     ViewTransactionDetailComponent,
     TransfertCashComponent,
-    CashReportComponent
+    CashReportComponent,
+    CashTransferReceiptComponent,
+    CashierSessionReportComponent
   ],
   providers: [
     CreateHoliday,

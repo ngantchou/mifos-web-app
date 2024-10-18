@@ -7,6 +7,8 @@ import { Dates } from 'app/core/utils/dates';
 /** Customer Services. */
 import { OrganizationService } from 'app/organization/organization.service';
 import { SettingsService } from 'app/settings/settings.service';
+import { SystemService } from 'app/system/system.service';
+import { SessionDataService } from '../session-data.service';
 
 @Component({
   selector: 'mifosx-settle-cash',
@@ -21,6 +23,7 @@ export class SettleCashComponent implements OnInit {
   maxDate = new Date();
   /** Cashier data. */
   cashierData: any;
+  columnCodes: any;
   /** Cashier Form. */
   settleCashForm: UntypedFormGroup;
   calculatedTotal: number = 0;
@@ -40,17 +43,22 @@ export class SettleCashComponent implements OnInit {
               private dateUtils: Dates,
               private organizationService: OrganizationService,
               private settingsService: SettingsService,
+              private sessionDataService: SessionDataService,
+              private systemService: SystemService,
               private router: Router) {
-    this.route.data.subscribe((data: { cashierTemplate: any}) => {
+    this.route.data.subscribe((data: { cashierTemplate: any,columnCodes: any}) => {
       this.cashierData = data.cashierTemplate;
+      this.columnCodes = data.columnCodes;
     });
   }
 
   ngOnInit() {
     this.maxDate = this.settingsService.maxFutureDate;
-    //this.targetAccounts = this.cashierData.targetAccounts;
-    this.targetAccounts.push({id: 1, name: 'Test'});
-    this.targetAccounts.push({id: 2, name: 'BGFI'});
+    let code = this.columnCodes.filter((cod: { name: string; }) => cod.name === "Banque" );
+    console.log(code[0])
+    this.systemService.getCodeValues(code[0].id).subscribe((response: any) => {
+      this.targetAccounts = response;
+    });
     this.setCashierForm();
   }
 
@@ -66,8 +74,9 @@ export class SettleCashComponent implements OnInit {
       'txnDate': [new Date(), Validators.required],
       'currencyCode': ['', Validators.required],
       'txnAmount': ['', Validators.required],
-      'txnNote': ['', Validators.required],
-      'targetAccount': ['', Validators.required],
+      'txnNote': ['-'],
+      'bankName': ['', Validators.required],
+      'bankAccount': ['', Validators.required],
       'bill10000': [0],
       'bill5000': [0],
       'bill2000': [0],
@@ -76,6 +85,7 @@ export class SettleCashComponent implements OnInit {
       'coin200': [0],
       'coin100': [0],
       'coin50': [0],
+      'coin25': [0],
     });
   }
   // Fonction pour calculer le total des billets et pièces FCFA
@@ -86,16 +96,16 @@ export class SettleCashComponent implements OnInit {
     const bill1000 = this.settleCashForm.get('bill1000').value || 0;
 
     const coin500 = this.settleCashForm.get('coin500').value || 0;
-    const coin200 = this.settleCashForm.get('coin200').value || 0;
     const coin100 = this.settleCashForm.get('coin100').value || 0;
     const coin50 = this.settleCashForm.get('coin50').value || 0;
+    const coin25 = this.settleCashForm.get('coin25').value || 0;
 
     // Calcul total en fonction des billets et pièces
     this.calculatedTotal = (bill10000 * 10000) + (bill5000 * 5000) +
                             (bill2000 * 2000) + (bill1000 * 1000) +
-                            (coin500 * 500) + (coin200 * 200) +
-                            (coin100 * 100) + (coin50 * 50);
-    this.isMismatchTotal = this.calculatedTotal !== this.settleCashForm.get('openingBalance').value;
+                            (coin500 * 500) + (coin100 * 100) +
+                            (coin50 * 50) + (coin25 * 25);
+    this.isMismatchTotal = this.calculatedTotal !== this.settleCashForm.get('txnAmount').value;
   }
   /**
    * Submits Settle Cash form.
@@ -105,9 +115,14 @@ export class SettleCashComponent implements OnInit {
     const locale = this.settingsService.language.code;
     const dateFormat = this.settingsService.dateFormat;
     const prevTxnDate: Date = this.settleCashForm.value.txnDate;
+    const entity_type = this.settleCashForm.value.bankAccount;
+    const entity_id = this.settleCashForm.value.bankName;
     if (settleCashFormData.txnDate instanceof Date) {
       settleCashFormData.txnDate = this.dateUtils.formatDate(prevTxnDate, dateFormat);
     }
+    const txnDate = settleCashFormData.txnDate;
+    const txnAmount = settleCashFormData.txnAmount;
+    const txnNote = settleCashFormData.txnNote;
     // Prepare billetage array
     const billetage = [
       { denomination: 10000, count: settleCashFormData.bill10000, tellerCount: settleCashFormData.bill10000, cashierCount: settleCashFormData.bill10000, difference: 0 },
@@ -117,17 +132,27 @@ export class SettleCashComponent implements OnInit {
       { denomination: 500, count: settleCashFormData.coin500, tellerCount: settleCashFormData.coin500, cashierCount: settleCashFormData.coin500, difference: 0 },
       { denomination: 100, count: settleCashFormData.coin100, tellerCount: settleCashFormData.coin100, cashierCount: settleCashFormData.coin100, difference: 0 },
       { denomination: 50, count: settleCashFormData.coin50, tellerCount: settleCashFormData.coin50, cashierCount: settleCashFormData.coin50, difference: 0 },
-      { denomination: 25, count: settleCashFormData.coin200, tellerCount: settleCashFormData.coin200, cashierCount: settleCashFormData.coin200, difference: 0 },
-
+      { denomination: 25, count: settleCashFormData.coin25, tellerCount: settleCashFormData.coin25, cashierCount: settleCashFormData.coin25, difference: 0 },
     ];
+
     const data = {
-      ...settleCashFormData,
       dateFormat,
       locale,
-      billetage
+      billetage,
+      txnAmount,
+      txnDate,
+      txnNote,
     };
+
+    let bank = this.targetAccounts.find((cod: { id: number; }) => cod.id === settleCashFormData.bankName );
+    settleCashFormData.targetCashier = bank.name+'('+settleCashFormData.bankAccount+')';
+    settleCashFormData.sourceCashier =  this.cashierData.tellerName+'('+this.cashierData.cashierName+')';
+    this.sessionDataService.setSessionData(settleCashFormData);
+
+    this.sessionDataService.setSessionData(settleCashFormData);
+
     this.organizationService.settleCash(this.cashierData.tellerId, this.cashierData.cashierId, data).subscribe((response: any) => {
-      this.router.navigate(['../'], {relativeTo: this.route});
+      this.router.navigate(['../cashier-receipt'], {relativeTo: this.route});
     });
   }
 

@@ -7,6 +7,8 @@ import { Dates } from 'app/core/utils/dates';
 /** Custom Services. */
 import { OrganizationService } from 'app/organization/organization.service';
 import { SettingsService } from 'app/settings/settings.service';
+import { SystemService } from 'app/system/system.service';
+import { SessionDataService } from '../session-data.service';
 
 /**
  * Allocate Cash component.
@@ -24,6 +26,8 @@ export class AllocateCashComponent implements OnInit {
   maxDate = new Date();
   /** Cashier data. */
   cashierData: any;
+  targetAccounts: { id: number; name: string }[] = [];
+  columnCodes: any;
   /** Cashier Form. */
   allocateCashForm: UntypedFormGroup;
   calculatedTotal: number = 0;
@@ -42,13 +46,20 @@ export class AllocateCashComponent implements OnInit {
               private dateUtils: Dates,
               private organizationService: OrganizationService,
               private settingsService: SettingsService,
+              private systemService: SystemService,
+              private sessionDataService: SessionDataService,
               private router: Router) {
-    this.route.data.subscribe((data: { cashierTemplate: any}) => {
+    this.route.data.subscribe((data: { cashierTemplate: any,columnCodes: any}) => {
       this.cashierData = data.cashierTemplate;
+      this.columnCodes = data.columnCodes;
     });
   }
 
   ngOnInit() {
+    let code = this.columnCodes.filter((cod: { name: string; }) => cod.name === "Banque" );
+    this.systemService.getCodeValues(code[0].id).subscribe((response: any) => {
+      this.targetAccounts = response;
+    });
     this.maxDate = this.settingsService.businessDate;
     this.setCashierForm();
   }
@@ -66,6 +77,8 @@ export class AllocateCashComponent implements OnInit {
       'currencyCode': ['', Validators.required],
       'txnAmount': ['', Validators.required],
       'txnNote': ['', Validators.required],
+      'bankName': ['', Validators.required],
+      'bankAccount': ['', Validators.required],
       'bill10000': [0],
       'bill5000': [0],
       'bill2000': [0],
@@ -93,7 +106,7 @@ export class AllocateCashComponent implements OnInit {
                             (bill2000 * 2000) + (bill1000 * 1000) +
                             (coin500 * 500) + (coin200 * 200) +
                             (coin100 * 100) + (coin50 * 50);
-    this.isMismatchTotal = this.calculatedTotal !== this.allocateCashForm.get('openingBalance').value;
+    this.isMismatchTotal = this.calculatedTotal !== this.allocateCashForm.get('txnAmount').value;
   }
   /**
    * Submits Allocate Cash form.
@@ -119,14 +132,25 @@ export class AllocateCashComponent implements OnInit {
     if (allocateCashFormData.txnDate instanceof Date) {
       allocateCashFormData.txnDate = this.dateUtils.formatDate(txnDate, dateFormat);
     }
+    const txnAmount = allocateCashFormData.txnAmount;
+    const txnNote = allocateCashFormData.txnNote;
+
     const data = {
-      ...allocateCashFormData,
+      txnAmount,
+      txnNote,
+      txnDate,
       dateFormat,
       locale,
       billetage
     };
+
+    let bank = this.targetAccounts.find((cod: { id: number; }) => cod.id === allocateCashFormData.bankName );
+    allocateCashFormData.sourceCashier = bank.name+'('+allocateCashFormData.bankAccount+')';
+    allocateCashFormData.targetCashier =  this.cashierData.tellerName+'('+this.cashierData.cashierName+')';
+    this.sessionDataService.setSessionData(allocateCashFormData);
+
     this.organizationService.allocateCash(this.cashierData.tellerId, this.cashierData.cashierId, data).subscribe((response: any) => {
-      this.router.navigate(['../'], {relativeTo: this.route});
+      this.router.navigate(['../cashier-receipt'], {relativeTo: this.route});
     });
   }
 

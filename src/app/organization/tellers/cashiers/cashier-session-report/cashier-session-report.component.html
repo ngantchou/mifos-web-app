@@ -1,0 +1,29 @@
+<div class="container">
+  <h1>{{ 'labels.report.CashierSessionReport' | translate }}</h1>
+
+  <div class="report-section">
+    <p><strong>{{ 'labels.inputs.Teller Name' | translate }}:</strong> {{ sessionData.tellerName }}</p>
+    <p><strong>{{ 'labels.inputs.Cashier' | translate }}:</strong> {{ sessionData.cashier }}</p>
+    <p><strong>{{ 'labels.inputs.Closing Amount' | translate }}:</strong> {{ sessionData.closingBalance }} FCFA</p>
+    <p><strong>{{ 'labels.inputs.Date' | translate }}:</strong> {{ sessionData.txnDate }}</p>
+    <p><strong>{{ 'labels.inputs.Currency' | translate }}:</strong> {{ sessionData.currencyCode }}</p>
+
+    <!-- Denomination section -->
+    <h3>{{ 'labels.inputs.Denomination' | translate }}</h3>
+    <ul>
+      <li>{{ 'labels.inputs.Bill10000FCFA' | translate }}: {{ sessionData.bill10000 }}</li>
+      <li>{{ 'labels.inputs.Bill5000FCFA' | translate }}: {{ sessionData.bill5000 }}</li>
+      <li>{{ 'labels.inputs.Bill2000FCFA' | translate }}: {{ sessionData.bill2000 }}</li>
+      <li>{{ 'labels.inputs.Bill1000FCFA' | translate }}: {{ sessionData.bill1000 }}</li>
+      <li>{{ 'labels.inputs.Coin500FCFA' | translate }}: {{ sessionData.coin500 }}</li>
+      <li>{{ 'labels.inputs.Coin100FCFA' | translate }}: {{ sessionData.coin100 }}</li>
+      <!-- Add more denominations if needed -->
+    </ul>
+
+    <p><strong>{{ 'labels.inputs.TotalAmount' | translate }}:</strong> {{ sessionData.calculatedTotal }} FCFA</p>
+    <p><strong>{{ 'labels.inputs.txnNote' | translate }}:</strong> {{ sessionData.txnNote }}</p>
+  </div>
+
+  <!-- Print button -->
+  <button mat-raised-button color="primary" (click)="printReport()">{{ 'labels.buttons.Print' | translate }}</button>
+</div>

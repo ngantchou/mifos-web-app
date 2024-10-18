@@ -110,6 +110,9 @@ import { DetailTransactionResolver } from './tellers/common-resolvers/detail-tra
 import { ViewTransactionDetailComponent } from './tellers/cashiers/transactions/view-transaction/view-transaction.component';
 import { TransfertCashComponent } from './tellers/cashiers/cash-transfert/cash-transfert.component';
 import { CashReportComponent } from './tellers/cashiers/cash-report/cash-report.component';
+import { CashierSessionReportComponent } from './tellers/cashiers/cashier-session-report/cashier-session-report.component';
+import { CodesResolver } from 'app/system/codes/codes.resolver';
+import { CashTransferReceiptComponent } from './tellers/cashiers/cash-transfert-receipt/cash-transfer-receipt.component';
 
 /** Organization Routes */
 const routes: Routes = [
@@ -464,7 +467,8 @@ const routes: Routes = [
                               component: SettleCashComponent,
                               data: { title: 'Settle Cash', breadcrumb: 'Settle Cash', routeParamBreadcrumb: false },
                               resolve: {
-                                cashierTemplate: CashierTransactionTemplateResolver
+                                cashierTemplate: CashierTransactionTemplateResolver,
+                                columnCodes: CodesResolver
                               }
                             },
                             {
@@ -472,7 +476,8 @@ const routes: Routes = [
                               component: AllocateCashComponent,
                               data: { title: 'Allocate Cash', breadcrumb: 'Allocate Cash', routeParamBreadcrumb: false },
                               resolve: {
-                                cashierTemplate: CashierTransactionTemplateResolver
+                                cashierTemplate: CashierTransactionTemplateResolver,
+                                columnCodes: CodesResolver
                               }
                             },
                             {
@@ -500,13 +505,27 @@ const routes: Routes = [
                               }
                             },
                             {
+                              path: 'cashier-session-report',
+                              data: { title: 'Report Cashier', breadcrumb: 'Report Cashier', routeParamBreadcrumb: false },
+                              component: CashierSessionReportComponent
+                            },
+                            {
                               path: 'transfert',
                               component: TransfertCashComponent,
                               data: { title: 'Transfert Cash', breadcrumb: 'Transfert Cash', routeParamBreadcrumb: false },
                               resolve: {
                                 cashiersData: TellersResolver
                               }
+                            },
+                            {
+                              path: 'cashier-receipt',
+                              component: CashTransferReceiptComponent,
+                              //data: { title: 'Report Transaction', breadcrumb: 'Report Transaction Cashier', routeParamBreadcrumb: false },
+                              resolve: {
+                                //cashierTemplate: CashierTransactionTemplateResolver
+                              }
                             }
+
                           ]
                         }
                       ]
@@ -604,7 +623,8 @@ const routes: Routes = [
                           component: SettleCashComponent,
                           data: { title: 'Settle Cash', breadcrumb: 'Settle Cash', routeParamBreadcrumb: false },
                           resolve: {
-                            cashierTemplate: CashierTransactionTemplateResolver
+                            cashierTemplate: CashierTransactionTemplateResolver,
+                            columnCodes: CodesResolver
                           }
                         },
                         {
@@ -612,7 +632,8 @@ const routes: Routes = [
                           component: AllocateCashComponent,
                           data: { title: 'Allocate Cash', breadcrumb: 'Allocate Cash', routeParamBreadcrumb: false },
                           resolve: {
-                            cashierTemplate: CashierTransactionTemplateResolver
+                            cashierTemplate: CashierTransactionTemplateResolver,
+                            columnCodes: CodesResolver
                           }
                         },
                         {
@@ -643,6 +664,14 @@ const routes: Routes = [
                           path: 'report',
                           component: CashReportComponent,
                           data: { title: 'Report Cashier', breadcrumb: 'Report Cashier', routeParamBreadcrumb: false },
+                          resolve: {
+                            cashierTemplate: CashierTransactionTemplateResolver
+                          }
+                        },
+                        {
+                          path: 'cashier-receipt',
+                          component: CashTransferReceiptComponent,
+                          data: { title: 'Report Transaction', breadcrumb: 'Report Transaction Cashier', routeParamBreadcrumb: false },
                           resolve: {
                             cashierTemplate: CashierTransactionTemplateResolver
                           }
@@ -895,7 +924,8 @@ const routes: Routes = [
     StandingInstructionsTemplateResolver,
     AdvanceSearchTemplateResolver,
     TellerSessionResolver,
-    DetailTransactionResolver
+    DetailTransactionResolver,
+    CodesResolver
   ]
 })
 export class OrganizationRoutingModule { }

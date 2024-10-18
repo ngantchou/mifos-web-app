@@ -461,9 +461,8 @@ export class OrganizationService {
     const httpParams = new HttpParams().set('command', 'allocate');
     return this.http.post(`/tellers/${tellerId}/cashiers/${cashierId}/allocate`, cashData, { params: httpParams });
   }
-  transfertCash(tellerId: string, cashierId: string, cashData: any): Observable<any> {
-    const httpParams = new HttpParams().set('command', 'transfert');
-    return this.http.post(`/tellers/${tellerId}/cashiers/${cashierId}/transfert`, cashData, { params: httpParams });
+  transfertCash(tellerId: string, cashierId: string, destinationId: string, cashData: any): Observable<any> {
+    return this.http.post(`/tellers/${tellerId}/cashiers/${cashierId}/destination/${destinationId}/transfert`, cashData);
   }
   openCashierSession(tellerId: string, cashierId: string, cashData: any): Observable<any> {
     return this.http.post(`/tellers/${tellerId}/cashiers/${cashierId}/open`, cashData);

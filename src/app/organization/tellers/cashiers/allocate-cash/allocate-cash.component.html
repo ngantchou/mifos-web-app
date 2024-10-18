@@ -59,12 +59,25 @@
           </mat-form-field>
 
           <mat-form-field fxFlex="48%">
-            <mat-label>{{ 'labels.inputs.Notes/Comments' | translate }}</mat-label>
-            <input matInput required formControlName="txnNote">
-            <mat-error *ngIf="allocateCashForm.controls.txnNote.hasError('required')">
-              {{ 'labels.inputs.Notes/Comments' | translate }} {{'labels.commons.is' | translate }} <strong>{{'labels.commons.required' | translate }}</strong>
+            <mat-label>{{ 'labels.inputs.Source' | translate }}</mat-label>
+            <mat-select required formControlName="bankName">
+              <mat-option *ngFor="let target of targetAccounts" [value]="target.id">
+                {{ target.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="allocateCashForm.controls.bankName.hasError('required')">
+              {{ 'labels.inputs.bankName' | translate }} {{'labels.commons.is' | translate }} <strong>{{'labels.commons.required' | translate }}</strong>
             </mat-error>
           </mat-form-field>
+
+          <mat-form-field fxFlex="48%">
+            <mat-label>{{ 'labels.inputs.BankAccount' | translate }}</mat-label>
+            <input matInput required formControlName="bankAccount">
+            <mat-error *ngIf="allocateCashForm.controls.bankAccount.hasError('required')">
+              {{ 'labels.inputs.Amount' | translate }} {{'labels.commons.is' | translate }} <strong>{{'labels.commons.required' | translate }}</strong>
+            </mat-error>
+          </mat-form-field>
+
           <!-- Closing amount for closing session -->
 
           <div fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column">

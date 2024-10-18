@@ -1,6 +1,7 @@
 <div class="container">
   <mat-card>
-    <form [formGroup]="cashTransferForm" (ngSubmit)="submitTransfer()">
+
+    <form *ngIf="!transferData" [formGroup]="cashTransferForm" (ngSubmit)="submitTransfer()">
       <mat-card-content>
         <div fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column">
           <!-- Source Cashier -->
@@ -83,10 +84,10 @@
           <div *ngIf="isMismatchTotal" fxFlex="100%" style="color: red;">
             <p>{{ 'labels.errors.MismatchTotal' | translate }}</p>
           </div>
-          <mat-form-field fxFlex="48%" >
+          <!-- <mat-form-field fxFlex="48%" >
             <mat-label>{{ 'labels.inputs.txnNote' | translate }}</mat-label>
             <input matInput required formControlName="txnNote">
-          </mat-form-field>
+          </mat-form-field> -->
         </div>
       </mat-card-content>
 
@@ -95,5 +96,9 @@
         <button mat-raised-button color="primary" [disabled]="!cashTransferForm.valid || isMismatchTotal" *mifosxHasPermission="'TRANSFERCASHIER_TELLER'">{{ 'labels.buttons.Submit' | translate }}</button>
       </mat-card-actions>
     </form>
+    <div *ngIf="transferData">
+      <app-cash-transfer-receipt [receiptData]="transferData"></app-cash-transfer-receipt>
+    </div>
   </mat-card>
 </div>
+

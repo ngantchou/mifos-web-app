@@ -7,7 +7,7 @@ import { Dates } from 'app/core/utils/dates';
 /** Custom Services. */
 import { OrganizationService } from 'app/organization/organization.service';
 import { SettingsService } from 'app/settings/settings.service';
-
+import { CashTransferReceiptComponent } from '../cash-transfert-receipt/cash-transfer-receipt.component';
 /**
  * Allocate Cash component.
  */
@@ -25,10 +25,13 @@ export class TransfertCashComponent implements OnInit {
   /** Cashier data. */
   cashierData: any;
   cashiersData: any;
+  tellerId: string;
+  cashierId: string;
   /** Cashier Form. */
   cashTransferForm: UntypedFormGroup;
   calculatedTotal: number = 0;
   isMismatchTotal : boolean;
+  transferData: any = null; // To store the data for receipt
   /**
    * Get cashier data from `Resolver`.
    * @param {FormBuilder} formBuilder Form Builder.
@@ -51,6 +54,14 @@ export class TransfertCashComponent implements OnInit {
 
   ngOnInit() {
     // Retrieve the last parameter (cashierId) from the route
+    // Retrieve tellerId and cashierId from the route params
+    this.route.parent?.paramMap.subscribe(params => {
+      this.tellerId = params.get('id');
+    });
+
+    this.route.paramMap.subscribe(params => {
+      this.cashierId = params.get('id');
+    });
     this.cashierData = this.cashiersData.filter((cashier: { id: number; }) => cashier.id === +this.route.snapshot.params['id']);
     this.cashierData = this.cashierData[0];
     this.cashiersData = this.cashiersData.filter((cashier: { id: number; }) => cashier.id !== +this.route.snapshot.params['id']);
@@ -70,7 +81,7 @@ export class TransfertCashComponent implements OnInit {
       'txnDate': [new Date(), Validators.required],
       //'currencyCode': ['', Validators.required],
       'txnAmount': ['', Validators.required],
-      'txnNote': ['', Validators.required],
+      'txnNote': ['-'],
       'sourceCashier': ['', Validators.required],
       'targetCashier': ['', Validators.required],
       'bill10000': [0],
@@ -112,13 +123,13 @@ export class TransfertCashComponent implements OnInit {
     const dateFormat = this.settingsService.dateFormat;
     const txnDate = this.cashTransferForm.value.txnDate;
     const txnAmount = this.cashTransferForm.value.txnAmount;
-    const txnNote = this.cashTransferForm.value.txnNote;
-    const sourceCashier = this.cashTransferForm.value.sourceCashier;
-    const targetCashier = this.cashTransferForm.value.targetCashier;
+    const sourceCashierId = this.cashTransferForm.value.sourceCashier;
+    const destinationCashierId = this.cashTransferForm.value.targetCashier;
     const currencyCode = 'XAF';
     if (cashTransferFormData.txnDate instanceof Date) {
       cashTransferFormData.txnDate = this.dateUtils.formatDate(txnDate, dateFormat);
     }
+    const txnNote = "transfert de "+this.cashTransferForm.value.txnAmount+" de la caisse "+sourceCashierId+" vers "+destinationCashierId;
     // Prepare billetage array
     const billetage = [
       { denomination: 10000, count: cashTransferFormData.bill10000, tellerCount: cashTransferFormData.bill10000, cashierCount: cashTransferFormData.bill10000, difference: 0 },
@@ -136,14 +147,19 @@ export class TransfertCashComponent implements OnInit {
       currencyCode,
       txnAmount,
       txnNote,
-      sourceCashier,
-      targetCashier,
+      sourceCashierId,
+      destinationCashierId,
       dateFormat,
       locale,
       billetage
     };
-    this.organizationService.transfertCash(this.cashierData.tellerId, this.cashierData.cashierId, data).subscribe((response: any) => {
-      this.router.navigate(['../'], {relativeTo: this.route});
+
+    this.transferData = this.cashTransferForm.value; // Capture form data
+    this.transferData.sourceCashier = this.cashierData.name;
+    this.transferData.targetCashier = this.cashiersData.find((cashier: { id: number; }) => cashier.id === destinationCashierId).name;
+
+    this.organizationService.transfertCash(this.tellerId, this.cashierId, destinationCashierId, data).subscribe((response: any) => {
+      this.transferData = this.cashTransferForm.value; // Capture form data
     });
   }
 

@@ -7,6 +7,7 @@ import { Dates } from 'app/core/utils/dates';
 /** Custom Services. */
 import { OrganizationService } from 'app/organization/organization.service';
 import { SettingsService } from 'app/settings/settings.service';
+import { SessionDataService } from '../session-data.service';
 
 /**
  * Allocate Cash component.
@@ -43,6 +44,7 @@ export class CloseCashierComponent implements OnInit {
               private dateUtils: Dates,
               private organizationService: OrganizationService,
               private settingsService: SettingsService,
+              private sessionDataService: SessionDataService,
               private router: Router) {
     this.route.data.subscribe((data: { cashierTemplate: any}) => {
       this.cashierData = data.cashierTemplate;
@@ -59,6 +61,7 @@ export class CloseCashierComponent implements OnInit {
    * Set Cashier form.
    */
   setCashierForm() {
+    //console.log(this.cashierData)
     this.sessionCashForm = this.formBuilder.group({
       'office': [{value: this.cashierData.officeName, disabled: true}],
       'tellerName': [{value: this.cashierData.tellerName, disabled: true}],
@@ -66,7 +69,7 @@ export class CloseCashierComponent implements OnInit {
       //'assignmentPeriod': [{value: this.dateUtils.formatDate(this.cashierData.startDate, 'dd MMMM yyyy') + ' - ' + this.dateUtils.formatDate(this.cashierData.endDate, 'dd MMMM yyyy'), disabled: true}],
       'txnDate': [new Date(), Validators.required],
       'currencyCode': ['', Validators.required],
-      'openingBalance': ['', Validators.required],
+      'openingBalance': [{value: this.cashierData.cashierData.OpeningAmount, disabled: true}],
       'closingBalance': ['', Validators.required],
       'bill10000': [0],
       'bill5000': [0],
@@ -97,7 +100,7 @@ export class CloseCashierComponent implements OnInit {
                             (coin500 * 500) + (coin200 * 200) +
                             (coin100 * 100) + (coin50 * 50);
 
-    this.isMismatchTotal = this.calculatedTotal !== this.sessionCashForm.get('openingBalance').value;
+    this.isMismatchTotal = this.calculatedTotal !== this.sessionCashForm.get('closingBalance').value;
   }
   /**
    * Submits open Cash form.
@@ -141,11 +144,17 @@ export class CloseCashierComponent implements OnInit {
       status: 0,  // Assuming status '1' means opening session
       billetage
     };
+    const sessionData = this.sessionCashForm.value;
+
+    // Store session data in the service
+    this.sessionDataService.setSessionData(sessionData);
+
+    this.router.navigate(['../report'], { relativeTo: this.route ,state: { sessionData: sessionData }});
 
     // Call the service to open cashier session
     this.organizationService.closeCashierSession(this.cashierData.tellerId, this.cashierData.cashierId, data)
     .subscribe((response: any) => {
-      this.router.navigate(['../report'], { relativeTo: this.route });
+      this.router.navigate(['../report'], { relativeTo: this.route ,state: { sessionData: sessionData }});
     });
   }
 }

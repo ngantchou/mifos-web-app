@@ -31,3 +31,23 @@
 .transaction-note {
   margin-top: 20px;
 }
+@media print {
+  /* Hide everything except the printable content */
+  body * {
+    // visibility: hidden;
+  }
+  .printable-area, .printable-area * {
+     visibility: visible;
+  }
+  .printable-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+
+  /* Hide print button during print */
+  .print-button {
+    display: none;
+  }
+}

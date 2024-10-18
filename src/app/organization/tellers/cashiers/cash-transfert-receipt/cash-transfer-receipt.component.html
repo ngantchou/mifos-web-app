@@ -1,0 +1,48 @@
+<div class="container" id="receipt-section">
+  <mat-card>
+    <mat-card-title>{{ 'labels.receipt.TransferReceipt' | translate }}</mat-card-title>
+    <mat-card-content>
+      <div fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column">
+        <!-- Source Cashier -->
+        <div fxFlex="48%">
+          <strong>{{ 'labels.receipt.SourceCashier' | translate }}:</strong> {{ receiptData.sourceCashier }}
+        </div>
+
+        <!-- Target Cashier -->
+        <div fxFlex="48%">
+          <strong>{{ 'labels.receipt.TargetCashier' | translate }}:</strong> {{ receiptData.targetCashier }}
+        </div>
+
+        <!-- Transfer Date -->
+        <div fxFlex="48%">
+          <strong>{{ 'labels.receipt.TransferDate' | translate }}:</strong> {{ receiptData.txnDate | date }}
+        </div>
+
+        <!-- Transfer Amount -->
+        <div fxFlex="48%">
+          <strong>{{ 'labels.receipt.TransferAmount' | translate }}:</strong> {{ receiptData.txnAmount }} FCFA
+        </div>
+
+        <!-- Denominations -->
+        <div fxFlex="100%" style="margin-top: 20px;">
+          <h3>{{ 'labels.receipt.DenominationDetails' | translate }}</h3>
+          <p><strong>{{ 'labels.receipt.Bill10000FCFA' | translate }}:</strong> {{ receiptData.bill10000 }}</p>
+          <p><strong>{{ 'labels.receipt.Bill5000FCFA' | translate }}:</strong> {{ receiptData.bill5000 }}</p>
+          <p><strong>{{ 'labels.receipt.Bill2000FCFA' | translate }}:</strong> {{ receiptData.bill2000 }}</p>
+          <p><strong>{{ 'labels.receipt.Bill1000FCFA' | translate }}:</strong> {{ receiptData.bill1000 }}</p>
+          <p><strong>{{ 'labels.receipt.Coin500FCFA' | translate }}:</strong> {{ receiptData.coin500 }}</p>
+          <p><strong>{{ 'labels.receipt.Coin100FCFA' | translate }}:</strong> {{ receiptData.coin100 }}</p>
+        </div>
+
+        <!-- Total -->
+        <div fxFlex="100%" style="margin-top: 20px;">
+          <strong>{{ 'labels.receipt.TotalAmount' | translate }}:</strong> {{ receiptData.calculatedTotal }} FCFA
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions fxLayout="row" fxLayoutAlign="center">
+      <button mat-raised-button color="primary" (click)="printReceipt()">{{ 'labels.buttons.PrintReceipt' | translate }}</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
