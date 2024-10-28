@@ -1,6 +1,6 @@
 /** Angular Imports. */
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Dates } from 'app/core/utils/dates';
 
@@ -8,6 +8,8 @@ import { Dates } from 'app/core/utils/dates';
 import { OrganizationService } from 'app/organization/organization.service';
 import { SettingsService } from 'app/settings/settings.service';
 
+/* Component */
+import { DenominationComponent } from 'app/shared/denomination/denomination.component';
 /**
  * Allocate Cash component.
  */
@@ -25,6 +27,7 @@ export class OpenCashierComponent implements OnInit {
   /** Cashier data. */
   cashierData: any;
   /** Cashier Form. */
+  totalBilletage: number = 0;
   sessionCashForm: UntypedFormGroup;
   calculatedTotal: number = 0;
   isMismatchTotal : boolean;
@@ -55,6 +58,56 @@ export class OpenCashierComponent implements OnInit {
     this.setCashierForm();
   }
 
+  // Bill denominations (notes)
+  billsData = [
+    { denomination: 10000 },
+    { denomination: 5000 },
+    { denomination: 2000 },
+    { denomination: 1000 },
+    { denomination: 500 }
+  ];
+
+  // Small coins (optional)
+  coinsData = [
+    { denomination: 500 },
+    { denomination: 100 },
+    { denomination: 50 },
+    { denomination: 25 },
+    { denomination: 10 },
+    { denomination: 5 },
+    { denomination: 2 },
+    { denomination: 1 }
+  ];
+
+  // Bill denominations (notes)
+  allDenominations = [
+    { denomination: 10000 , count: 0 },
+    { denomination: 5000 , count: 0 },
+    { denomination: 2000 , count: 0 },
+    { denomination: 1000 , count: 0 },
+    { denomination: 500 , count: 0 },
+    { denomination: 100 , count: 0 },
+    { denomination: 50 , count: 0 },
+    { denomination: 25 , count: 0 },
+    { denomination: 10 , count: 0 },
+    { denomination: 5 , count: 0 },
+    { denomination: 2 , count: 0 },
+    { denomination: 1 , count: 0 }
+  ];
+
+  onTotalAmountChange(total: number) {
+    this.calculatedTotal = total;
+    const transactionAmount =  this.sessionCashForm.get('openingBalance')?.value;
+    const totalDepositAmount = this.calculatedTotal;
+    // Check if both fields are filled and if they match
+    if (transactionAmount !== null && totalDepositAmount !== null && transactionAmount != totalDepositAmount) {
+       this.isMismatchTotal = true ; // Validation error
+    }
+  }
+
+  onAmountInWordsChange(amountInWord: string) {
+
+  }
   /**
    * Set Cashier form.
    */
@@ -65,8 +118,8 @@ export class OpenCashierComponent implements OnInit {
       'cashier': [{value: this.cashierData.cashierName, disabled: true}],
       'txnDate': [new Date(), Validators.required],
       'currencyCode': ['', Validators.required],
-      'openingBalance': ['', Validators.required],
-      'closingBalance': [''], 
+      'openingBalance': [this.cashierData.cashierData.ClosingAmount, Validators.required],
+      'closingBalance': [''],
       'bill10000': [0],
       'bill5000': [0],
       'bill2000': [0],
@@ -78,24 +131,18 @@ export class OpenCashierComponent implements OnInit {
       'txnNote': ['', Validators.required]
     });
   }
-  // Fonction pour calculer le total des billets et pièces FCFA
-  calculateTotal() {
-    const bill10000 = this.sessionCashForm.get('bill10000').value || 0;
-    const bill5000 = this.sessionCashForm.get('bill5000').value || 0;
-    const bill2000 = this.sessionCashForm.get('bill2000').value || 0;
-    const bill1000 = this.sessionCashForm.get('bill1000').value || 0;
 
-    const coin500 = this.sessionCashForm.get('coin500').value || 0;
-    const coin200 = this.sessionCashForm.get('coin200').value || 0;
-    const coin100 = this.sessionCashForm.get('coin100').value || 0;
-    const coin50 = this.sessionCashForm.get('coin50').value || 0;
-
-    // Calcul total en fonction des billets et pièces
-    this.calculatedTotal = (bill10000 * 10000) + (bill5000 * 5000) + 
-                            (bill2000 * 2000) + (bill1000 * 1000) + 
-                            (coin500 * 500) + (coin200 * 200) + 
-                            (coin100 * 100) + (coin50 * 50);
-    this.isMismatchTotal = this.calculatedTotal !== this.sessionCashForm.get('openingBalance').value;
+  amountMatchValidator(): ValidatorFn {
+    return (formGroup: AbstractControl): ValidationErrors | null => {
+      const transactionAmount = formGroup.get('openingBalance')?.value;
+      const totalDepositAmount = this.calculatedTotal;
+      console.log(totalDepositAmount,transactionAmount)
+      // Check if both fields are filled and if they match
+      if (transactionAmount !== null && totalDepositAmount !== null && transactionAmount != totalDepositAmount) {
+        return { amountMismatch: true }; // Validation error
+      }
+      return null; // No validation error
+    };
   }
   /**
    * Submits open Cash form.
@@ -106,25 +153,25 @@ export class OpenCashierComponent implements OnInit {
     const locale = this.settingsService.language.code;
     const dateFormat = this.settingsService.dateFormat;
     const txnDate = sessionCashFormData.txnDate;
-  
+
     // Format transaction date
     if (txnDate instanceof Date) {
       sessionCashFormData.txnDate = this.dateUtils.formatDate(txnDate, dateFormat);
     }
-  
-    // Prepare billetage array
-    const billetage = [
-      { denomination: 10000, count: sessionCashFormData.bill10000, tellerCount: sessionCashFormData.bill10000, cashierCount: sessionCashFormData.bill10000, difference: 0 },
-      { denomination: 5000, count: sessionCashFormData.bill5000, tellerCount: sessionCashFormData.bill5000, cashierCount: sessionCashFormData.bill5000, difference: 0 },
-      { denomination: 2000, count: sessionCashFormData.bill2000, tellerCount: sessionCashFormData.bill2000, cashierCount: sessionCashFormData.bill2000, difference: 0 },
-      { denomination: 1000, count: sessionCashFormData.bill1000, tellerCount: sessionCashFormData.bill1000, cashierCount: sessionCashFormData.bill1000, difference: 0 },
-      { denomination: 500, count: sessionCashFormData.coin500, tellerCount: sessionCashFormData.coin500, cashierCount: sessionCashFormData.coin500, difference: 0 },
-      { denomination: 100, count: sessionCashFormData.coin100, tellerCount: sessionCashFormData.coin100, cashierCount: sessionCashFormData.coin100, difference: 0 },
-      { denomination: 50, count: sessionCashFormData.coin50, tellerCount: sessionCashFormData.coin50, cashierCount: sessionCashFormData.coin50, difference: 0 },
-      { denomination: 25, count: sessionCashFormData.coin200, tellerCount: sessionCashFormData.coin200, cashierCount: sessionCashFormData.coin200, difference: 0 },
 
-    ];
-  
+    // Prepare billetage array
+    let billetage:any = [];
+
+    this.allDenominations.forEach(coin => {
+      const numberControl = this.sessionCashForm.get('numberOfBills_' + coin.denomination).value;
+      const totalControl = this.sessionCashForm.get('totalAmount_' + coin.denomination).value;
+      // Listen to changes in the number of coins and update the total
+      if (numberControl > 0 && numberControl != null && numberControl !== undefined) {
+        billetage.push(
+          { denomination: coin.denomination, count: numberControl, tellerCount: numberControl, cashierCount: numberControl, difference: 0 },
+        )
+      }
+    });
     // Prepare the data object
     const data = {
       cashierId: this.cashierData.cashierId,
@@ -137,12 +184,12 @@ export class OpenCashierComponent implements OnInit {
       status: 1,  // Assuming status '1' means opening session
       billetage
     };
-  
+
     // Call the service to open cashier session
     this.organizationService.openCashierSession(this.cashierData.tellerId, this.cashierData.cashierId, data)
       .subscribe((response: any) => {
         this.router.navigate(['../'], { relativeTo: this.route });
       });
   }
-  
+
 }

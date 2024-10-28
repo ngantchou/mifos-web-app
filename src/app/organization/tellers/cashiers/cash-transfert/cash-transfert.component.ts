@@ -1,6 +1,6 @@
 /** Angular Imports. */
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Dates } from 'app/core/utils/dates';
 
@@ -92,7 +92,20 @@ export class TransfertCashComponent implements OnInit {
       'coin200': [0],
       'coin100': [0],
       'coin50': [0],
-    });
+    }, { validators: this.amountMatchValidator()});
+  }
+
+  amountMatchValidator(): ValidatorFn {
+    return (formGroup: AbstractControl): ValidationErrors | null => {
+      const transactionAmount = formGroup.get('txnAmount')?.value;
+      const totalDepositAmount = this.calculatedTotal;
+
+      // Check if both fields are filled and if they match
+      if (transactionAmount !== null && totalDepositAmount !== null && transactionAmount !== totalDepositAmount) {
+        return { amountMismatch: true }; // Validation error
+      }
+      return null; // No validation error
+    };
   }
   // Fonction pour calculer le total des billets et pièces FCFA
   calculateTotal() {
@@ -154,12 +167,11 @@ export class TransfertCashComponent implements OnInit {
       billetage
     };
 
-    this.transferData = this.cashTransferForm.value; // Capture form data
-    this.transferData.sourceCashier = this.cashierData.name;
-    this.transferData.targetCashier = this.cashiersData.find((cashier: { id: number; }) => cashier.id === destinationCashierId).name;
 
     this.organizationService.transfertCash(this.tellerId, this.cashierId, destinationCashierId, data).subscribe((response: any) => {
       this.transferData = this.cashTransferForm.value; // Capture form data
+      this.transferData.sourceCashier = this.cashierData.name;
+      this.transferData.targetCashier = this.cashiersData.find((cashier: { id: number; }) => cashier.id === destinationCashierId).name;
     });
   }
 

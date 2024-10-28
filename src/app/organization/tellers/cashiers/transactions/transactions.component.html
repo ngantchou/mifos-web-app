@@ -1,4 +1,8 @@
 <div fxLayout="row" fxLayoutGap="1%" fxLayoutAlign="end" class="container m-b-20">
+  <button  mat-raised-button color="warn" [routerLink]="['../close']" *mifosxHasPermission="'CLOSECASHIERSESSION_CASHIER'">
+    <i class="fa fa-lock"></i>
+    {{ 'tooltips.Close Cashier' | translate }}
+  </button>
   <button mat-raised-button color="primary" [routerLink]="['../allocate']" *mifosxHasPermission="'ALLOCATECASHIER_TELLER'">
       <fa-icon icon="arrow-up" class="m-r-10"></fa-icon>
       {{ 'labels.buttons.Allocate Cash' | translate }}
@@ -6,6 +10,10 @@
   <button mat-raised-button color="warn" [routerLink]="['../settle']" *mifosxHasPermission="'SETTLECASHFROMCASHIER_TELLER'">
       <fa-icon icon="arrow-down" class="m-r-10"></fa-icon>
       {{ 'labels.buttons.Settle Cash' | translate }}
+  </button>
+  <button class="cashier-action-button" mat-raised-button color="primary" matTooltip="{{ 'tooltips.Transfert Amount' | translate }}"
+   [routerLink]="['../transfert']" *mifosxHasPermission="'CASHIERSESSION'">
+  <i class="fa fa-arrow-right"></i>
   </button>
 </div>
 

@@ -1,0 +1,112 @@
+/* advans-receipt.component.scss */
+.receipt-card {
+ // max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+}
+.print-break {
+  display: none; /* Hide <br> elements by default */
+}
+.header-section {
+  margin-bottom: 24px;
+
+  .logo {
+    .mat-headline-4 {
+      margin: 0;
+      color: #666;
+    }
+    .mat-subtitle-1 {
+      color: #666;
+    }
+  }
+}
+
+.title-section {
+  margin-bottom: 24px;
+
+  .mat-h2 {
+    margin: 0;
+    text-align: center;
+    width: 100%;
+  }
+}
+
+.details-section {
+  margin-bottom: 24px;
+
+  mat-list-item {
+    height: auto !important;
+    padding: 8px 0;
+  }
+}
+
+.mat-table {
+  width: 100%;
+
+  th.mat-header-cell,
+  td.mat-cell {
+    padding: 12px;
+    text-align: left;
+  }
+}
+
+.totals-card {
+  margin: 16px 0 24px;
+  padding: 16px;
+}
+
+.signatures-section {
+  margin: 24px 0 24px;
+
+  .signature-block {
+    flex: 1;
+    padding: 0 16px;
+
+    .signature-line {
+      border-bottom: 1px solid #666;
+      margin-top: 40px;
+    }
+
+    mat-chip-listbox {
+      justify-content: center;
+    }
+  }
+}
+
+.footer-section {
+  margin-top: 24px;
+
+  .social-icons {
+    color: #666;
+
+    mat-icon {
+      &:nth-child(1) { color: #1877f2; }  // Facebook
+      &:nth-child(2) { color: #0a66c2; }  // LinkedIn
+      &:nth-child(3) { color: #ff0000; }  // YouTube
+      &:nth-child(4) { color: #e4405f; }  // Instagram
+    }
+  }
+}
+
+@media print {
+  .receipt-card {
+    box-shadow: none !important;
+    margin: 0 !important;
+  }
+}
+/* advans-receipt.component.css */
+@media print {
+  /* Hide the print button during printing */
+  button {
+    display: none;
+  }
+
+  /* You can also hide any other elements you don't want to appear in the print view */
+  .social-icons {
+    display: none;
+  }
+
+  .footer-section {
+    display: none;
+  }
+}

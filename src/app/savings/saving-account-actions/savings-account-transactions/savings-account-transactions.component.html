@@ -39,7 +39,7 @@
           </mat-select>
         </mat-form-field>
 
-        <div *ngIf="isDeposit">
+        <div>
           <div fxLayout="row" class="margin-t" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="2%">
             <div>
               <mat-table [dataSource]="billsDenominations" class="bills-table" mat-table>
@@ -123,7 +123,7 @@
           <div *ngIf="savingAccountTransactionForm.hasError('amountMismatch')">
             <p class="error-message">Transaction amount must match the total deposit amount.</p>
           </div>
-          <div formArrayName="sourceOfFunds" class="m-t-20">
+          <div formArrayName="sourceOfFunds" class="m-t-20" *ngIf="transactionType.deposit">
             <label>{{ 'labels.inputs.Source of Funds' | translate }}</label>
             <div>
               <ng-container *ngFor="let source of sourcesOfFundsOptions; let i = index">

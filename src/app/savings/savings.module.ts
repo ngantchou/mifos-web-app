@@ -53,6 +53,7 @@ import { DatatableTransactionTabComponent } from './savings-account-view/transac
 import { SavingsTransactionGeneralTabComponent } from './savings-account-view/transactions/view-transaction/savings-transaction-general-tab/savings-transaction-general-tab.component';
 import { SavingsTransactionDatatableTabComponent } from './savings-account-view/transactions/view-transaction/savings-transaction-datatable-tab/savings-transaction-datatable-tab.component';
 import { GeneralTabComponent } from './savings-account-view/general-tab/general-tab.component';
+import { SavingAccountTransactionReceiptComponent } from '../organization/tellers/cashiers/saving-account-transaction-receipt/saving-account-transaction-receipt.component';
 
 
 /**
@@ -65,7 +66,7 @@ import { GeneralTabComponent } from './savings-account-view/general-tab/general-
     SharedModule,
     PipesModule,
     DirectivesModule,
-    SavingsRoutingModule
+    SavingsRoutingModule,
   ],
   declarations: [
     SavingAccountActionsComponent,
@@ -112,7 +113,8 @@ import { GeneralTabComponent } from './savings-account-view/general-tab/general-
     DatatableTransactionTabComponent,
     SavingsTransactionGeneralTabComponent,
     SavingsTransactionDatatableTabComponent,
-    GeneralTabComponent
+    GeneralTabComponent,
+    SavingAccountTransactionReceiptComponent
   ],
   providers: [ ]
 })

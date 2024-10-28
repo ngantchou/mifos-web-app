@@ -1,0 +1,56 @@
+<div fxLayout="row" [formGroup]="denominationFormGroup"  fxLayout.xs="column"  fxLayoutGap="2%">
+  <div >
+    <mat-table [dataSource]="billsDenominations" class="bills-table" mat-table>
+      <!-- Bills Denomination Table -->
+      <ng-container matColumnDef="denomination">
+        <mat-header-cell *matHeaderCellDef> Denomination </mat-header-cell>
+        <mat-cell *matCellDef="let bill"> {{bill.denomination}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="numberOfBills">
+        <mat-header-cell *matHeaderCellDef> Number </mat-header-cell>
+        <mat-cell *matCellDef="let bill">
+          <input type="number" [formControlName]="'numberOfBills_' + bill.denomination" matInput min="0" placeholder="0" (input)="updateTotalAmount()"/>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="total">
+        <mat-header-cell *matHeaderCellDef> Total </mat-header-cell>
+        <mat-cell *matCellDef="let bill">
+          <input type="number" [formControlName]="'totalAmount_' + bill.denomination" matInput readonly placeholder="0"/>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="['denomination', 'numberOfBills', 'total']"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: ['denomination', 'numberOfBills', 'total']"></mat-row>
+    </mat-table>
+  </div>
+
+  <div>
+    <mat-table [dataSource]="smallCoins" class="bills-table" mat-table>
+      <!-- Small Coins Table -->
+      <ng-container matColumnDef="denomination">
+        <mat-header-cell *matHeaderCellDef> Denomination </mat-header-cell>
+        <mat-cell *matCellDef="let coin"> {{coin.denomination}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="numberOfBills">
+        <mat-header-cell *matHeaderCellDef> Number </mat-header-cell>
+        <mat-cell *matCellDef="let coin">
+          <input type="number" [formControlName]="'numberOfBills_' + coin.denomination" matInput min="0" placeholder="0" (input)="updateTotalAmount()"/>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="total">
+        <mat-header-cell *matHeaderCellDef> Total </mat-header-cell>
+        <mat-cell *matCellDef="let coin">
+          <input type="number" [formControlName]="'totalAmount_' + coin.denomination" matInput readonly placeholder="0"/>
+          <span>{{ currencyCode }}</span>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="['denomination', 'numberOfBills', 'total']"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: ['denomination', 'numberOfBills', 'total']"></mat-row>
+    </mat-table>
+  </div>
+</div>
+
+<!-- Total Amount -->
+<div class="total-section m-t-4">
+  <div class="m-t-20">Total Amount of Deposit: <span class="success-message">{{totalDepositAmount}} {{ currencyCode }}</span></div>
+  <div class="m-t-20">Total Amount in Words: <span class="success-message">{{totalAmountInWords}} {{ currencyCode }}</span></div>
+</div>

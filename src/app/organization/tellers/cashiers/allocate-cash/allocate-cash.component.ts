@@ -1,6 +1,6 @@
 /** Angular Imports. */
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Dates } from 'app/core/utils/dates';
 
@@ -87,7 +87,20 @@ export class AllocateCashComponent implements OnInit {
       'coin200': [0],
       'coin100': [0],
       'coin50': [0],
-    });
+    }, { validators: this.amountMatchValidator()});
+  }
+
+  amountMatchValidator(): ValidatorFn {
+    return (formGroup: AbstractControl): ValidationErrors | null => {
+      const transactionAmount = formGroup.get('txnAmount')?.value;
+      const totalDepositAmount = this.calculatedTotal;
+
+      // Check if both fields are filled and if they match
+      if (transactionAmount !== null && totalDepositAmount !== null && transactionAmount !== totalDepositAmount) {
+        return { amountMismatch: true }; // Validation error
+      }
+      return null; // No validation error
+    };
   }
   // Fonction pour calculer le total des billets et pièces FCFA
   calculateTotal() {
@@ -144,12 +157,11 @@ export class AllocateCashComponent implements OnInit {
       billetage
     };
 
-    let bank = this.targetAccounts.find((cod: { id: number; }) => cod.id === allocateCashFormData.bankName );
-    allocateCashFormData.sourceCashier = bank.name+'('+allocateCashFormData.bankAccount+')';
-    allocateCashFormData.targetCashier =  this.cashierData.tellerName+'('+this.cashierData.cashierName+')';
-    this.sessionDataService.setSessionData(allocateCashFormData);
-
     this.organizationService.allocateCash(this.cashierData.tellerId, this.cashierData.cashierId, data).subscribe((response: any) => {
+      let bank = this.targetAccounts.find((cod: { id: number; }) => cod.id === allocateCashFormData.bankName );
+      allocateCashFormData.sourceCashier = bank.name+'('+allocateCashFormData.bankAccount+')';
+      allocateCashFormData.targetCashier =  this.cashierData.tellerName+'('+this.cashierData.cashierName+')';
+      this.sessionDataService.setSessionData(allocateCashFormData);
       this.router.navigate(['../cashier-receipt'], {relativeTo: this.route});
     });
   }

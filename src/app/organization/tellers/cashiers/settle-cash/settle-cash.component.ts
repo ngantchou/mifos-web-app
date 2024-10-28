@@ -1,6 +1,6 @@
 /** Angular Imports. */
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Dates } from 'app/core/utils/dates';
 
@@ -86,7 +86,20 @@ export class SettleCashComponent implements OnInit {
       'coin100': [0],
       'coin50': [0],
       'coin25': [0],
-    });
+    }, { validators: this.amountMatchValidator()});
+  }
+
+  amountMatchValidator(): ValidatorFn {
+    return (formGroup: AbstractControl): ValidationErrors | null => {
+      const transactionAmount = formGroup.get('txnAmount')?.value;
+      const totalDepositAmount = this.calculatedTotal;
+
+      // Check if both fields are filled and if they match
+      if (transactionAmount !== null && totalDepositAmount !== null && transactionAmount !== totalDepositAmount) {
+        return { amountMismatch: true }; // Validation error
+      }
+      return null; // No validation error
+    };
   }
   // Fonction pour calculer le total des billets et pièces FCFA
   calculateTotal() {
@@ -144,14 +157,11 @@ export class SettleCashComponent implements OnInit {
       txnNote,
     };
 
-    let bank = this.targetAccounts.find((cod: { id: number; }) => cod.id === settleCashFormData.bankName );
-    settleCashFormData.targetCashier = bank.name+'('+settleCashFormData.bankAccount+')';
-    settleCashFormData.sourceCashier =  this.cashierData.tellerName+'('+this.cashierData.cashierName+')';
-    this.sessionDataService.setSessionData(settleCashFormData);
-
-    this.sessionDataService.setSessionData(settleCashFormData);
-
     this.organizationService.settleCash(this.cashierData.tellerId, this.cashierData.cashierId, data).subscribe((response: any) => {
+      let bank = this.targetAccounts.find((cod: { id: number; }) => cod.id === settleCashFormData.bankName );
+      settleCashFormData.targetCashier = bank.name+'('+settleCashFormData.bankAccount+')';
+      settleCashFormData.sourceCashier =  this.cashierData.tellerName+'('+this.cashierData.cashierName+')';
+      this.sessionDataService.setSessionData(settleCashFormData);
       this.router.navigate(['../cashier-receipt'], {relativeTo: this.route});
     });
   }

@@ -1,9 +1,9 @@
 /** Angular Imports. */
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Dates } from 'app/core/utils/dates';
-
+import { DenominationComponent } from 'app/shared/denomination/denomination.component';
 /** Custom Services. */
 import { OrganizationService } from 'app/organization/organization.service';
 import { SettingsService } from 'app/settings/settings.service';
@@ -80,7 +80,20 @@ export class CloseCashierComponent implements OnInit {
       'coin100': [0],
       'coin50': [0],
       'txnNote': ['', Validators.required]
-    });
+    }, { validators: this.amountMatchValidator()});
+  }
+
+  amountMatchValidator(): ValidatorFn {
+    return (formGroup: AbstractControl): ValidationErrors | null => {
+      const transactionAmount = formGroup.get('closingBalance')?.value;
+      const totalDepositAmount = this.calculatedTotal;
+
+      // Check if both fields are filled and if they match
+      if (transactionAmount !== null && totalDepositAmount !== null && transactionAmount !== totalDepositAmount) {
+        return { amountMismatch: true }; // Validation error
+      }
+      return null; // No validation error
+    };
   }
   // Fonction pour calculer le total des billets et pièces FCFA
   calculateTotal() {
@@ -133,8 +146,8 @@ export class CloseCashierComponent implements OnInit {
     // Prepare the data object
     const data = {
       cashierId: this.cashierData.cashierId,
-      openingAmount: sessionCashFormData.openingBalance,
-      closingAmount: sessionCashFormData.closingAmount,
+      openingAmount: this.cashierData.cashierData.OpeningAmount,
+      closingAmount: sessionCashFormData.closingBalance,
       currencyCode: sessionCashFormData.currencyCode,
       locale,
       startDate: sessionCashFormData.txnDate,  // already formatted above
@@ -147,13 +160,14 @@ export class CloseCashierComponent implements OnInit {
     const sessionData = this.sessionCashForm.value;
 
     // Store session data in the service
-    this.sessionDataService.setSessionData(sessionData);
 
-    this.router.navigate(['../report'], { relativeTo: this.route ,state: { sessionData: sessionData }});
+    //this.router.navigate(['../report'], { relativeTo: this.route ,state: { sessionData: sessionData }});
 
     // Call the service to open cashier session
     this.organizationService.closeCashierSession(this.cashierData.tellerId, this.cashierData.cashierId, data)
     .subscribe((response: any) => {
+    this.sessionDataService.setSessionData(sessionData);
+
       this.router.navigate(['../report'], { relativeTo: this.route ,state: { sessionData: sessionData }});
     });
   }

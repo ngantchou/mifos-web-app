@@ -9,6 +9,7 @@ import { SavingsService } from '../../savings.service';
 import { SettingsService } from 'app/settings/settings.service';
 import { Dates } from 'app/core/utils/dates';
 import { Custums } from 'app/core/utils/custom';
+import { SessionDataService } from 'app/organization/tellers/cashiers/session-data.service';
 /**
  * Create savings account transactions component.
  */
@@ -108,6 +109,7 @@ export class SavingsAccountTransactionsComponent implements OnInit {
               private dateUtils: Dates,
               private customUtils: Custums,
               private savingsService: SavingsService,
+              private sessionDataService: SessionDataService,
               private settingsService: SettingsService) {
     this.route.data.subscribe((data: { savingsAccountActionData: any }) => {
       this.paymentTypeOptions = data.savingsAccountActionData.paymentTypeOptions;
@@ -128,7 +130,7 @@ export class SavingsAccountTransactionsComponent implements OnInit {
     // Find the 'Cash' payment option by name
     this.paymentTypeOptions = this.paymentTypeOptions.filter(pt => pt.name === 'Cash');
     this.savingAccountTransactionForm.get('paymentTypeId')?.setValue(this.paymentTypeOptions[0]!.id);
-    if(this.isDeposit) {
+
       this.allDenominations.forEach(bill => {
         this.savingAccountTransactionForm.addControl(
           `numberOfBills_${bill.denomination}`,
@@ -150,7 +152,7 @@ export class SavingsAccountTransactionsComponent implements OnInit {
           }
         });
       });
-    }
+
   }
   updateTotalDepositAmount() {
     let total = 0;
@@ -206,9 +208,6 @@ export class SavingsAccountTransactionsComponent implements OnInit {
   }
 
   amountMatchValidator(): ValidatorFn {
-    if (!this.isDeposit) {
-      return null;
-    }
     return (formGroup: AbstractControl): ValidationErrors | null => {
       const transactionAmount = formGroup.get('transactionAmount')?.value;
       const totalDepositAmount = formGroup.get('totalDepositAmount')?.value;
@@ -303,8 +302,26 @@ export class SavingsAccountTransactionsComponent implements OnInit {
       locale,
       billetage
     };
+    const now = new Date();
+    const date = now.toLocaleDateString(); // e.g., "10/23/2024"
+    const time = now.toLocaleTimeString(); // e.g., "7:28:35 PM"
+
     this.savingsService.executeSavingsAccountTransactionsCommand(this.savingAccountId, this.transactionCommand, data).subscribe(res => {
-      this.router.navigate(['../../transactions'], { relativeTo: this.route });
+
+      if(res.changes){
+        const receiptData = {
+          receiptNumber: res.changes.receiptNumber,
+          date: date,
+          time: time,
+          transactionType: this.transactionCommand,
+          agency: res.changes.agency,
+          transaction: res.changes.transaction,
+          paymentDetails: billetage,
+        };
+        console.log(receiptData)
+        this.sessionDataService.setSessionData(receiptData);
+        this.router.navigate(['/organization/tellers/session/1/cashiers/1/cashier-receipt/',this.savingAccountId], { relativeTo: this.route });
+      }
     });
   }
 }

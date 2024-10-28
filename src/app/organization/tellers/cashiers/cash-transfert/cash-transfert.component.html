@@ -84,16 +84,16 @@
           <div *ngIf="isMismatchTotal" fxFlex="100%" style="color: red;">
             <p>{{ 'labels.errors.MismatchTotal' | translate }}</p>
           </div>
-          <!-- <mat-form-field fxFlex="48%" >
+           <mat-form-field fxFlex="48%" >
             <mat-label>{{ 'labels.inputs.txnNote' | translate }}</mat-label>
             <input matInput required formControlName="txnNote">
-          </mat-form-field> -->
+          </mat-form-field>
         </div>
       </mat-card-content>
 
       <mat-card-actions fxLayout="row" fxLayoutAlign="center" fxLayoutGap="5px">
         <button type="button" mat-raised-button [routerLink]="['../']">{{ 'labels.buttons.Cancel' | translate }}</button>
-        <button mat-raised-button color="primary" [disabled]="!cashTransferForm.valid || isMismatchTotal" *mifosxHasPermission="'TRANSFERCASHIER_TELLER'">{{ 'labels.buttons.Submit' | translate }}</button>
+        <button mat-raised-button color="primary" [disabled]="!cashTransferForm.valid || isMismatchTotal" >{{ 'labels.buttons.Submit' | translate }}</button>
       </mat-card-actions>
     </form>
     <div *ngIf="transferData">

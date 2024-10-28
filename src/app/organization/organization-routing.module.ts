@@ -113,6 +113,7 @@ import { CashReportComponent } from './tellers/cashiers/cash-report/cash-report.
 import { CashierSessionReportComponent } from './tellers/cashiers/cashier-session-report/cashier-session-report.component';
 import { CodesResolver } from 'app/system/codes/codes.resolver';
 import { CashTransferReceiptComponent } from './tellers/cashiers/cash-transfert-receipt/cash-transfer-receipt.component';
+import { SavingAccountTransactionReceiptComponent } from 'app/organization/tellers/cashiers/saving-account-transaction-receipt/saving-account-transaction-receipt.component';
 
 /** Organization Routes */
 const routes: Routes = [
@@ -518,8 +519,8 @@ const routes: Routes = [
                               }
                             },
                             {
-                              path: 'cashier-receipt',
-                              component: CashTransferReceiptComponent,
+                              path: 'cashier-receipt/:savingAccountId',
+                              component: SavingAccountTransactionReceiptComponent,
                               //data: { title: 'Report Transaction', breadcrumb: 'Report Transaction Cashier', routeParamBreadcrumb: false },
                               resolve: {
                                 //cashierTemplate: CashierTransactionTemplateResolver
@@ -611,7 +612,7 @@ const routes: Routes = [
                           }
                         },
                         {
-                          path: 'transaction/:id',
+                          path: 'reçu',
                           component: ViewTransactionDetailComponent,
                           data: { title: 'Detail transaction', breadcrumb: 'Detail transaction', routeParamBreadcrumb: false },
                           resolve: {
