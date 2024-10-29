@@ -86,7 +86,7 @@ export class SettleCashComponent implements OnInit {
       'coin100': [0],
       'coin50': [0],
       'coin25': [0],
-    }, { validators: this.amountMatchValidator()});
+    });
   }
 
   amountMatchValidator(): ValidatorFn {

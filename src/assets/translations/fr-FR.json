@@ -520,7 +520,8 @@
       "CloseSession": "Clôturer la session",
       "OpenSession": "Ouvrir la session",
       "Fermer": "Fermer",
-      "PrintReceipt": "Imprimer de reçu"
+      "PrintReceipt": "Imprimer de reçu",
+      "Transfert Cash": "Transfert inter-caisse"
     },
     "errors": {
       "MismatchTotal": "Le montant total des coupures ne correspond pas au montant de clôture."

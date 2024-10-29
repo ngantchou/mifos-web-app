@@ -92,7 +92,7 @@ export class TransfertCashComponent implements OnInit {
       'coin200': [0],
       'coin100': [0],
       'coin50': [0],
-    }, { validators: this.amountMatchValidator()});
+    });
   }
 
   amountMatchValidator(): ValidatorFn {

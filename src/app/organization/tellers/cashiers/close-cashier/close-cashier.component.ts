@@ -80,7 +80,7 @@ export class CloseCashierComponent implements OnInit {
       'coin100': [0],
       'coin50': [0],
       'txnNote': ['', Validators.required]
-    }, { validators: this.amountMatchValidator()});
+    });
   }
 
   amountMatchValidator(): ValidatorFn {
