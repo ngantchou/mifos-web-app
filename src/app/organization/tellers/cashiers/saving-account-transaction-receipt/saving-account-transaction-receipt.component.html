@@ -31,7 +31,7 @@
           <mat-divider></mat-divider><br class="print-break">
           <mat-list-item>Nom client: {{receiptData.agency.clientName}}</mat-list-item>
           <mat-divider></mat-divider><br class="print-break">
-          <mat-list-item>Code agence client: {{receiptData.agency.agencyCode}}</mat-list-item>
+          <mat-list-item>Code agence: {{receiptData.agency.agencyCode}}</mat-list-item>
           <mat-divider></mat-divider><br class="print-break">
           <mat-list-item>Montant: {{receiptData.agency.amount | number}}</mat-list-item>
           <mat-divider></mat-divider><br class="print-break">
@@ -77,18 +77,6 @@
     <td mat-cell *matCellDef="let element"> {{element.count * element.denomination | number}} </td>
   </ng-container>
 
-  <!-- Bills Returned Column -->
-  <ng-container matColumnDef="billsReturned">
-    <th mat-header-cell *matHeaderCellDef> Nombre de billets rendus </th>
-    <td mat-cell *matCellDef="let element"> {{element.billsReturned}} </td>
-  </ng-container>
-
-  <!-- Amount Returned Column -->
-  <ng-container matColumnDef="amountReturned">
-    <th mat-header-cell *matHeaderCellDef> Montant rendu </th>
-    <td mat-cell *matCellDef="let element"> {{element.amountReturned}} </td>
-  </ng-container>
-
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
@@ -97,7 +85,7 @@
     <mat-card class="totals-card mat-elevation-z1">
       <div fxLayout="row" fxLayoutAlign="space-between center">
         <div>Total Reçu: {{receiptData.agency.amount | number}}</div>
-        <div>Total Rendu: {{receiptData.amountReturned}}</div>
+        <!-- <div>Total Rendu: {{receiptData.amountReturned}}</div> -->
       </div>
     </mat-card>
 
@@ -110,12 +98,12 @@
 
       <div class="signature-block text-center">
         <div>
-          <span>TRANSACTION VALIDEE</span>
+
         </div>
       </div>
 
       <div class="signature-block text-right">
-        <p class="mat-caption">Signature/Cachet caissier</p>
+        <p class="mat-caption">Signature caissier</p>
         <div class="signature-line"></div>
       </div>
     </div>

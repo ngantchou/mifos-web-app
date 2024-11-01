@@ -60,7 +60,7 @@ export class SavingAccountTransactionReceiptComponent {
   };
 
   // Table columns definition for mat-table
-  displayedColumns: string[] = ['notes', 'billsReceived', 'amountReceived', 'billsReturned', 'amountReturned'];
+  displayedColumns: string[] = ['notes', 'billsReceived', 'amountReceived'];
   // Add the printReceipt method
   @ViewChild('receiptContent', { static: false }) receiptContent!: ElementRef;
 
@@ -71,7 +71,7 @@ export class SavingAccountTransactionReceiptComponent {
     }
   }
   getType(type:string){
-    return type === "deposit" ? "Versement" : "Retrait";
+    return type === "deposit" ? "Versement Espèces" : "Retrait Espèces";
   }
   printComponent() {
     if (this.receiptContent) {
@@ -189,10 +189,12 @@ export class SavingAccountTransactionReceiptComponent {
 
               .signature-block {
                 margin-top: 20px;
+                margin-bottom: 20px;
               }
               .signature-line {
                 border-bottom: 1px solid #666;
                 margin-top: 40px;
+                margin-bottom: 40px;
                 border-top: 1px solid black;
               }
 
