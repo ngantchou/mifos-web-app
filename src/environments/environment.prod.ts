@@ -9,9 +9,9 @@ export const environment = {
   fineractPlatformTenantId: window['env']['fineractPlatformTenantId'] || 'default',
   fineractPlatformTenantIds: window['env']['fineractPlatformTenantIds'] || 'default',
   // For connecting to others servers running elsewhere update the base API URL
-  baseApiUrls: window['env']['fineractApiUrls'] || 'http://102.220.19.214:8080',
+  baseApiUrls: window['env']['fineractApiUrls'] || 'https://102.220.19.214:8443',
   // For connecting to server running elsewhere set the base API URL
-  baseApiUrl: window['env']['fineractApiUrl'] || 'http://102.220.19.214:8080',
+  baseApiUrl: window['env']['fineractApiUrl'] || 'https://102.220.19.214:8443',
   allowServerSwitch: env.allow_switching_backend_instance,
   apiProvider: window['env']['apiProvider'] || '/fineract-provider/api',
   apiVersion: window['env']['apiVersion'] || '/v1',
@@ -25,8 +25,8 @@ export const environment = {
     content: 'This system is for authorized use only. Unauthorized access will result in possible legal action. By accessing this system, you acknowledge that you are authorized to do so and that all data stored and processed here is confidential.',
     buttonText: 'Close'
   },
-  defaultLanguage: window['env']['defaultLanguage'] || 'en-US',
-  supportedLanguages: window['env']['supportedLanguages'] || 'cs-CS,de-DE,en-US,es-MX,fr-FR,it-IT,ko-KO,lt-LT,lv-LV,ne-NE,pt-PT,sw-SW',
+  defaultLanguage: window['env']['defaultLanguage'] || 'fr-FR',
+  supportedLanguages: window['env']['supportedLanguages'] || 'en-US,fr-FR',
   preloadClients: window['env']['preloadClients'] || true,
 
   defaultCharDelimiter: window['env']['defaultCharDelimiter'] || ',',

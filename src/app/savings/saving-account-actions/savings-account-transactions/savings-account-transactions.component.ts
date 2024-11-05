@@ -185,7 +185,7 @@ export class SavingsAccountTransactionsComponent implements OnInit {
       'totalDepositAmount': [0],
       'amountInWords': [''],
       'sourceOfFunds': this.formBuilder.array(this.sourcesOfFundsOptions.map(() => this.formBuilder.control(false))),
-      'depositName': [''],
+      'depositName': ['',Validators.required],
       // Dynamically add form controls for each denomination
       numberOfBills_2000: [0],
       totalAmount_2000: [0],

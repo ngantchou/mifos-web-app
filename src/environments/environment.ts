@@ -15,9 +15,9 @@ export const environment = {
   fineractPlatformTenantIds: window['env']['fineractPlatformTenantIds'] || 'default',
   // For connecting to others servers running elsewhere update the base API URL
   baseApiUrls: window['env']['fineractApiUrls'] ||
-    'https://localhost:8443',
+    'https://102.220.19.214:8443',
   // For connecting to server running elsewhere set the base API URL
-  baseApiUrl: window['env']['baseApiUrl'] || 'https://localhost:8443',
+  baseApiUrl: window['env']['baseApiUrl'] || 'https://102.220.19.214:8443',
   allowServerSwitch: env.allow_switching_backend_instance,
   apiProvider: window['env']['apiProvider'] || '/fineract-provider/api',
   apiVersion: window['env']['apiVersion'] || '/v1',
@@ -31,7 +31,7 @@ export const environment = {
     content: "Ce système est réservé à une utilisation autorisée. Un accès non autorisé entraînera d'éventuelles poursuites judiciaires. En accédant à ce système, vous reconnaissez être autorisé à le faire et que toutes les données stockées et traitées ici sont confidentielles.",
     buttonText: 'Fermer'
   },
-  defaultLanguage: window['env']['defaultLanguage'] || 'en-US',
+  defaultLanguage: window['env']['defaultLanguage'] || 'fr-FR',
   supportedLanguages: window['env']['supportedLanguages'] || 'en-US,fr-FR',
   preloadClients: window['env']['preloadClients'] || true,
 
