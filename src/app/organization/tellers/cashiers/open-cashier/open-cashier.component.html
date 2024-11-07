@@ -59,12 +59,10 @@
           </mat-form-field>
         </div>
         <app-denomination
-        [allDenominations]="allDenominations"
-        [billsDenominations]="billsData"
-        [smallCoins]="coinsData"
         [currencyCode]="'CFA'"
         [denominationFormGroup]="sessionCashForm"
         (totalAmountChange)="onTotalAmountChange($event)"
+        (billetageChange)="onBilletageChange($event)"
         (amountInWordsChange)="onAmountInWordsChange($event)">
       </app-denomination>
 

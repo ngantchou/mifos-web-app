@@ -29,6 +29,7 @@ export class SettleCashComponent implements OnInit {
   calculatedTotal: number = 0;
   isMismatchTotal : boolean;
   targetAccounts: { id: number; name: string }[] = [];
+  billetage : any = [];
   /**
    * Get cashier data from `Resolver`.
    * @param {FormBuilder} formBuilder Form Builder.
@@ -49,6 +50,18 @@ export class SettleCashComponent implements OnInit {
     this.route.data.subscribe((data: { cashierTemplate: any,columnCodes: any}) => {
       this.cashierData = data.cashierTemplate;
       this.columnCodes = data.columnCodes;
+      this.settleCashForm = this.formBuilder.group({
+        'office': [{value: this.cashierData.officeName, disabled: true}],
+        'tellerName': [{value: this.cashierData.tellerName, disabled: true}],
+        'cashier': [{value: this.cashierData.cashierName, disabled: true}],
+        'assignmentPeriod': [{value: this.dateUtils.formatDate(this.cashierData.startDate, 'dd MMMM yyyy') + ' - ' + this.dateUtils.formatDate(this.cashierData.endDate, 'dd MMMM yyyy'), disabled: true}],
+        'txnDate': [new Date(), Validators.required],
+        'currencyCode': ['', Validators.required],
+        'txnAmount': ['', Validators.required],
+        'txnNote': ['-'],
+        'bankName': ['', Validators.required],
+        'bankAccount': ['', Validators.required],
+      });
     });
   }
 
@@ -59,7 +72,7 @@ export class SettleCashComponent implements OnInit {
     this.systemService.getCodeValues(code[0].id).subscribe((response: any) => {
       this.targetAccounts = response;
     });
-    this.setCashierForm();
+    //this.setCashierForm();
   }
 
   /**
@@ -77,48 +90,25 @@ export class SettleCashComponent implements OnInit {
       'txnNote': ['-'],
       'bankName': ['', Validators.required],
       'bankAccount': ['', Validators.required],
-      'bill10000': [0],
-      'bill5000': [0],
-      'bill2000': [0],
-      'bill1000': [0],
-      'coin500': [0],
-      'coin200': [0],
-      'coin100': [0],
-      'coin50': [0],
-      'coin25': [0],
     });
   }
-
-  amountMatchValidator(): ValidatorFn {
-    return (formGroup: AbstractControl): ValidationErrors | null => {
-      const transactionAmount = formGroup.get('txnAmount')?.value;
-      const totalDepositAmount = this.calculatedTotal;
-
-      // Check if both fields are filled and if they match
-      if (transactionAmount !== null && totalDepositAmount !== null && transactionAmount !== totalDepositAmount) {
-        return { amountMismatch: true }; // Validation error
-      }
-      return null; // No validation error
-    };
+  onTotalAmountChange(total: number) {
+    this.calculatedTotal = total;
+    const transactionAmount =  this.settleCashForm.get('txnAmount')?.value;
+    const totalDepositAmount = this.calculatedTotal;
+    // Check if both fields are filled and if they match
+    if (transactionAmount !== null && totalDepositAmount !== null && transactionAmount != totalDepositAmount) {
+       this.isMismatchTotal = true ; // Validation error
+    }
   }
-  // Fonction pour calculer le total des billets et pièces FCFA
-  calculateTotal() {
-    const bill10000 = this.settleCashForm.get('bill10000').value || 0;
-    const bill5000 = this.settleCashForm.get('bill5000').value || 0;
-    const bill2000 = this.settleCashForm.get('bill2000').value || 0;
-    const bill1000 = this.settleCashForm.get('bill1000').value || 0;
 
-    const coin500 = this.settleCashForm.get('coin500').value || 0;
-    const coin100 = this.settleCashForm.get('coin100').value || 0;
-    const coin50 = this.settleCashForm.get('coin50').value || 0;
-    const coin25 = this.settleCashForm.get('coin25').value || 0;
+  onAmountInWordsChange(amountInWord: string) {
 
-    // Calcul total en fonction des billets et pièces
-    this.calculatedTotal = (bill10000 * 10000) + (bill5000 * 5000) +
-                            (bill2000 * 2000) + (bill1000 * 1000) +
-                            (coin500 * 500) + (coin100 * 100) +
-                            (coin50 * 50) + (coin25 * 25);
-    this.isMismatchTotal = this.calculatedTotal !== this.settleCashForm.get('txnAmount').value;
+  }
+  // This method receives the billetage array from the child component
+  onBilletageChange(billetage: any[]): void {
+    this.billetage = billetage;
+    console.log('Billetage array received:', this.billetage);
   }
   /**
    * Submits Settle Cash form.
@@ -136,22 +126,11 @@ export class SettleCashComponent implements OnInit {
     const txnDate = settleCashFormData.txnDate;
     const txnAmount = settleCashFormData.txnAmount;
     const txnNote = settleCashFormData.txnNote;
-    // Prepare billetage array
-    const billetage = [
-      { denomination: 10000, count: settleCashFormData.bill10000, tellerCount: settleCashFormData.bill10000, cashierCount: settleCashFormData.bill10000, difference: 0 },
-      { denomination: 5000, count: settleCashFormData.bill5000, tellerCount: settleCashFormData.bill5000, cashierCount: settleCashFormData.bill5000, difference: 0 },
-      { denomination: 2000, count: settleCashFormData.bill2000, tellerCount: settleCashFormData.bill2000, cashierCount: settleCashFormData.bill2000, difference: 0 },
-      { denomination: 1000, count: settleCashFormData.bill1000, tellerCount: settleCashFormData.bill1000, cashierCount: settleCashFormData.bill1000, difference: 0 },
-      { denomination: 500, count: settleCashFormData.coin500, tellerCount: settleCashFormData.coin500, cashierCount: settleCashFormData.coin500, difference: 0 },
-      { denomination: 100, count: settleCashFormData.coin100, tellerCount: settleCashFormData.coin100, cashierCount: settleCashFormData.coin100, difference: 0 },
-      { denomination: 50, count: settleCashFormData.coin50, tellerCount: settleCashFormData.coin50, cashierCount: settleCashFormData.coin50, difference: 0 },
-      { denomination: 25, count: settleCashFormData.coin25, tellerCount: settleCashFormData.coin25, cashierCount: settleCashFormData.coin25, difference: 0 },
-    ];
 
     const data = {
       dateFormat,
       locale,
-      billetage,
+      billetage: this.billetage,
       txnAmount,
       txnDate,
       txnNote,

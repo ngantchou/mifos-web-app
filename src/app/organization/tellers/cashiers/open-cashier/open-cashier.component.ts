@@ -1,6 +1,6 @@
 /** Angular Imports. */
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import {  UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Dates } from 'app/core/utils/dates';
 
@@ -31,7 +31,7 @@ export class OpenCashierComponent implements OnInit {
   sessionCashForm: UntypedFormGroup;
   calculatedTotal: number = 0;
   isMismatchTotal : boolean;
-  status: 'open' | 'close';  // Define status for opening or closing
+  billetage:any = [];
   /**
    * Get cashier data from `Resolver`.
    * @param {FormBuilder} formBuilder Form Builder.
@@ -54,46 +54,8 @@ export class OpenCashierComponent implements OnInit {
 
   ngOnInit() {
     this.maxDate = this.settingsService.businessDate;
-    this.status = 'open';
     this.setCashierForm();
   }
-
-  // Bill denominations (notes)
-  billsData = [
-    { denomination: 10000 },
-    { denomination: 5000 },
-    { denomination: 2000 },
-    { denomination: 1000 },
-    { denomination: 500 }
-  ];
-
-  // Small coins (optional)
-  coinsData = [
-    { denomination: 500 },
-    { denomination: 100 },
-    { denomination: 50 },
-    { denomination: 25 },
-    { denomination: 10 },
-    { denomination: 5 },
-    { denomination: 2 },
-    { denomination: 1 }
-  ];
-
-  // Bill denominations (notes)
-  allDenominations = [
-    { denomination: 10000 , count: 0 },
-    { denomination: 5000 , count: 0 },
-    { denomination: 2000 , count: 0 },
-    { denomination: 1000 , count: 0 },
-    { denomination: 500 , count: 0 },
-    { denomination: 100 , count: 0 },
-    { denomination: 50 , count: 0 },
-    { denomination: 25 , count: 0 },
-    { denomination: 10 , count: 0 },
-    { denomination: 5 , count: 0 },
-    { denomination: 2 , count: 0 },
-    { denomination: 1 , count: 0 }
-  ];
 
   onTotalAmountChange(total: number) {
     this.calculatedTotal = total;
@@ -108,6 +70,11 @@ export class OpenCashierComponent implements OnInit {
   onAmountInWordsChange(amountInWord: string) {
 
   }
+  // This method receives the billetage array from the child component
+  onBilletageChange(billetage: any[]): void {
+    this.billetage = billetage;
+    console.log('Billetage array received:', this.billetage);
+  }
   /**
    * Set Cashier form.
    */
@@ -120,30 +87,10 @@ export class OpenCashierComponent implements OnInit {
       'currencyCode': ['', Validators.required],
       'openingBalance': [this.cashierData.cashierData.ClosingAmount, Validators.required],
       'closingBalance': [''],
-      'bill10000': [0],
-      'bill5000': [0],
-      'bill2000': [0],
-      'bill1000': [0],
-      'coin500': [0],
-      'coin200': [0],
-      'coin100': [0],
-      'coin50': [0],
       'txnNote': ['', Validators.required]
     });
   }
 
-  amountMatchValidator(): ValidatorFn {
-    return (formGroup: AbstractControl): ValidationErrors | null => {
-      const transactionAmount = formGroup.get('openingBalance')?.value;
-      const totalDepositAmount = this.calculatedTotal;
-      console.log(totalDepositAmount,transactionAmount)
-      // Check if both fields are filled and if they match
-      if (transactionAmount !== null && totalDepositAmount !== null && transactionAmount != totalDepositAmount) {
-        return { amountMismatch: true }; // Validation error
-      }
-      return null; // No validation error
-    };
-  }
   /**
    * Submits open Cash form.
    */
@@ -159,19 +106,6 @@ export class OpenCashierComponent implements OnInit {
       sessionCashFormData.txnDate = this.dateUtils.formatDate(txnDate, dateFormat);
     }
 
-    // Prepare billetage array
-    let billetage:any = [];
-
-    this.allDenominations.forEach(coin => {
-      const numberControl = this.sessionCashForm.get('numberOfBills_' + coin.denomination).value;
-      const totalControl = this.sessionCashForm.get('totalAmount_' + coin.denomination).value;
-      // Listen to changes in the number of coins and update the total
-      if (numberControl > 0 && numberControl != null && numberControl !== undefined) {
-        billetage.push(
-          { denomination: coin.denomination, count: numberControl, tellerCount: numberControl, cashierCount: numberControl, difference: 0 },
-        )
-      }
-    });
     // Prepare the data object
     const data = {
       cashierId: this.cashierData.cashierId,
@@ -182,7 +116,7 @@ export class OpenCashierComponent implements OnInit {
       dateFormat,
       description: "Opening cashier session",
       status: 1,  // Assuming status '1' means opening session
-      billetage
+      billetage:this.billetage
     };
 
     // Call the service to open cashier session

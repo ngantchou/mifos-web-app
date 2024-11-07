@@ -45,7 +45,7 @@
 
           <mat-form-field fxFlex="48%" >
             <mat-label>{{ 'labels.inputs.Opening Amount' | translate }}</mat-label>
-            <input matInput required formControlName="openingBalance" [disabled]="status === 'close'">
+            <input matInput required formControlName="openingBalance" >
             <mat-error *ngIf="sessionCashForm.controls.openingBalance.hasError('required')">
               {{ 'labels.inputs.Amount' | translate }} {{ 'labels.commons.is' | translate }} <strong>{{ 'labels.commons.required' | translate }}</strong>
             </mat-error>
@@ -68,52 +68,13 @@
             <div fxFlex="100%" style="margin-top: 20px;">
               <h3>{{ 'labels.inputs.Denomination' | translate }}</h3>
             </div>
-
-            <!-- Champs pour les billets FCFA -->
-            <mat-form-field fxFlex="48%">
-              <mat-label>{{ 'labels.inputs.Bill10000FCFA' | translate }}</mat-label>
-              <input matInput type="number" formControlName="bill10000" (input)="calculateTotal()">
-            </mat-form-field>
-
-            <mat-form-field fxFlex="48%">
-              <mat-label>{{ 'labels.inputs.Bill5000FCFA' | translate }}</mat-label>
-              <input matInput type="number" formControlName="bill5000" (input)="calculateTotal()">
-            </mat-form-field>
-
-            <mat-form-field fxFlex="48%">
-              <mat-label>{{ 'labels.inputs.Bill2000FCFA' | translate }}</mat-label>
-              <input matInput type="number" formControlName="bill2000" (input)="calculateTotal()">
-            </mat-form-field>
-
-            <mat-form-field fxFlex="48%">
-              <mat-label>{{ 'labels.inputs.Bill1000FCFA' | translate }}</mat-label>
-              <input matInput type="number" formControlName="bill1000" (input)="calculateTotal()">
-            </mat-form-field>
-
-            <!-- Champs pour les pièces FCFA -->
-            <mat-form-field fxFlex="48%">
-              <mat-label>{{ 'labels.inputs.Coin500FCFA' | translate }}</mat-label>
-              <input matInput type="number" formControlName="coin500" (input)="calculateTotal()">
-            </mat-form-field>
-
-            <mat-form-field fxFlex="48%">
-              <mat-label>{{ 'labels.inputs.Coin100FCFA' | translate }}</mat-label>
-              <input matInput type="number" formControlName="coin100" (input)="calculateTotal()">
-            </mat-form-field>
-
-            <mat-form-field fxFlex="48%">
-              <mat-label>{{ 'labels.inputs.Coin50FCFA' | translate }}</mat-label>
-              <input matInput type="number" formControlName="coin50" (input)="calculateTotal()">
-            </mat-form-field>
-
-            <mat-form-field fxFlex="48%">
-              <mat-label>{{ 'labels.inputs.Coin25FCFA' | translate }}</mat-label>
-              <input matInput type="number" formControlName="coin200" (input)="calculateTotal()">
-            </mat-form-field>
-            <!-- Total calculé automatiquement -->
-            <div fxFlex="100%" style="margin-top: 20px;">
-              <p>{{ 'labels.inputs.TotalAmount' | translate }}: {{ calculatedTotal }} FCFA</p>
-            </div>
+            <app-denomination
+            [currencyCode]="'CFA'"
+            [denominationFormGroup]="sessionCashForm"
+            (totalAmountChange)="onTotalAmountChange($event)"
+            (billetageChange)="onBilletageChange($event)"
+            (amountInWordsChange)="onAmountInWordsChange($event)">
+          </app-denomination>
 
             <!-- Validation si le billetage ne correspond pas au montant de clôture -->
             <div *ngIf="!isMismatchTotal" fxFlex="100%" style="color: red;">
