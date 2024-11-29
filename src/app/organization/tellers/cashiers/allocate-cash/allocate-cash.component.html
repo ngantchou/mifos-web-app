@@ -81,17 +81,10 @@
             <h3>{{ 'labels.inputs.Denomination' | translate }}</h3>
           </div>
 
-          <app-denomination
-          [currencyCode]="'CFA'"
-          [denominationFormGroup]="allocateCashForm"
-          (totalAmountChange)="onTotalAmountChange($event)"
-          (billetageChange)="onBilletageChange($event)"
-          (amountInWordsChange)="onAmountInWordsChange($event)">
-        </app-denomination>
-          <!-- Display Calculated Total -->
-          <div fxFlex="100%" style="margin-top: 20px;">
-            <p>{{ 'labels.inputs.TotalAmount' | translate }}: {{ calculatedTotal }} FCFA</p>
-          </div>
+          <app-billetage
+          [currencyCode]="currencyCode"
+          (billetageChange)="handleBilletageChange($event)">
+        </app-billetage>
 
           <!-- Total Mismatch Warning -->
           <div *ngIf="isMismatchTotal" fxFlex="100%" style="color: red;">

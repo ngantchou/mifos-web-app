@@ -84,13 +84,10 @@
             <div fxFlex="100%" style="margin-top: 20px;">
               <h3>{{ 'labels.inputs.Denomination' | translate }}</h3>
             </div>
-            <app-denomination
-            [currencyCode]="'CFA'"
-            [denominationFormGroup]="settleCashForm"
-            (totalAmountChange)="onTotalAmountChange($event)"
-            (billetageChange)="onBilletageChange($event)"
-            (amountInWordsChange)="onAmountInWordsChange($event)">
-          </app-denomination>
+            <app-billetage
+            [currencyCode]="currencyCode"
+            (billetageChange)="handleBilletageChange($event)">
+          </app-billetage>
             <!-- Validation si le billetage ne correspond pas au montant de clôture -->
             <div *ngIf="isMismatchTotal" fxFlex="100%" style="color: red;">
               <p>{{ 'labels.errors.MismatchTotal' | translate }}</p>

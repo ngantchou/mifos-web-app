@@ -24,20 +24,28 @@
         </div>
 
         <!-- Denominations -->
-        <div fxFlex="100%" style="margin-top: 20px;">
-          <h3>{{ 'labels.receipt.DenominationDetails' | translate }}</h3>
-          <p><strong>{{ 'labels.receipt.Bill10000FCFA' | translate }}:</strong> {{ receiptData.bill10000 }}</p>
-          <p><strong>{{ 'labels.receipt.Bill5000FCFA' | translate }}:</strong> {{ receiptData.bill5000 }}</p>
-          <p><strong>{{ 'labels.receipt.Bill2000FCFA' | translate }}:</strong> {{ receiptData.bill2000 }}</p>
-          <p><strong>{{ 'labels.receipt.Bill1000FCFA' | translate }}:</strong> {{ receiptData.bill1000 }}</p>
-          <p><strong>{{ 'labels.receipt.Coin500FCFA' | translate }}:</strong> {{ receiptData.coin500 }}</p>
-          <p><strong>{{ 'labels.receipt.Coin100FCFA' | translate }}:</strong> {{ receiptData.coin100 }}</p>
-        </div>
-
-        <!-- Total -->
-        <div fxFlex="100%" style="margin-top: 20px;">
-          <strong>{{ 'labels.receipt.TotalAmount' | translate }}:</strong> {{ receiptData.calculatedTotal }} FCFA
-        </div>
+        <table class="denomination-table pt-3">
+          <thead>
+            <tr>
+              <th>{{ 'labels.inputs.Denomination' | translate }}</th>
+              <th>{{ 'labels.inputs.Count' | translate }}</th>
+              <th>{{ 'labels.inputs.Total' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of receiptData.billetage">
+              <td>{{ item.denomination }}</td>
+              <td>{{ item.count }}</td>
+              <td>{{ calculateRowTotal(item) | number }}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2"> <strong>{{ 'labels.receipt.TotalAmount' | translate }}:</strong></td>
+              <td>{{ calculateGrandTotal() | number }} </td>
+            </tr>
+          </tfoot>
+        </table>
       </div>
     </mat-card-content>
 

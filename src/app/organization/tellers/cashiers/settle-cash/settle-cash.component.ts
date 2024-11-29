@@ -9,6 +9,7 @@ import { OrganizationService } from 'app/organization/organization.service';
 import { SettingsService } from 'app/settings/settings.service';
 import { SystemService } from 'app/system/system.service';
 import { SessionDataService } from '../session-data.service';
+import { Billetage } from 'app/shared/billetage/billetage.component';
 
 @Component({
   selector: 'mifosx-settle-cash',
@@ -30,6 +31,8 @@ export class SettleCashComponent implements OnInit {
   isMismatchTotal : boolean;
   targetAccounts: { id: number; name: string }[] = [];
   billetage : any = [];
+  currencyCode = 'XAF'; // Or your desired currency code
+
   /**
    * Get cashier data from `Resolver`.
    * @param {FormBuilder} formBuilder Form Builder.
@@ -91,6 +94,11 @@ export class SettleCashComponent implements OnInit {
       'bankName': ['', Validators.required],
       'bankAccount': ['', Validators.required],
     });
+  }
+  handleBilletageChange(billetage: Billetage[]) {
+    this.billetage = billetage;
+    console.log('Billetage data:', this.billetage);
+    // Now you can use this.billetageData to send to your API or process further
   }
   onTotalAmountChange(total: number) {
     this.calculatedTotal = total;

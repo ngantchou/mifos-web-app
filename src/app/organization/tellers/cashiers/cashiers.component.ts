@@ -18,7 +18,7 @@ export class CashiersComponent implements OnInit {
   /** Cashiers data. */
   cashiersData: any;
   /** Columns to be displayed in cashiers table. */
-  displayedColumns: string[] = ['period', 'staffName', 'isFullDay', 'status', 'vaultActions'];
+  displayedColumns: string[] = ['period', 'staffName', 'isFullDay', 'vaultActions'];
   /** Data source for cashiers table. */
   dataSource: MatTableDataSource<any>;
 

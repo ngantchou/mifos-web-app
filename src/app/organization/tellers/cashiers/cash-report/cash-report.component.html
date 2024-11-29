@@ -34,7 +34,11 @@
       </tr>
       <tr>
         <td>{{ 'labels.inputs.Closing Amount' | translate }}</td>
-        <td>{{ sessionData.billetage.closingBalance | currency:sessionData.currencyOptions[0].code }}</td>
+        <td>{{ sessionData.billetage.closingAmount | currency:sessionData.currencyOptions[0].code }}</td>
+      </tr>
+      <tr>
+        <td>{{ 'labels.inputs.txnNote' | translate }}</td>
+        <td>{{ sessionData.billetage.txnNote | number }} </td>
       </tr>
     </table>
 
@@ -47,61 +51,28 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>10,000 FCFA</td>
-          <td>{{ sessionData.billetage.bill10000 }}</td>
-          <td>{{ sessionData.billetage.bill10000 * 10000 | currency:sessionData.currencyOptions[0].code }}</td>
-        </tr>
-        <tr>
-          <td>5,000 FCFA</td>
-          <td>{{ sessionData.billetage.bill5000 }}</td>
-          <td>{{ sessionData.billetage.bill5000 * 5000 | currency:sessionData.currencyOptions[0].code }}</td>
-        </tr>
-        <tr>
-          <td>2,000 FCFA</td>
-          <td>{{ sessionData.billetage.bill2000 }}</td>
-          <td>{{ sessionData.billetage.bill2000 * 2000 | currency:sessionData.currencyOptions[0].code }}</td>
-        </tr>
-        <tr>
-          <td>1,000 FCFA</td>
-          <td>{{ sessionData.billetage.bill1000 }}</td>
-          <td>{{ sessionData.billetage.bill1000 * 1000 | currency:sessionData.currencyOptions[0].code }}</td>
-        </tr>
-        <tr>
-          <td>500 FCFA</td>
-          <td>{{ sessionData.billetage.coin500 }}</td>
-          <td>{{ sessionData.billetage.coin500 * 500 | currency:sessionData.currencyOptions[0].code }}</td>
-        </tr>
-        <tr>
-          <td>100 FCFA</td>
-          <td>{{ sessionData.billetage.coin100 }}</td>
-          <td>{{ sessionData.billetage.coin100 * 100 | currency:sessionData.currencyOptions[0].code }}</td>
-        </tr>
-        <tr>
-          <td>50 FCFA</td>
-          <td>{{ sessionData.billetage.coin50 }}</td>
-          <td>{{ sessionData.billetage.coin50 * 50 | currency:sessionData.currencyOptions[0].code }}</td>
-        </tr>
-        <tr>
-          <td>25 FCFA</td>
-          <td>{{ sessionData.billetage.coin25 }}</td>
-          <td>{{ sessionData.billetage.coin25 * 25 | currency:sessionData.currencyOptions[0].code }}</td>
+        <tr *ngFor="let item of sessionData.billetage.billetage">
+          <td>{{ item.denomination }}</td>
+          <td>{{ item.count }}</td>
+          <td>{{ calculateRowTotal(item) | number }}</td>
         </tr>
       </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="2">{{ 'labels.inputs.totalAmount' | translate }}</td>
+          <td>{{ calculateGrandTotal() | number }} </td>
+        </tr>
+      </tfoot>
     </table>
 
     <div class="summary">
-      <p><strong>{{ 'labels.inputs.TotalCounted' | translate }}:</strong> {{ calculateTotal() | currency:sessionData.currencyOptions[0].code  }}</p>
-      <p><strong>{{ 'labels.inputs.ClosingBalance' | translate }}:</strong> {{ sessionData.billetage.closingBalance | currency:sessionData.currencyOptions[0].code }}</p>
-      <p [ngClass]="{'difference-mismatch': difference !== 0}">
-        <strong>{{ 'labels.inputs.Difference' | translate }}:</strong> {{ difference | currency:sessionData.currencyOptions[0].code }}
+      <!-- <p><strong>{{ 'labels.inputs.TotalCounted' | translate }}:</strong> {{ calculateTotal() | currency:sessionData.currencyOptions[0].code  }}</p> -->
+      <!-- <p><strong>{{ 'labels.inputs.ClosingBalance' | translate }}:</strong> {{ sessionData.billetage.closingBalance | currency:sessionData.currencyOptions[0].code }}</p> -->
+      <p >
+        <strong>{{ 'labels.inputs.Difference' | translate }}:</strong> {{ difference() | number }}
       </p>
     </div>
 
-    <div class="transaction-note">
-      <p><strong>{{ 'labels.inputs.txnNote' | translate }}:</strong></p>
-      <p>{{ sessionData.billetage.txnNote }}</p>
-    </div>
     <!-- Print Button -->
     <div class="print-button">
       <button mat-raised-button color="primary" (click)="printReport()">

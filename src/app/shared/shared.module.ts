@@ -48,7 +48,7 @@ import { GlAccountDisplayComponent } from './accounting/gl-account-display/gl-ac
 import { ViewSavingsAccountingDetailsComponent } from './accounting/view-savings-accounting-details/view-savings-accounting-details.component';
 import { ThemeToggleComponent } from './theme-toggle/theme-toggle.component';
 import { LongTextComponent } from './long-text/long-text.component';
-import { DenominationComponent } from './denomination/denomination.component';
+import { BilletageComponent } from './billetage/billetage.component';
 
 /**
  * Shared Module
@@ -104,7 +104,7 @@ import { DenominationComponent } from './denomination/denomination.component';
     ViewSavingsAccountingDetailsComponent,
     ThemeToggleComponent,
     LongTextComponent,
-    DenominationComponent
+    BilletageComponent
   ],
   exports: [
     FileUploadComponent,
@@ -138,7 +138,7 @@ import { DenominationComponent } from './denomination/denomination.component';
     ViewSavingsAccountingDetailsComponent,
     ThemeToggleComponent,
     LongTextComponent,
-    DenominationComponent
+    BilletageComponent
   ]
 })
 export class SharedModule { }

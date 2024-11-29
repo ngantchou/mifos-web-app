@@ -23,7 +23,8 @@ export class CashReportComponent {
     // Retrieve the session data from the service
     this.cashierData = this.sessionDataService.getSessionData();
 
-
+    // Retrieve the session data from
+    console.log(this.cashierData);
     this.route.data.subscribe((data: { cashierTemplate: any}) => {
       this.sessionData = data.cashierTemplate;
     });
@@ -48,8 +49,15 @@ export class CashReportComponent {
     return total;
   }
 
-  get difference(): number {
-    return this.calculateTotal() - this.sessionData.billetage.closingBalance;
+  difference(): number {
+    return this.sessionData.billetage.closingBalance - this.sessionData.billetage.openingAmount;
+  }
+
+  calculateRowTotal(item: any): number {
+    return item.denomination * item.count;
+  }
+  calculateGrandTotal(): number {
+    return this.sessionData.billetage.billetage.reduce((sum:any, item:any) => sum + this.calculateRowTotal(item), 0);
   }
 
   printReport(): void {

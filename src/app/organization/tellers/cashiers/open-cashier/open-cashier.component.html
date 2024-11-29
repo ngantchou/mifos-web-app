@@ -6,32 +6,34 @@
 
         <div fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column">
 
-          <mat-form-field fxFlex="48%" >
+          <mat-form-field fxFlex="48%">
             <mat-label>{{ 'labels.inputs.Office' | translate }}</mat-label>
             <input matInput required formControlName="office">
           </mat-form-field>
 
-          <mat-form-field fxFlex="48%" >
+          <mat-form-field fxFlex="48%">
             <mat-label>{{ 'labels.inputs.Teller Name' | translate }}</mat-label>
             <input matInput required formControlName="tellerName">
           </mat-form-field>
 
-          <mat-form-field fxFlex="48%" >
+          <mat-form-field fxFlex="48%">
             <mat-label>{{ 'labels.inputs.Cashier' | translate }}</mat-label>
             <input matInput required formControlName="cashier">
           </mat-form-field>
 
           <mat-form-field fxFlex="48%" (click)="cashDatePicker.open()">
             <mat-label>{{ 'labels.inputs.Date' | translate }}</mat-label>
-            <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="cashDatePicker" required formControlName="txnDate">
+            <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="cashDatePicker" required
+              formControlName="txnDate">
             <mat-datepicker-toggle matSuffix [for]="cashDatePicker"></mat-datepicker-toggle>
             <mat-datepicker #cashDatePicker></mat-datepicker>
             <mat-error *ngIf="sessionCashForm.controls.txnDate.hasError('required')">
-              {{ 'labels.inputs.Date' | translate }} {{ 'labels.commons.is' | translate }} <strong>{{ 'labels.commons.required' | translate }}</strong>
+              {{ 'labels.inputs.Date' | translate }} {{ 'labels.commons.is' | translate }} <strong>{{
+                'labels.commons.required' | translate }}</strong>
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field fxFlex="48%" >
+          <mat-form-field fxFlex="48%">
             <mat-label>{{ 'labels.inputs.Currency' | translate }}</mat-label>
             <mat-select required formControlName="currencyCode">
               <mat-option *ngFor="let currency of cashierData.currencyOptions" [value]="currency.code">
@@ -39,42 +41,46 @@
               </mat-option>
             </mat-select>
             <mat-error *ngIf="sessionCashForm.controls.currencyCode.hasError('required')">
-              {{ 'labels.inputs.Currency' | translate }} {{ 'labels.commons.is' | translate }} <strong>{{ 'labels.commons.required' | translate }}</strong>
+              {{ 'labels.inputs.Currency' | translate }} {{ 'labels.commons.is' | translate }} <strong>{{
+                'labels.commons.required' | translate }}</strong>
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field fxFlex="48%" >
+          <mat-form-field fxFlex="48%">
             <mat-label>{{ 'labels.inputs.Opening Amount' | translate }}</mat-label>
             <input matInput required formControlName="openingBalance">
             <mat-error *ngIf="sessionCashForm.controls.openingBalance.hasError('required')">
-              {{ 'labels.inputs.Amount' | translate }} {{ 'labels.commons.is' | translate }} <strong>{{ 'labels.commons.required' | translate }}</strong>
+              {{ 'labels.inputs.Amount' | translate }} {{ 'labels.commons.is' | translate }} <strong>{{
+                'labels.commons.required' | translate }}</strong>
             </mat-error>
           </mat-form-field>
 
           <!-- Closing amount for closing session -->
 
-          <mat-form-field fxFlex="48%" >
+          <mat-form-field fxFlex="48%">
             <mat-label>{{ 'labels.inputs.txnNote' | translate }}</mat-label>
             <input matInput required formControlName="txnNote">
           </mat-form-field>
-        </div>
-        <app-denomination
-        [currencyCode]="'CFA'"
-        [denominationFormGroup]="sessionCashForm"
-        (totalAmountChange)="onTotalAmountChange($event)"
-        (billetageChange)="onBilletageChange($event)"
-        (amountInWordsChange)="onAmountInWordsChange($event)">
-      </app-denomination>
+          <!-- Section pour le billetage -->
+          <div fxFlex="100%" style="margin-top: 20px;">
+            <h3>{{ 'labels.inputs.Denomination' | translate }} <span *ngIf="isMismatchTotal" style="color: red;">{{
+                'labels.errors.MismatchTotal' | translate }}</span></h3>
+            <app-billetage [currencyCode]="currencyCode" (billetageChange)="handleBilletageChange($event)">
+            </app-billetage>
+          </div>
 
-      <!-- <div *ngIf="!isMismatchTotal">
-        <p class="error-message">Transaction amount must match the total deposit amount.</p>
-      </div> -->
+          <!-- Validation si le billetage ne correspond pas au montant de clôture -->
+          <div fxFlex="100%">
+            <span *ngIf="isMismatchTotal" style="color: red;">{{ 'labels.errors.MismatchTotal' | translate }}</span>
+          </div>
+        </div>
 
       </mat-card-content>
 
       <mat-card-actions fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="5px">
-        <button type="button" mat-raised-button [routerLink]="['../']">{{ 'labels.buttons.Cancel' | translate }}</button>
-        <button mat-raised-button color="primary" [disabled]="!sessionCashForm.valid">
+        <button type="button" mat-raised-button [routerLink]="['../']">{{ 'labels.buttons.Cancel' | translate
+          }}</button>
+        <button mat-raised-button color="primary" [disabled]="!sessionCashForm.valid || isMismatchTotal">
           {{ 'labels.buttons.OpenSession' | translate }}
         </button>
       </mat-card-actions>

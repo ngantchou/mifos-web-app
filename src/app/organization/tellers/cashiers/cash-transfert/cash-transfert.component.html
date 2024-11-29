@@ -7,7 +7,7 @@
           <!-- Source Cashier -->
           <mat-form-field fxFlex="48%">
             <mat-label>{{ 'labels.inputs.Source Cashier' | translate }}</mat-label>
-            <mat-select required formControlName="sourceCashier" >
+            <mat-select required formControlName="sourceCashier">
               <mat-option *ngFor="let cashier of [cashierData]" [value]="cashier.id">
                 {{ cashier.name }}
               </mat-option>
@@ -38,62 +38,30 @@
             <mat-label>{{ 'labels.inputs.Transfer Amount' | translate }}</mat-label>
             <input matInput type="number" required formControlName="txnAmount">
           </mat-form-field>
-
+          <mat-form-field fxFlex="48%">
+            <mat-label>{{ 'labels.inputs.txnNote' | translate }}</mat-label>
+            <input matInput required formControlName="txnNote">
+          </mat-form-field>
           <!-- Denomination Section -->
           <div fxFlex="100%" style="margin-top: 20px;">
             <h3>{{ 'labels.inputs.Denomination' | translate }}</h3>
           </div>
-
-          <!-- Denomination fields corresponding to the transfer amount -->
-          <mat-form-field fxFlex="48%">
-            <mat-label>{{ 'labels.inputs.Bill10000FCFA' | translate }}</mat-label>
-            <input matInput type="number" formControlName="bill10000" (input)="calculateTotal()">
-          </mat-form-field>
-
-          <mat-form-field fxFlex="48%">
-            <mat-label>{{ 'labels.inputs.Bill5000FCFA' | translate }}</mat-label>
-            <input matInput type="number" formControlName="bill5000" (input)="calculateTotal()">
-          </mat-form-field>
-
-          <mat-form-field fxFlex="48%">
-            <mat-label>{{ 'labels.inputs.Bill2000FCFA' | translate }}</mat-label>
-            <input matInput type="number" formControlName="bill2000" (input)="calculateTotal()">
-          </mat-form-field>
-
-          <mat-form-field fxFlex="48%">
-            <mat-label>{{ 'labels.inputs.Bill1000FCFA' | translate }}</mat-label>
-            <input matInput type="number" formControlName="bill1000" (input)="calculateTotal()">
-          </mat-form-field>
-
-          <mat-form-field fxFlex="48%">
-            <mat-label>{{ 'labels.inputs.Coin500FCFA' | translate }}</mat-label>
-            <input matInput type="number" formControlName="coin500" (input)="calculateTotal()">
-          </mat-form-field>
-
-          <mat-form-field fxFlex="48%">
-            <mat-label>{{ 'labels.inputs.Coin100FCFA' | translate }}</mat-label>
-            <input matInput type="number" formControlName="coin100" (input)="calculateTotal()">
-          </mat-form-field>
-
-          <!-- Total Amount Calculated -->
-          <div fxFlex="100%" style="margin-top: 20px;">
-            <p>{{ 'labels.inputs.TotalAmount' | translate }}: {{ calculatedTotal }} FCFA</p>
-          </div>
+          <app-billetage [currencyCode]="currencyCode" (billetageChange)="handleBilletageChange($event)">
+          </app-billetage>
 
           <!-- Mismatch Validation -->
           <div *ngIf="isMismatchTotal" fxFlex="100%" style="color: red;">
             <p>{{ 'labels.errors.MismatchTotal' | translate }}</p>
           </div>
-           <mat-form-field fxFlex="48%" >
-            <mat-label>{{ 'labels.inputs.txnNote' | translate }}</mat-label>
-            <input matInput required formControlName="txnNote">
-          </mat-form-field>
+
         </div>
       </mat-card-content>
 
       <mat-card-actions fxLayout="row" fxLayoutAlign="center" fxLayoutGap="5px">
-        <button type="button" mat-raised-button [routerLink]="['../']">{{ 'labels.buttons.Cancel' | translate }}</button>
-        <button mat-raised-button color="primary" [disabled]="!cashTransferForm.valid || isMismatchTotal" >{{ 'labels.buttons.Submit' | translate }}</button>
+        <button type="button" mat-raised-button [routerLink]="['../']">{{ 'labels.buttons.Cancel' | translate
+          }}</button>
+        <button mat-raised-button color="primary" [disabled]="!cashTransferForm.valid || isMismatchTotal">{{
+          'labels.buttons.Submit' | translate }}</button>
       </mat-card-actions>
     </form>
     <div *ngIf="transferData">
@@ -101,4 +69,3 @@
     </div>
   </mat-card>
 </div>
-

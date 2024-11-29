@@ -1,0 +1,16 @@
+<div class="denomination-container" fxLayout="row wrap" fxLayoutGap="16px">
+  <form [formGroup]="billetageForm">
+    <div fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column">
+      <ng-container *ngFor="let denomination of denominations">
+        <mat-form-field fxFlex="48%">
+          <mat-label>{{ denomination.label | translate }} </mat-label>
+          <input matInput type="number" [formControlName]="getDenominationControlName(denomination.denomination)"
+            (input)="updateBilletage()" min="0" (input)="calculateTotal()">
+        </mat-form-field>
+      </ng-container>
+    </div>
+  </form>
+</div>
+<div>
+  <p>{{ 'labels.inputs.TotalAmount' | translate }}: {{ totalAmount }} {{ currencyCode }}</p>
+</div>

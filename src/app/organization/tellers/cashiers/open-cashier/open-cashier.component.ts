@@ -9,7 +9,7 @@ import { OrganizationService } from 'app/organization/organization.service';
 import { SettingsService } from 'app/settings/settings.service';
 
 /* Component */
-import { DenominationComponent } from 'app/shared/denomination/denomination.component';
+import { Billetage } from 'app/shared/billetage/billetage.component';
 /**
  * Allocate Cash component.
  */
@@ -32,6 +32,8 @@ export class OpenCashierComponent implements OnInit {
   calculatedTotal: number = 0;
   isMismatchTotal : boolean;
   billetage:any = [];
+  currencyCode = 'XAF'; // Or your desired currency code
+  totalAmount: number = 0;
   /**
    * Get cashier data from `Resolver`.
    * @param {FormBuilder} formBuilder Form Builder.
@@ -55,25 +57,30 @@ export class OpenCashierComponent implements OnInit {
   ngOnInit() {
     this.maxDate = this.settingsService.businessDate;
     this.setCashierForm();
+    this.calculateTotalAmount(); // Calculate total amount
+
   }
 
-  onTotalAmountChange(total: number) {
-    this.calculatedTotal = total;
-    const transactionAmount =  this.sessionCashForm.get('openingBalance')?.value;
-    const totalDepositAmount = this.calculatedTotal;
-    // Check if both fields are filled and if they match
-    if (transactionAmount !== null && totalDepositAmount !== null && transactionAmount != totalDepositAmount) {
-       this.isMismatchTotal = true ; // Validation error
-    }
+  calculateTotalAmount(): number {
+    this.totalAmount = this.billetage.reduce((sum: number, item: any) => {
+      return sum + item.denomination * item.count;
+    }, 0);
+
+    const closingBalanceControl = this.sessionCashForm?.get('openingBalance');
+    this.isMismatchTotal = closingBalanceControl ? this.totalAmount != closingBalanceControl.value : false;
+    //this.onTotalAmountChange(this.totalAmount);
+    return this.totalAmount;
   }
 
-  onAmountInWordsChange(amountInWord: string) {
-
+  handleBilletageChange(billetage: Billetage[]) {
+    this.billetage = billetage;
+    console.log('Billetage data:', this.billetage);
+    this.calculateTotalAmount();
   }
   // This method receives the billetage array from the child component
   onBilletageChange(billetage: any[]): void {
-    this.billetage = billetage;
-    console.log('Billetage array received:', this.billetage);
+    this.billetage = billetage || [];
+    this.calculateTotalAmount();
   }
   /**
    * Set Cashier form.

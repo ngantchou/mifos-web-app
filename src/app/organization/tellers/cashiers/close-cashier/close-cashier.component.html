@@ -63,36 +63,33 @@
                 {{ 'labels.inputs.Amount' | translate }} {{ 'labels.commons.is' | translate }} <strong>{{ 'labels.commons.required' | translate }}</strong>
               </mat-error>
             </mat-form-field>
-
+            <mat-form-field fxFlex="48%" >
+              <mat-label>{{ 'labels.inputs.txnNote' | translate }}</mat-label>
+              <input matInput required formControlName="txnNote">
+            </mat-form-field>
             <!-- Section pour le billetage -->
             <div fxFlex="100%" style="margin-top: 20px;">
-              <h3>{{ 'labels.inputs.Denomination' | translate }}</h3>
+              <h3>{{ 'labels.inputs.Denomination' | translate }} <span *ngIf="isMismatchTotal" style="color: red;" >{{ 'labels.errors.MismatchTotal' | translate }}</span></h3>
+              <app-billetage
+              [currencyCode]="currencyCode"
+              (billetageChange)="handleBilletageChange($event)">
+            </app-billetage>
             </div>
-            <app-denomination
-            [currencyCode]="'CFA'"
-            [denominationFormGroup]="sessionCashForm"
-            (totalAmountChange)="onTotalAmountChange($event)"
-            (billetageChange)="onBilletageChange($event)"
-            (amountInWordsChange)="onAmountInWordsChange($event)">
-          </app-denomination>
 
             <!-- Validation si le billetage ne correspond pas au montant de clôture -->
-            <div *ngIf="!isMismatchTotal" fxFlex="100%" style="color: red;">
-              <p>{{ 'labels.errors.MismatchTotal' | translate }}</p>
+            <div  fxFlex="100%" >
+              <span *ngIf="isMismatchTotal" style="color: red;" >{{ 'labels.errors.MismatchTotal' | translate }}</span>
             </div>
 
           </div>
-          <mat-form-field fxFlex="48%" >
-            <mat-label>{{ 'labels.inputs.txnNote' | translate }}</mat-label>
-            <input matInput required formControlName="txnNote">
-          </mat-form-field>
+
         </div>
 
       </mat-card-content>
 
       <mat-card-actions fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="5px">
         <button type="button" mat-raised-button [routerLink]="['../']">{{ 'labels.buttons.Cancel' | translate }}</button>
-        <button mat-raised-button color="primary" [disabled]="!sessionCashForm.valid">
+        <button mat-raised-button color="primary" [disabled]="!sessionCashForm.valid || isMismatchTotal">
           {{ 'labels.buttons.CloseSession' | translate }}
         </button>
       </mat-card-actions>

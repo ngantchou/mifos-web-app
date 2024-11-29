@@ -1,18 +1,14 @@
 <div class="container">
-
   <mat-card>
-
     <h2 mat-title *ngIf="transactionType.withdrawal">{{'labels.heading.Withdraw Money From Saving Account' | translate}}</h2>
     <h2 mat-title *ngIf="transactionType.deposit">{{'labels.heading.Deposit Money To Saving Account' | translate}}</h2>
 
     <form [formGroup]="savingAccountTransactionForm" (ngSubmit)="submit()">
-
       <mat-card-content fxLayout="column">
 
         <mat-form-field (click)="dueDatePicker.open()">
           <mat-label>{{'labels.inputs.Transaction Date' | translate}}</mat-label>
-          <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="dueDatePicker"
-            formControlName="transactionDate" required>
+          <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="dueDatePicker" formControlName="transactionDate" required>
           <mat-datepicker-toggle matSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
           <mat-datepicker #dueDatePicker></mat-datepicker>
           <mat-error *ngIf="savingAccountTransactionForm.controls.transactionDate.hasError('required')">
@@ -38,98 +34,62 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+<!--
+        <div class="denomination-table">
+          <mat-table [dataSource]="DENOMINATIONS" class="mat-elevation-z8">
 
-        <div>
-          <div fxLayout="row" class="margin-t" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="2%">
-            <div>
-              <mat-table [dataSource]="billsDenominations" class="bills-table" mat-table>
+            <ng-container matColumnDef="denomination">
+              <mat-header-cell *matHeaderCellDef> {{'labels.inputs.Denomination' | translate}} </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.denomination}} </mat-cell>
+            </ng-container>
 
-                <!-- Denomination Column -->
-                <ng-container matColumnDef="denomination">
-                  <mat-header-cell *matHeaderCellDef> Denomination </mat-header-cell>
-                  <mat-cell *matCellDef="let bill"> {{bill.denomination}} </mat-cell>
-                </ng-container>
+            <ng-container matColumnDef="numberOfBills">
+              <mat-header-cell *matHeaderCellDef> {{'labels.inputs.Number of Bills' | translate}} </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <input type="number" [formControlName]="'numberOfBills_' + element.denomination" matInput min="0" placeholder="0"/>
+              </mat-cell>
+            </ng-container>
 
-                <!-- Number of Bills Column -->
-                <ng-container matColumnDef="numberOfBills">
-                  <mat-header-cell *matHeaderCellDef> Number </mat-header-cell>
-                  <mat-cell *matCellDef="let bill">
-                    <input type="number" [formControlName]="'numberOfBills_' + bill.denomination" matInput min="0" placeholder="0"/>
-                  </mat-cell>
-                </ng-container>
+            <ng-container matColumnDef="total">
+              <mat-header-cell *matHeaderCellDef> {{'labels.inputs.Total' | translate}} </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <input type="number" [formControlName]="'totalAmount_' + element.denomination" matInput readonly class="form-control" placeholder="0"/>
+                <span>{{ currencyCode }}</span>
+              </mat-cell>
+            </ng-container>
 
-                <!-- Total Amount Column -->
-                <ng-container matColumnDef="total">
-                  <mat-header-cell *matHeaderCellDef> Total </mat-header-cell>
-                  <mat-cell *matCellDef="let bill">
-                    <input type="number" [formControlName]="'totalAmount_' + bill.denomination" matInput readonly class="form-control" placeholder="0"/>
-                    <span>{{ currencyCode }}</span>
-                  </mat-cell>
-                </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> 1
+          </mat-table>
+        </div> -->
+        <app-billetage
+          [currencyCode]="currencyCode"
+          (billetageChange)="handleBilletageChange($event)">
+        </app-billetage>
 
-                <!-- Header and Row Declarations -->
-                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-
-              </mat-table>
-            </div>
-            <div>
-              <mat-table [dataSource]="smallCoins" class="bills-table" mat-table>
-
-                <!-- Denomination Column -->
-                <ng-container matColumnDef="denomination">
-                  <mat-header-cell *matHeaderCellDef> Denomination </mat-header-cell>
-                  <mat-cell *matCellDef="let bill"> {{bill.denomination}} </mat-cell>
-                </ng-container>
-
-                <!-- Number of Bills Column -->
-                <ng-container matColumnDef="numberOfBills">
-                  <mat-header-cell *matHeaderCellDef> Number </mat-header-cell>
-                  <mat-cell *matCellDef="let bill">
-                    <input type="number" [formControlName]="'numberOfBills_' + bill.denomination" matInput min="0" class="form-control" placeholder="0"/>
-                  </mat-cell>
-                </ng-container>
-
-                <!-- Total Amount Column -->
-                <ng-container matColumnDef="total">
-                  <mat-header-cell *matHeaderCellDef> Total </mat-header-cell>
-                  <mat-cell *matCellDef="let bill">
-                    <input type="number" [formControlName]="'totalAmount_' + bill.denomination" matInput readonly placeholder="0" min="0"/>
-                    <span>{{ currencyCode }}</span>
-                  </mat-cell>
-                </ng-container>
-
-                <!-- Header and Row Declarations -->
-                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-
-              </mat-table>
-            </div>
+        <div class="total-section m-t-4">
+          <div class="m-t-20">
+            {{'labels.inputs.Total Amount of Deposit' | translate}}:
+            <input type="number" class="d-none" formControlName="totalDepositAmount" matInput readonly />
+            <span class="success-message">{{totalDepositAmount}} {{ currencyCode }}</span>
           </div>
-          <!-- Total Amount -->
-          <div class="total-section m-t-4">
-              <div class="m-t-20">
-                {{'labels.inputs.Total Amount of Deposit' | translate}}:
-                <input type="number" class="d-none" formControlName="totalDepositAmount" matInput readonly />
-                <span class="success-message">{{totalDepositAmount}} {{ currencyCode }}</span>
-              </div>
-              <div class="m-t-20">
-                {{'labels.inputs.Total Amount in Words' | translate}}:
-                <input type="text" class="d-none" formControlName="amountInWords" matInput readonly />
-                <span class="success-message">{{totalAmountInWords}} Franc CFA</span>
-              </div>
+          <div class="m-t-20">
+            {{'labels.inputs.Total Amount in Words' | translate}}:
+            <input type="text" class="d-none" formControlName="amountInWords" matInput readonly />
+            <span class="success-message">{{totalAmountInWords}} Franc CFA</span>
           </div>
-          <!-- Label outside the form field wrapper -->
-          <div *ngIf="savingAccountTransactionForm.hasError('amountMismatch')">
-            <p class="error-message">Transaction amount must match the total deposit amount.</p>
-          </div>
-          <div formArrayName="sourceOfFunds" class="m-t-20" *ngIf="transactionType.deposit">
-            <label>{{ 'labels.inputs.Source of Funds' | translate }}</label>
-            <div>
-              <ng-container *ngFor="let source of sourcesOfFundsOptions; let i = index">
-                <mat-checkbox [formControlName]="i">{{ source }}</mat-checkbox>
-              </ng-container>
-            </div>
+        </div>
+
+        <div *ngIf="savingAccountTransactionForm.hasError('amountMismatch')">
+          <p class="error-message">Transaction amount must match the total deposit amount.</p>
+        </div>
+
+        <div formArrayName="sourceOfFunds" class="m-t-20" *ngIf="transactionType.deposit">
+          <label>{{ 'labels.inputs.Source of Funds' | translate }}</label>
+          <div>
+            <ng-container *ngFor="let source of sourcesOfFundsOptions; let i = index">
+              <mat-checkbox [formControlName]="i">{{ source }}</mat-checkbox>
+            </ng-container>
           </div>
         </div>
 
@@ -177,15 +137,12 @@
           <mat-label>{{'labels.inputs.Notes' | translate}}</mat-label>
           <textarea formControlName="note" matInput cdkTextareaAutosize cdkAutosizeMinRows="2"></textarea>
         </mat-form-field>
+
         <mat-card-actions fxLayoutGap="5px" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center">
           <button type="button" mat-raised-button [routerLink]="['../../transactions']">{{'labels.buttons.Cancel' | translate}}</button>
           <button mat-raised-button color="primary" [disabled]="!savingAccountTransactionForm.valid">{{'labels.buttons.Submit' | translate}}</button>
         </mat-card-actions>
-
       </mat-card-content>
-
     </form>
-
   </mat-card>
-
 </div>

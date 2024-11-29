@@ -26,6 +26,14 @@ export class CashTransferReceiptComponent {
     }
   }
 
+  calculateGrandTotal(): number {
+    return this.receiptData.billetage.reduce((sum:any, item:any) => sum + this.calculateRowTotal(item), 0);
+  }
+
+  calculateRowTotal(item: any): number {
+    return item.denomination * item.count;
+  }
+
   // Method to print the receipt
   printReceipt() {
     const printContents = document.getElementById('receipt-section').innerHTML;
